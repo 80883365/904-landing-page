@@ -1,0 +1,52 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PageHero from "../components/PageHero.astro";
+import Section from "../components/Section.astro";
+import { SITE, CONTACT } from "../consts";
+---
+<BaseLayout title="Privacy Policy" description="How CarboPure collects, uses and protects your personal data." noindex={true}>
+  <PageHero
+    tone="light"
+    eyebrow="Legal"
+    title="Privacy Policy"
+    intro={`Last updated: June 2026. How ${SITE.legalName} collects, uses and safeguards your information.`}
+    crumbs={[{ label: "Home", href: "/" }, { label: "Privacy Policy" }]}
+  />
+  <Section containerClass="!max-w-3xl">
+    <div class="prose-cp">
+      <p>{SITE.legalName} ("we", "us") respects your privacy. This policy explains what we collect through this website and how we use it. It applies only to information gathered via this site.</p>
+
+      <h2>Information we collect</h2>
+      <ul>
+        <li><strong>Contact details</strong> you submit via our forms — name, company, email, phone and message.</li>
+        <li><strong>Inquiry details</strong> such as product interest, volume and delivery requirements.</li>
+        <li><strong>Technical data</strong> your browser sends automatically (IP address, browser type, pages visited) for security and analytics.</li>
+      </ul>
+
+      <h2>How we use your information</h2>
+      <ul>
+        <li>To respond to inquiries, prepare quotes and provide technical support.</li>
+        <li>To fulfill orders and communicate about shipments.</li>
+        <li>To improve our website, products and services.</li>
+        <li>For lawful business record-keeping and fraud prevention.</li>
+      </ul>
+
+      <h2>Legal basis & data sharing</h2>
+      <p>We process your data on the basis of your consent and our legitimate business interests in responding to your inquiry. We do not sell your data. We share it only with processors who help us operate (e.g. our form provider and email service) under appropriate agreements, or where required by law.</p>
+
+      <h2>Data retention</h2>
+      <p>We retain inquiry and order data for as long as necessary to serve the relationship and meet legal obligations, then delete or anonymize it.</p>
+
+      <h2>Your rights</h2>
+      <p>You may request access to, correction of, or deletion of your personal data, and object to or restrict certain processing. To exercise any right, email <a href={`mailto:${CONTACT.email}`}>{CONTACT.email}</a>.</p>
+
+      <h2>Cookies</h2>
+      <p>This site uses only essential cookies required for it to function. Analytics, if added later, will be configurable and disclosed here.</p>
+
+      <h2>Contact</h2>
+      <p>Questions about this policy or your data? Contact us at <a href={`mailto:${CONTACT.email}`}>{CONTACT.email}</a>.</p>
+
+      <p class="text-sm text-carbon-400">This is a template privacy policy for a starter site. Have it reviewed by qualified counsel before going live.</p>
+    </div>
+  </Section>
+</BaseLayout>

@@ -1,0 +1,178 @@
+---
+/**
+ * Site header — sticky, white, with mega-dropdown nav and a mobile drawer.
+ * Active link highlighting via current pathname.
+ */
+import { NAV, SITE, CONTACT } from "../consts";
+import Icon from "./Icon.astro";
+import Button from "./Button.astro";
+
+const pathname = Astro.url.pathname.replace(/\/$/, "") || "/";
+const isActive = (href: string) => {
+  const clean = href.replace(/\/$/, "") || "/";
+  if (clean === "/") return pathname === "/";
+  return pathname === clean || pathname.startsWith(clean + "/");
+};
+---
+<header id="site-header" class="sticky top-0 z-50 border-b border-carbon-100 bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/85">
+  {/* Top utility bar */}
+  <div class="hidden border-b border-carbon-100 bg-carbon-900 text-white/80 lg:block">
+    <div class="container-x flex h-9 items-center justify-between text-xs">
+      <p class="flex items-center gap-2">
+        <Icon name="globe" class="size-3.5 text-accent-400" />
+        Gold ore grinding equipment and media supply
+      </p>
+      <div class="flex items-center gap-5">
+        <span class="flex items-center gap-1.5">
+          <Icon name="mail" class="size-3.5" /> {CONTACT.email}
+        </span>
+        <a href={`tel:${CONTACT.phone.replace(/\s/g, "")}`} class="flex items-center gap-1.5 transition hover:text-white">
+          <Icon name="phone" class="size-3.5" /> {CONTACT.phone}
+        </a>
+      </div>
+    </div>
+  </div>
+
+  {/* Main bar */}
+  <div class="container-x flex h-16 items-center justify-between gap-4 lg:h-[4.5rem]">
+    {/* Logo */}
+    <a href="/" class="flex shrink-0 items-center gap-2.5" aria-label={`${SITE.name} home`}>
+      <span class="flex size-9 items-center justify-center rounded-xs bg-brand-600 text-white">
+        <Icon name="layers" class="size-5" />
+      </span>
+      <span class="flex flex-col leading-none">
+        <span class="font-display text-lg font-700 tracking-tight text-brand-600">
+          Gold<span class="text-accent-500">Core</span>
+        </span>
+        <span class="font-condensed text-[0.6rem] font-800 uppercase tracking-[0.18em] text-carbon-400">
+          Mining Equipment
+        </span>
+      </span>
+    </a>
+
+    {/* Desktop nav */}
+    <nav class="hidden items-center gap-1 xl:flex" aria-label="Primary">
+      {NAV.map((item) => (
+        <div class="group relative">
+          <a
+            href={item.href}
+            class={`flex items-center gap-1 rounded-xs px-3 py-2 text-[0.9375rem] font-600 transition ${
+              isActive(item.href)
+                ? "text-accent-600"
+                : "text-carbon-700 hover:text-brand-600"
+            }`}
+            aria-current={isActive(item.href) ? "page" : undefined}
+          >
+            {item.label}
+            {item.children && <Icon name="chevronDown" class="size-3.5 opacity-60 transition group-hover:rotate-180" />}
+          </a>
+
+          {item.children && (
+            <div class="invisible absolute left-1/2 top-full z-50 w-[34rem] -translate-x-1/2 translate-y-2 pt-2 opacity-0 transition-all duration-200 group-hover:visible group-hover:translate-y-0 group-hover:opacity-100">
+              <div class="overflow-hidden rounded-md border border-carbon-100 bg-white shadow-[0_24px_48px_-20px_rgba(5,42,104,0.3)]">
+                <ul class="grid grid-cols-1 gap-0.5 p-2">
+                  {item.children.map((child) => (
+                    <li>
+                      <a
+                        href={child.href}
+                        class="block rounded-xs px-3 py-2.5 transition hover:bg-brand-50"
+                      >
+                        <span class="block text-[0.9375rem] font-700 text-brand-600">
+                          {child.label}
+                        </span>
+                        {child.blurb && (
+                          <span class="mt-0.5 block text-sm text-carbon-500">{child.blurb}</span>
+                        )}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          )}
+        </div>
+      ))}
+    </nav>
+
+    {/* Right actions */}
+    <div class="flex items-center gap-2">
+      <button class="btn btn-primary hidden sm:inline-flex" onclick="openContactModal({ sourcePage: window.location.pathname, ctaLabel: 'Request a Quote' })">
+        Request a Quote <Icon name="arrowRight" class="size-[1.15em]" />
+      </button>
+      {/* Mobile toggle */}
+      <button
+        id="menu-toggle"
+        class="flex size-10 items-center justify-center rounded-xs border border-carbon-200 text-carbon-700 xl:hidden"
+        aria-label="Open menu"
+        aria-expanded="false"
+        aria-controls="mobile-menu"
+      >
+        <Icon name="menu" class="size-5" data-icon-open />
+        <Icon name="close" class="hidden size-5" data-icon-close />
+      </button>
+    </div>
+  </div>
+
+  {/* Mobile drawer */}
+  <div id="mobile-menu" class="hidden border-t border-carbon-100 bg-white xl:hidden">
+    <nav class="container-x flex max-h-[80vh] flex-col gap-1 overflow-y-auto py-4" aria-label="Mobile">
+      {NAV.map((item) => (
+        <div class="border-b border-carbon-50 pb-1">
+          <a
+            href={item.href}
+            class={`flex items-center justify-between py-2.5 text-base font-600 ${
+              isActive(item.href) ? "text-accent-600" : "text-carbon-800"
+            }`}
+          >
+            {item.label}
+            {item.children && <Icon name="chevronDown" class="size-4 text-carbon-400" />}
+          </a>
+          {item.children && (
+            <ul class="ml-3 border-l-2 border-brand-100 pl-3">
+              {item.children.map((child) => (
+                <li>
+                  <a href={child.href} class="block py-2 text-sm text-carbon-500">
+                    {child.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+      ))}
+      <div class="pt-3">
+        <button class="btn btn-primary w-full" onclick="openContactModal({ sourcePage: window.location.pathname, ctaLabel: 'Request a Quote' })">
+          Request a Quote <Icon name="arrowRight" class="size-[1.15em]" />
+        </button>
+      </div>
+    </nav>
+  </div>
+</header>
+
+{/* Ensure mobile menu icon toggles + closes on navigation */}
+<script>
+  const toggle = document.getElementById("menu-toggle");
+  const menu = document.getElementById("mobile-menu");
+  const iconOpen = document.querySelector("[data-icon-open]");
+  const iconClose = document.querySelector("[data-icon-close]");
+
+  const setMenu = (open: boolean) => {
+    if (!menu || !toggle) return;
+    menu.classList.toggle("hidden", !open);
+    toggle.setAttribute("aria-expanded", String(open));
+    iconOpen?.classList.toggle("hidden", open);
+    iconClose?.classList.toggle("hidden", !open);
+  };
+
+  toggle?.addEventListener("click", () => {
+    const open = menu?.classList.contains("hidden");
+    setMenu(Boolean(open));
+  });
+  menu?.querySelectorAll("a").forEach((a) =>
+    a.addEventListener("click", () => setMenu(false))
+  );
+  // Close on resize to desktop
+  window.addEventListener("resize", () => {
+    if (window.innerWidth >= 1280) setMenu(false);
+  });
+</script>

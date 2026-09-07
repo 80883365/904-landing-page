@@ -1,0 +1,44 @@
+---
+/**
+ * Labeled form input — used by the contact form.
+ */
+type InputType =
+  | "text"
+  | "email"
+  | "tel"
+  | "number"
+  | "url"
+  | "search"
+  | "password";
+
+interface Props {
+  label: string;
+  name: string;
+  type?: InputType;
+  required?: boolean;
+  placeholder?: string;
+  autocomplete?: string;
+}
+const {
+  label,
+  name,
+  type = "text",
+  required = false,
+  placeholder = "",
+  autocomplete,
+} = Astro.props;
+---
+<div>
+  <label for={name} class="mb-1.5 block text-sm font-700 text-carbon-700">
+    {label}
+  </label>
+  <input
+    id={name}
+    name={name}
+    type={type}
+    required={required}
+    placeholder={placeholder}
+    autocomplete={autocomplete}
+    class="w-full rounded-xs border border-carbon-200 bg-white px-3.5 py-2.5 text-sm outline-none transition placeholder:text-carbon-300 focus:border-accent-500 focus:ring-2 focus:ring-accent-500/20"
+  />
+</div>

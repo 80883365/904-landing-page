@@ -1,0 +1,82 @@
+---
+import { SITE, CONTACT, FOOTER_LINKS, SOCIAL } from "../consts";
+import Icon from "./Icon.astro";
+---
+<footer class="bg-carbon-950 text-white/70">
+  {/* CTA band */}
+  <div class="border-b border-white/10">
+    <div class="container-x flex flex-col items-center justify-between gap-6 py-10 text-center lg:flex-row lg:text-left">
+      <div>
+        <h2 class="!text-white text-2xl sm:text-3xl">Need equipment matched to your ore?</h2>
+        <p class="mt-2 text-white/60">Send the feed size, target grind and throughput for preliminary model selection.</p>
+      </div>
+      <button class="btn btn-primary shrink-0" onclick="openContactModal({ sourcePage: window.location.pathname, ctaLabel: 'Talk to an Engineer' })">
+        Talk to an Engineer <Icon name="arrowRight" class="size-4" />
+      </button>
+    </div>
+  </div>
+
+  {/* Main footer */}
+  <div class="container-x grid grid-cols-2 gap-8 py-14 md:grid-cols-3 lg:grid-cols-5">
+    {/* Brand col */}
+    <div class="col-span-2 lg:col-span-2">
+      <a href="/" class="flex items-center gap-2.5">
+        <span class="flex size-9 items-center justify-center rounded-xs bg-brand-600 text-white">
+          <Icon name="layers" class="size-5" />
+        </span>
+        <span class="font-display text-lg font-700 text-white">
+          Gold<span class="text-accent-500">Core</span>
+        </span>
+      </a>
+      <p class="mt-4 max-w-sm text-sm leading-relaxed text-white/60">
+        {SITE.description}
+      </p>
+      <div class="mt-5 space-y-2 text-sm">
+        <p class="flex items-start gap-2.5">
+          <Icon name="pin" class="mt-0.5 size-4 shrink-0 text-accent-400" />
+          <span>{CONTACT.addressLine1}<br />{CONTACT.addressLine2}</span>
+        </p>
+        <span class="flex items-center gap-2.5">
+          <Icon name="mail" class="size-4 shrink-0 text-accent-400" /> {CONTACT.email}
+        </span>
+        <a href={`tel:${CONTACT.phone.replace(/\s/g, "")}`} class="flex items-center gap-2.5 transition hover:text-white">
+          <Icon name="phone" class="size-4 shrink-0 text-accent-400" /> {CONTACT.phone}
+        </a>
+      </div>
+    </div>
+
+    {/* Link columns */}
+    {FOOTER_LINKS.map((col) => (
+      <div>
+        <h3 class="font-condensed text-sm font-800 uppercase tracking-wider text-white">{col.heading}</h3>
+        <ul class="mt-4 space-y-2.5 text-sm">
+          {col.links.map((link) => (
+            <li>
+              <a href={link.href} class="text-white/60 transition hover:text-accent-400">{link.label}</a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    ))}
+  </div>
+
+  {/* Bottom bar */}
+  <div class="border-t border-white/10">
+    <div class="container-x flex flex-col items-center justify-between gap-4 py-6 text-sm sm:flex-row">
+      <p class="text-white/50">© {new Date().getFullYear()} {SITE.legalName} All rights reserved.</p>
+      <div class="flex items-center gap-3">
+        {SOCIAL.map((s) => (
+          <a
+            href={s.href}
+            class="flex size-9 items-center justify-center rounded-xs border border-white/15 transition hover:border-accent-500 hover:text-accent-400"
+            aria-label={s.label}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <Icon name={s.label.toLowerCase()} class="size-4" />
+          </a>
+        ))}
+      </div>
+    </div>
+  </div>
+</footer>

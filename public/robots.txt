@@ -1,0 +1,11 @@
+# Robots.txt for GoldCore
+# Allow all search engines to crawl the site
+
+User-agent: *
+Allow: /
+
+# Disallow crawling of admin area (Decap CMS)
+Disallow: /admin/
+
+# Sitemap location
+Sitemap: https://www.goldcore-machinery.com/sitemap-index.xml

@@ -1,0 +1,36 @@
+---
+/**
+ * Tiny IntersectionObserver script that adds .is-visible to [data-reveal]
+ * elements as they enter the viewport. Loaded once via BaseLayout.
+ * No framework dependency — vanilla JS, ~0.6kb.
+ */
+---
+<script>
+  const reveal = () => {
+    // Elements with data-reveal-instant should show immediately
+    const instantEls = document.querySelectorAll("[data-reveal-instant]");
+    instantEls.forEach((el) => el.classList.add("is-visible"));
+
+    // Elements with data-reveal use intersection observer
+    const els = document.querySelectorAll("[data-reveal]");
+    if (!("IntersectionObserver" in window) || els.length === 0) {
+      els.forEach((el) => el.classList.add("is-visible"));
+      return;
+    }
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("is-visible");
+            io.unobserve(entry.target);
+          }
+        });
+      },
+      { rootMargin: "0px 0px -10% 0px", threshold: 0.12 }
+    );
+    els.forEach((el) => io.observe(el));
+  };
+
+  if (document.readyState !== "loading") reveal();
+  else document.addEventListener("DOMContentLoaded", reveal);
+</script>

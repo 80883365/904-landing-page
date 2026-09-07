@@ -1,0 +1,71 @@
+---
+/**
+ * Inner-page hero — compact dark banner with breadcrumb + title + intro.
+ * tone: dark (default, carbon-900) | brand (navy) | light
+ */
+import Icon from "./Icon.astro";
+interface Crumb {
+  label: string;
+  href?: string;
+}
+interface Props {
+  title: string;
+  eyebrow?: string;
+  intro?: string;
+  crumbs?: Crumb[];
+  tone?: "dark" | "brand" | "light";
+}
+const { title, eyebrow, intro, crumbs = [], tone = "dark" } = Astro.props;
+
+const bg =
+  tone === "brand"
+    ? "bg-brand-600"
+    : tone === "light"
+      ? "bg-carbon-50 text-carbon-800"
+      : "bg-carbon-900 text-white";
+const isLight = tone === "light";
+---
+<section class={`relative overflow-hidden ${bg}`}>
+  {/* Decorative dot grid + glow */}
+  <div
+    class={`pointer-events-none absolute inset-0 opacity-[0.18] ${isLight ? "opacity-[0.07]" : ""}`}
+    style="background-image:radial-gradient(circle at 1px 1px, currentColor 1px, transparent 0); background-size:22px 22px;"
+    aria-hidden="true"
+  >
+  </div>
+  <div
+    class="pointer-events-none absolute -right-32 -top-32 size-96 rounded-full bg-accent-500/20 blur-3xl"
+    aria-hidden="true"
+  >
+  </div>
+
+  <div class="container-x relative py-14 sm:py-20">
+    {crumbs.length > 0 && (
+      <nav aria-label="Breadcrumb" class="mb-5">
+        <ol class={`flex flex-wrap items-center gap-2 text-sm ${isLight ? "text-carbon-500" : "text-white/60"}`}>
+          {crumbs.map((c, i) => (
+            <li class="flex items-center gap-2">
+              {c.href ? (
+                <a href={c.href} class="transition hover:text-accent-400">{c.label}</a>
+              ) : (
+                <span class={isLight ? "text-carbon-700" : "text-white/90"}>{c.label}</span>
+              )}
+              {i < crumbs.length - 1 && <Icon name="chevronRight" class="size-3.5 opacity-50" />}
+            </li>
+          ))}
+        </ol>
+      </nav>
+    )}
+
+    {eyebrow && (
+      <span class={`eyebrow ${isLight ? "" : "!text-accent-400"}`}>{eyebrow}</span>
+    )}
+    <h1 class={`mt-3 max-w-3xl ${isLight ? "" : "!text-white"}`}>{title}</h1>
+    {intro && (
+      <p class={`mt-4 max-w-2xl text-lg leading-relaxed ${isLight ? "text-carbon-500" : "text-white/75"}`}>
+        {intro}
+      </p>
+    )}
+    <slot />
+  </div>
+</section>

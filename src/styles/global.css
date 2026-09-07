@@ -1,0 +1,379 @@
+/* ============================================================================
+   GoldCore — Global Stylesheet
+   Tailwind CSS v4 (CSS-first config) + Design DNA tokens
+   DNA source: krones.com industrial-B2B language, adapted for an
+   mineral-processing equipment supplier.
+   ========================================================================== */
+
+@import "tailwindcss";
+
+/* ----------------------------------------------------------------------------
+   1. Design Tokens  →  exposed as Tailwind utilities (bg-brand, text-accent…)
+   ------------------------------------------------------------------------- */
+@theme {
+  /* —— Brand / warm industrial gold —— */
+  --color-brand-50: #fff9e8;
+  --color-brand-100: #fcefc4;
+  --color-brand-200: #f7dc83;
+  --color-brand-300: #efc34b;
+  --color-brand-400: #dca01d;
+  --color-brand-500: #bd7f0e;
+  --color-brand-600: #8c5908;
+  --color-brand-700: #6f4308;
+  --color-brand-800: #4d2e09;
+  --color-brand-900: #2e1b07;
+
+  --color-accent-300: #ffe083;
+  --color-accent-400: #f7c948;
+  --color-accent-500: #e3a319;
+  --color-accent-600: #a96908;
+
+  /* —— Carbon (signature dark = the product itself) —— */
+  --color-carbon-50: #f4f5f5;
+  --color-carbon-100: #eaebeb; /* hairline borders */
+  --color-carbon-200: #d6d7d9;
+  --color-carbon-300: #b4babe; /* mid grey */
+  --color-carbon-400: #909598;
+  --color-carbon-500: #6c7072; /* muted text */
+  --color-carbon-600: #484a4c; /* secondary text */
+  --color-carbon-700: #3a3a3a;
+  --color-carbon-800: #242526; /* body text */
+  --color-carbon-900: #16181d; /* carbon black surface */
+  --color-carbon-950: #0c0d10;
+
+  /* —— Category accents (product families / industries) —— */
+  --color-cat-lime: #97c218;
+  --color-cat-teal: #00987a;
+  --color-cat-gold: #e0b000;
+  --color-cat-orange: #e34805;
+  --color-cat-red: #b3282e;
+
+  /* —— Typography —— */
+  --font-sans: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-display: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-condensed: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  /* —— Type scale — display ramp tightened ~15% for headings —— */
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.25rem;
+  --text-2xl: 1.5625rem;
+  --text-3xl: 1.953rem;
+  --text-4xl: 2.125rem; /* 34px — headings & stat figures */
+  --text-5xl: 2.625rem; /* 42px */
+  --text-6xl: 3.25rem;  /* 52px — hero display */
+
+  /* —— Radius: square industrial language across the entire site —— */
+  --radius-xs: 0;
+  --radius-sm: 0;
+  --radius-md: 0;
+  --radius-lg: 0;
+  --radius-xl: 0;
+  --radius-2xl: 0;
+  --radius-3xl: 0;
+  --radius-full: 0;
+  --radius-pill: 0;
+
+  /* —— Container —— */
+  --container-max: 80rem; /* 1280px */
+
+  /* —— Motion —— */
+  --ease-industrial: cubic-bezier(0.22, 1, 0.36, 1);
+  --animate-reveal: reveal 0.7s var(--ease-industrial) both;
+
+  @keyframes reveal {
+    from {
+      opacity: 0;
+      transform: translateY(1.25rem);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}
+
+/* ----------------------------------------------------------------------------
+   3. Base layer
+   ------------------------------------------------------------------------- */
+@layer base {
+  :root {
+    color-scheme: light;
+    scroll-behavior: smooth;
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    background-color: var(--color-white);
+    color: var(--color-carbon-800);
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1, h2, h3, h4, h5 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    line-height: 1.12;
+    letter-spacing: -0.015em;
+    color: var(--color-brand-600);
+    text-wrap: balance;
+  }
+
+  /* Headings tightened ~15% for a more compact, premium rhythm.
+     h1 ≈ 30→52px, h2 ≈ 24→34px, h3 ≈ 19→22px across breakpoints. */
+  h1 { font-size: clamp(1.875rem, 1.35rem + 2.5vw, 3.25rem); }
+  h2 { font-size: clamp(1.5rem, 1.15rem + 1.6vw, 2.125rem); }
+  h3 { font-size: clamp(1.2rem, 1.05rem + 0.85vw, 1.375rem); }
+
+  a { color: inherit; text-decoration: none; }
+
+  ::selection {
+    background: var(--color-accent-500);
+    color: white;
+  }
+
+  :focus-visible {
+    outline: 3px solid var(--color-accent-500);
+    outline-offset: 2px;
+    border-radius: 0;
+  }
+
+  img { max-width: 100%; height: auto; }
+
+  img, button, input, textarea, select, dialog,
+  .card, .btn, .chip, [class*="rounded-"] {
+    border-radius: 0 !important;
+  }
+}
+
+/* ----------------------------------------------------------------------------
+   4. Component utilities
+   ------------------------------------------------------------------------- */
+@layer components {
+  /* Page width container */
+  .container-x {
+    width: 100%;
+    max-width: var(--container-max);
+    margin-inline: auto;
+    padding-inline: 1.25rem;
+  }
+  @media (min-width: 640px) {
+    .container-x { padding-inline: 1.5rem; }
+  }
+  @media (min-width: 1024px) {
+    .container-x { padding-inline: 2rem; }
+  }
+
+  /* Eyebrow / kicker label — small, uppercase, tracked */
+  .eyebrow {
+    font-family: var(--font-condensed);
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    font-size: 0.8125rem;
+    color: var(--color-accent-600);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .eyebrow::before { display: none; }
+
+  /* Buttons — pill CTAs (Krones DNA) */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    font-family: var(--font-sans);
+    font-weight: 700;
+    font-size: 0.9375rem;
+    line-height: 1;
+    padding: 0.875rem 1.5rem;
+    border-radius: var(--radius-pill);
+    border: 2px solid transparent;
+    cursor: pointer;
+    transition: background-color 0.2s var(--ease-industrial),
+      color 0.2s var(--ease-industrial), transform 0.2s var(--ease-industrial),
+      border-color 0.2s var(--ease-industrial);
+    white-space: nowrap;
+  }
+  .btn:hover { transform: translateY(-1px); }
+  .btn:active { transform: translateY(0); }
+
+  .btn-primary { background: var(--color-accent-400); color: var(--color-carbon-950); }
+  .btn-primary:hover { background: var(--color-accent-600); }
+
+  .btn-brand { background: var(--color-brand-600); color: white; }
+  .btn-brand:hover { background: var(--color-brand-700); }
+
+  .btn-dark { background: var(--color-carbon-900); color: white; }
+  .btn-dark:hover { background: var(--color-carbon-800); }
+
+  .btn-outline {
+    background: transparent;
+    color: var(--color-brand-600);
+    border-color: var(--color-carbon-200);
+  }
+  .btn-outline:hover {
+    border-color: var(--color-brand-600);
+    background: var(--color-brand-50);
+  }
+
+  .btn-ghost-light {
+    background: transparent;
+    color: white;
+    border-color: rgba(255, 255, 255, 0.4);
+  }
+  .btn-ghost-light:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: white;
+  }
+
+  /* Card — angular, border-led elevation */
+  .card {
+    background: white;
+    border: 1px solid var(--color-carbon-100);
+    border-radius: var(--radius-sm);
+    transition: border-color 0.25s var(--ease-industrial),
+      box-shadow 0.25s var(--ease-industrial),
+      transform 0.25s var(--ease-industrial);
+  }
+  .card-hover:hover {
+    border-color: var(--color-brand-200);
+    box-shadow: 0 12px 32px -16px rgba(5, 42, 104, 0.28);
+    transform: translateY(-4px);
+  }
+
+  /* Section label divider */
+  .section-divider {
+    height: 1px;
+    background: var(--color-carbon-100);
+    border: 0;
+  }
+
+  /* Tag / chip */
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    padding: 0.3rem 0.7rem;
+    border-radius: var(--radius-xs);
+    background: var(--color-brand-50);
+    color: var(--color-brand-600);
+    border: 1px solid var(--color-brand-100);
+  }
+
+  /* Prose for blog / content */
+  .prose-cp {
+    color: var(--color-carbon-700);
+    font-size: 1.0625rem;
+    line-height: 1.75;
+  }
+  .prose-cp h2 {
+    margin-top: 2.5rem;
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+    scroll-margin-top: 8rem;
+  }
+  .prose-cp h3 {
+    margin-top: 2rem;
+    margin-bottom: 0.75rem;
+    font-size: 1.25rem;
+    color: var(--color-brand-700);
+    scroll-margin-top: 8rem;
+  }
+  .prose-cp h4 {
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+    font-size: 1.125rem;
+    color: var(--color-carbon-800);
+    scroll-margin-top: 8rem;
+  }
+  .prose-cp p { margin-bottom: 1.25rem; }
+  .prose-cp ul,
+  .prose-cp ol { margin: 0 0 1.25rem 1.25rem; }
+  .prose-cp ul { list-style: disc; }
+  .prose-cp ol { list-style: decimal; }
+  .prose-cp li { margin-bottom: 0.5rem; }
+  .prose-cp a {
+    color: var(--color-accent-600);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+  .prose-cp blockquote {
+    border-left: 1px solid var(--color-accent-500);
+    padding: 0.5rem 0 0.5rem 1.25rem;
+    margin: 1.5rem 0;
+    font-style: italic;
+    color: var(--color-carbon-600);
+  }
+  .prose-cp code {
+    background: var(--color-carbon-50);
+    padding: 0.15rem 0.4rem;
+    border-radius: var(--radius-xs);
+    font-size: 0.9em;
+  }
+  .prose-cp table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.5rem 0;
+    font-size: 0.9375rem;
+  }
+  .prose-cp th,
+  .prose-cp td {
+    border: 1px solid var(--color-carbon-100);
+    padding: 0.625rem 0.875rem;
+    text-align: left;
+  }
+  .prose-cp th {
+    background: var(--color-brand-50);
+    color: var(--color-brand-600);
+    font-weight: 700;
+  }
+
+  /* Table of Contents styling */
+  .toc-list { list-style: none; padding: 0; }
+}
+
+/* ----------------------------------------------------------------------------
+   5. Scroll-reveal (CSS-only, IntersectionObserver toggles .is-visible)
+   ------------------------------------------------------------------------- */
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(1.25rem);
+  transition: opacity 0.7s var(--ease-industrial),
+    transform 0.7s var(--ease-industrial);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+[data-reveal].is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Reduced-motion: disable decorative motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+  [data-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}

@@ -1,0 +1,11 @@
+---
+import Icon from "./Icon.astro";
+import { CONTACT } from "../consts";
+---
+<footer class="border-t border-carbon-800 bg-carbon-950 text-white">
+  <div class="container-x grid gap-10 py-12 lg:grid-cols-[1.2fr_.8fr] lg:items-end">
+    <div><div class="flex items-center gap-3"><span class="flex size-10 items-center justify-center bg-accent-400 text-carbon-950"><Icon name="layers" class="size-5" /></span><strong class="text-xl">GoldCore Wet Pan Mill Supply</strong></div><p class="mt-5 max-w-xl text-sm leading-relaxed text-white/60">Preliminary model selection based on ore, feed size, hourly target and site power. Technical figures on this page must be confirmed against the final factory datasheet.</p></div>
+    <div class="border-l border-carbon-700 pl-6"><p class="text-sm text-white/50">Sales contact</p><p class="mt-2 font-700 text-accent-300">{CONTACT.email}</p><p class="mt-1 text-white/70">{CONTACT.phone}</p></div>
+  </div>
+  <div class="border-t border-carbon-800"><div class="container-x flex flex-col gap-2 py-5 text-xs text-white/45 sm:flex-row sm:justify-between"><span>© {new Date().getFullYear()} GoldCore Mining Equipment Co., Ltd.</span><span>Wet pan mill sourcing and technical inquiry page</span></div></div>
+</footer>

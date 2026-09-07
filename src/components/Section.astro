@@ -1,0 +1,61 @@
+---
+/**
+ * Standard content section: eyebrow + title + intro, then a <slot/>.
+ * tone: light (default) | alt (carbon-50) | dark (carbon-900)
+ */
+interface Props {
+  eyebrow?: string;
+  title?: string;
+  intro?: string;
+  align?: "left" | "center";
+  tone?: "light" | "alt" | "dark";
+  id?: string;
+  class?: string;
+  containerClass?: string;
+}
+const {
+  eyebrow,
+  title,
+  intro,
+  align = "left",
+  tone = "light",
+  id,
+  class: className = "",
+  containerClass = "",
+} = Astro.props;
+
+const toneBg = {
+  light: "bg-white",
+  alt: "bg-carbon-50",
+  dark: "bg-carbon-900 text-white",
+}[tone];
+
+const isDark = tone === "dark";
+const alignCls = align === "center" ? "text-center mx-auto items-center" : "";
+// Only gap the slot away from the header when a header actually exists.
+// Sections without eyebrow/title/intro carry their own inner spacing.
+const hasHeader = Boolean(eyebrow || title || intro);
+const slotGap = hasHeader ? "mt-12 sm:mt-14 lg:mt-16" : "";
+---
+<section id={id} class={`py-16 sm:py-20 lg:py-24 ${toneBg} ${className}`.trim()}>
+  <div class={`container-x ${containerClass}`.trim()}>
+    {hasHeader && (
+      <header class={`flex max-w-3xl flex-col gap-4 ${alignCls}`.trim()}>
+        {eyebrow && (
+          <span class={`eyebrow ${isDark ? "!text-accent-400" : ""}`}>{eyebrow}</span>
+        )}
+        {title && (
+          <h2 class={isDark ? "!text-white" : ""}>{title}</h2>
+        )}
+        {intro && (
+          <p class={`text-lg ${isDark ? "text-white/75" : "text-carbon-500"}`}>
+            {intro}
+          </p>
+        )}
+      </header>
+    )}
+    <div class={slotGap}>
+      <slot />
+    </div>
+  </div>
+</section>

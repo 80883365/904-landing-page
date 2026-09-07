@@ -1,0 +1,43 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Section from "../components/Section.astro";
+import Icon from "../components/Icon.astro";
+import OptimizedImage from "../components/OptimizedImage.astro";
+import ProductCard from "../components/ProductCard.astro";
+import { getCollection } from "astro:content";
+import { SITE } from "../consts";
+import heroImg from "../assets/images/homepage/gold-processing-plant-hero.webp";
+import ballMillImg from "../assets/images/gold-ore-ball-mill/industrial-ball-mill.webp";
+import wetPanImg from "../assets/images/wet-pan-mill-for-gold/double-wheel-wet-pan-mill.webp";
+import steelBallsImg from "../assets/images/forged-grinding-steel-balls/forged-steel-grinding-balls.webp";
+const products = (await getCollection("products")).sort((a,b) => a.data.order - b.data.order);
+const productImages: Record<string, ImageMetadata> = {"gold-ore-ball-mill":ballMillImg,"wet-pan-mill-for-gold":wetPanImg,"forged-grinding-steel-balls":steelBallsImg};
+const jsonLd = {"@context":"https://schema.org","@type":"Organization",name:SITE.name,url:SITE.url,description:SITE.description};
+---
+<BaseLayout title="Gold Mining Grinding Equipment Manufacturer" description="Ball mills, wet pan mills and forged grinding steel balls for gold ore processing. Get application-led model selection and an export quote." image={heroImg.src} jsonLd={jsonLd}>
+  <section class="relative min-h-[680px] overflow-hidden bg-carbon-950 text-white">
+    <OptimizedImage src={heroImg} alt="Gold mine processing plant with grinding and material handling equipment" class="absolute inset-0 h-full w-full object-cover opacity-55" loading="eager" fetchpriority="high" sizes="100vw" />
+    <div class="absolute inset-0 bg-gradient-to-r from-carbon-950 via-carbon-950/85 to-carbon-950/20"></div>
+    <div class="container-x relative flex min-h-[680px] items-center py-20"><div class="max-w-3xl">
+      <h1 class="!text-white !text-5xl sm:!text-6xl">Gold ore grinding equipment built around your recovery circuit</h1>
+      <p class="mt-6 max-w-2xl text-lg leading-relaxed text-white/80 sm:text-xl">Ball mills, wet pan mills and forged grinding media selected from your ore, target fineness, throughput and site conditions—not from a generic catalogue.</p>
+      <div class="mt-9 flex flex-wrap gap-3"><button class="btn btn-primary px-7 py-4" onclick="openContactModal({ sourcePage: '/', ctaLabel: 'Get Equipment Recommendation' })">Get Equipment Recommendation <Icon name="arrowRight" class="size-4" /></button><a class="btn btn-ghost-light px-7 py-4" href="/products">Explore Products</a></div>
+      <div class="mt-12 grid max-w-2xl grid-cols-1 gap-px overflow-hidden rounded-md border border-white/15 bg-white/10 sm:grid-cols-3">
+        <div class="bg-carbon-950/60 p-5"><strong class="block text-xl text-accent-400">3 product lines</strong><span class="text-sm text-white/65">One grinding supply partner</span></div>
+        <div class="bg-carbon-950/60 p-5"><strong class="block text-xl text-accent-400">0.5 t/h upward</strong><span class="text-sm text-white/65">Small to continuous plants</span></div>
+        <div class="bg-carbon-950/60 p-5"><strong class="block text-xl text-accent-400">20–150 mm</strong><span class="text-sm text-white/65">Forged media range</span></div>
+      </div>
+    </div></div>
+  </section>
+  <Section title="Choose the grinding route that fits the mine" intro="Each product page combines model data with the process information our engineers need to make a useful recommendation.">
+    <div class="grid gap-6 lg:grid-cols-3">{products.map((p) => <ProductCard href={`/products/${p.id}`} title={p.data.title} excerpt={p.data.excerpt} icon={p.data.icon} category={p.data.category} image={productImages[p.id]} imageAlt={p.data.heroImageAlt} />)}</div>
+  </Section>
+  <Section tone="alt" title="From crushed ore to a controlled grind" intro="A practical selection process connects equipment, grinding media and downstream recovery instead of treating each purchase in isolation.">
+    <div class="grid gap-8 lg:grid-cols-[1.1fr_.9fr] lg:items-center"><div class="overflow-hidden rounded-md"><OptimizedImage src={ballMillImg} alt="Industrial ball mill in a mineral processing grinding circuit" class="aspect-[16/10] w-full object-cover" loading="lazy" /></div><ol class="space-y-6">
+      <li class="flex gap-4"><span class="flex size-10 shrink-0 items-center justify-center rounded-full bg-accent-400 font-700 text-carbon-950">1</span><div><h3 class="!text-lg">Define the ore and target</h3><p class="mt-1 text-carbon-500">Share feed size, ore hardness, required P80 and hourly throughput.</p></div></li>
+      <li class="flex gap-4"><span class="flex size-10 shrink-0 items-center justify-center rounded-full bg-accent-400 font-700 text-carbon-950">2</span><div><h3 class="!text-lg">Match the mill and media</h3><p class="mt-1 text-carbon-500">Select the grinding method, working volume, power and ball charge.</p></div></li>
+      <li class="flex gap-4"><span class="flex size-10 shrink-0 items-center justify-center rounded-full bg-accent-400 font-700 text-carbon-950">3</span><div><h3 class="!text-lg">Confirm the complete scope</h3><p class="mt-1 text-carbon-500">Review auxiliaries, shipping, installation requirements and wear parts.</p></div></li>
+    </ol></div>
+  </Section>
+  <Section tone="dark" align="center" title="Start with your ore, not a model number" intro="Send the available test data and production target. We will return a preliminary equipment route and the questions needed for a firm quotation." containerClass="!max-w-4xl"><button class="btn btn-primary px-7 py-4" onclick="openContactModal({ sourcePage: '/', ctaLabel: 'Request Preliminary Selection' })">Request Preliminary Selection <Icon name="arrowRight" class="size-4" /></button></Section>
+</BaseLayout>

@@ -1,0 +1,215 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Section from "../../components/Section.astro";
+import Icon from "../../components/Icon.astro";
+import BlogCard from "../../components/BlogCard.astro";
+import { getCollection, render } from "astro:content";
+import type { GetStaticPaths } from "astro";
+import OptimizedImage from "../../components/OptimizedImage.astro";
+const blogImg = "/images/iodine-number-explained.webp";
+import { generateArticleSchema, generateBreadcrumbSchema } from "../../config/seo";
+import { SITE } from "../../config/site";
+
+export const getStaticPaths = (async () => {
+  const posts = await getCollection("blog", ({ data }) => !data.draft);
+  return posts.map((p) => ({
+    params: { slug: p.id },
+    props: { post: p },
+  }));
+}) satisfies GetStaticPaths;
+
+const { post } = Astro.props;
+const { Content, headings } = await render(post);
+const d = post.data;
+
+// Use heroImage if available, otherwise fallback to default
+const heroImage = d.heroImage || blogImg;
+const heroImageAlt = d.heroImageAlt || d.title;
+
+const all = (await getCollection("blog", ({ data }) => !data.draft))
+  .filter((p) => p.id !== post.id)
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+const more = [...all.filter((p) => p.data.category === d.category), ...all].slice(0, 3);
+
+const fmt = (d: Date) =>
+  d.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" });
+
+// Generate Article Schema
+const schemaImage = new URL(heroImage, SITE.url).href;
+
+const articleSchema = generateArticleSchema({
+  headline: d.title,
+  description: d.description,
+  image: schemaImage,
+  author: d.author,
+  datePublished: d.pubDate,
+  dateModified: d.updatedDate,
+});
+
+// Generate Breadcrumb Schema
+const breadcrumbSchema = generateBreadcrumbSchema([
+  { name: "Home", url: SITE.url },
+  { name: "Blog", url: new URL("/blog", SITE.url).href },
+  { name: d.title, url: new URL(`/blog/${post.id}`, SITE.url).href },
+]);
+
+// Combine schemas
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [articleSchema, breadcrumbSchema],
+};
+
+// Filter headings for ToC (h2 and h3 only)
+const tocHeadings = headings.filter((h) => h.depth === 2 || h.depth === 3);
+---
+<BaseLayout title={d.title} description={d.description} type="article" jsonLd={jsonLd}>
+  {/* Hero - Clean Modern Design */}
+  <section class="border-b border-carbon-100 bg-carbon-50">
+    <div class="container-x py-12 sm:py-16">
+      {/* Breadcrumb - Single Line */}
+      <nav aria-label="Breadcrumb" class="mb-8">
+        <ol class="flex items-center gap-2 text-sm text-carbon-500 overflow-hidden">
+          <li class="shrink-0"><a href="/" class="transition hover:text-accent-600">Home</a></li>
+          <li class="shrink-0"><Icon name="chevronRight" class="size-3.5" /></li>
+          <li class="shrink-0"><a href="/blog" class="transition hover:text-accent-600">Blog</a></li>
+          <li class="shrink-0"><Icon name="chevronRight" class="size-3.5" /></li>
+          <li class="truncate text-carbon-700">{d.title}</li>
+        </ol>
+      </nav>
+
+      {/* Two Column Layout */}
+      <div class="grid gap-12 lg:grid-cols-[1.3fr_1fr] lg:gap-16">
+        {/* Left: Content */}
+        <div>
+          {/* Meta badges */}
+          <div class="mb-5 flex flex-wrap items-center gap-3 text-sm">
+            <span class="chip !bg-accent-50 !text-accent-700 !border-accent-200">{d.category}</span>
+            <span class="text-carbon-400">鈥?/span>
+            <span class="text-carbon-500">{fmt(d.pubDate)}</span>
+            <span class="text-carbon-400">鈥?/span>
+            <span class="text-carbon-500">5 min read</span>
+          </div>
+
+          {/* Title */}
+          <h1 class="!text-4xl sm:!text-5xl !leading-[1.1] !text-brand-600">{d.title}</h1>
+
+          {/* Description */}
+          <p class="mt-6 text-xl leading-relaxed text-carbon-600">{d.description}</p>
+
+          {/* Author */}
+          <div class="mt-8 flex items-center gap-3 text-sm text-carbon-500">
+            <Icon name="globe" class="size-5" />
+            <span>By <span class="font-600 text-carbon-700">{d.author}</span></span>
+          </div>
+        </div>
+
+        {/* Right: Featured Image */}
+        <div class="overflow-hidden rounded-lg shadow-lg">
+          <OptimizedImage
+            src={heroImage}
+            alt={heroImageAlt}
+            class="aspect-[4/3] h-full w-full object-cover"
+            loading="eager"
+            fetchpriority="high"
+          />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {/* Article body */}
+  <Section containerClass="!max-w-4xl">
+    {/* Table of Contents - Clean Design */}
+    {tocHeadings.length > 0 && (
+      <div class="mb-12 rounded-lg border border-carbon-200 bg-gradient-to-br from-carbon-50 to-white p-8 shadow-sm">
+        <h2 class="mb-6 !mt-0 flex items-center gap-3 !text-xl font-700 text-brand-600">
+          <svg class="size-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7"></path>
+          </svg>
+          Table of Contents
+        </h2>
+        <ol class="toc-list space-y-3">
+          {(() => {
+            let h2Count = 0;
+            let h3Count = 0;
+            return tocHeadings.map((heading) => {
+              if (heading.depth === 2) {
+                h2Count++;
+                h3Count = 0;
+                return (
+                  <li class="toc-h2">
+                    <a
+                      href={`#${heading.slug}`}
+                      class="group flex items-start gap-3 text-base text-carbon-700 transition hover:text-accent-600"
+                    >
+                      <span class="flex size-6 shrink-0 items-center justify-center rounded bg-brand-100 text-xs font-700 text-brand-600 transition group-hover:bg-accent-600 group-hover:text-white">{h2Count}</span>
+                      <span class="leading-relaxed">{heading.text}</span>
+                    </a>
+                  </li>
+                );
+              } else {
+                h3Count++;
+                return (
+                  <li class="toc-h3 ml-9">
+                    <a
+                      href={`#${heading.slug}`}
+                      class="group flex items-start gap-2.5 text-sm text-carbon-600 transition hover:text-accent-600"
+                    >
+                      <span class="shrink-0 text-xs font-600 text-carbon-400 transition group-hover:text-accent-600">{h2Count}.{h3Count}</span>
+                      <span class="leading-relaxed">{heading.text}</span>
+                    </a>
+                  </li>
+                );
+              }
+            });
+          })()}
+        </ol>
+      </div>
+    )}
+
+    {/* Article content */}
+    <article class="prose-cp">
+      <Content />
+    </article>
+
+    {/* Tags */}
+    <div class="mt-10 border-t border-carbon-100 pt-8">
+      <div class="flex flex-wrap gap-2">
+        {d.tags.map((t) => <span class="chip">#{t}</span>)}
+      </div>
+    </div>
+
+    {/* CTA */}
+    <div class="mt-10 rounded-md bg-brand-600 p-8 text-white sm:p-10">
+      <div class="flex flex-col items-start gap-6 sm:flex-row sm:items-center sm:justify-between">
+        <div class="flex-1">
+          <h2 class="!text-white !text-2xl">Need help with your application?</h2>
+          <p class="mt-2 text-base text-white/85">Get a tailored carbon recommendation and free sample from our technical team.</p>
+        </div>
+        <button class="btn btn-primary shrink-0" onclick="openContactModal({ sourcePage: '/blog', ctaLabel: 'Talk to an engineer' })">
+          Talk to an engineer <Icon name="arrowRight" class="size-[1.15em]" />
+        </button>
+      </div>
+    </div>
+  </Section>
+
+  {/* More posts */}
+  {more.length > 0 && (
+    <Section tone="alt" eyebrow="Keep reading" title="Related articles">
+      <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        {more.map((p) => (
+          <BlogCard
+            href={`/blog/${p.id}`}
+            title={p.data.title}
+            excerpt={p.data.description}
+            date={p.data.pubDate}
+            category={p.data.category}
+            readingTime="5 min read"
+            image={p.data.heroImage || blogImg}
+            imageAlt={p.data.title}
+          />
+        ))}
+      </div>
+    </Section>
+  )}
+</BaseLayout>

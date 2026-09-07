@@ -1,0 +1,125 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PageHero from "../components/PageHero.astro";
+import Section from "../components/Section.astro";
+import Icon from "../components/Icon.astro";
+import Button from "../components/Button.astro";
+import OptimizedImage from "../components/OptimizedImage.astro";
+import labImg from "../assets/images/quality/lab.webp";
+
+const certs = [
+  { code: "ISO 9001:2015", t: "Quality Management", d: "Documented, audited processes governing every batch from raw material to dispatch." },
+  { code: "ISO 14001", t: "Environmental Management", d: "Controlled emissions and a structured approach to reducing environmental impact." },
+  { code: "NSF/ANSI 61", t: "Drinking Water", d: "Selected grades certified for contact with drinking water in North America." },
+  { code: "HALAL", t: "Food Compliance", d: "Food-grade carbon suitable for halal-certified production lines." },
+  { code: "REACH", t: "EU Compliance", d: "Registration, evaluation and compliance for export to the European Union." },
+];
+
+const tests = [
+  { label: "Iodine number", m: "ASTM D4607", d: "Micropore capacity — small-molecule adsorption." },
+  { label: "Methylene blue", m: "ASTM D3860", d: "Mesopore capacity — large / colored molecules." },
+  { label: "CTC activity", m: "ASTM D3467", d: "Gas-phase adsorption capacity." },
+  { label: "Hardness", m: "ASTM D3802", d: "Resistance to attrition and fines generation." },
+  { label: "Ash content", m: "ASTM D2866", d: "Non-carbonaceous residue — purity indicator." },
+  { label: "Moisture", m: "ASTM D2867", d: "Water content for accurate dosing." },
+  { label: "Particle size", m: "ASTM D2862", d: "Mesh distribution for pressure drop & kinetics." },
+  { label: "Apparent density", m: "ASTM D2854", d: "Bulk density for volume-to-weight conversion." },
+];
+---
+<BaseLayout
+  title="Quality & Certifications"
+  description="CarboPure quality system: ISO 9001/14001, NSF/ANSI 61, HALAL and REACH — with full Certificate of Analysis and ASTM testing on every batch."
+>
+  <PageHero
+    tone="brand"
+    eyebrow="Quality & certifications"
+    title="Spec-driven quality you can verify"
+    intro="A Certificate of Analysis accompanies every shipment. Our lab tests each batch to recognized ASTM standards before it leaves the gate."
+    crumbs={[{ label: "Home", href: "/" }, { label: "Quality & Certifications" }]}
+  />
+
+  {/* Lab image band */}
+  <section class="relative overflow-hidden">
+    <OptimizedImage
+      src={labImg}
+      alt="CarboPure laboratory technician testing activated carbon quality"
+      class="h-[260px] w-full object-cover sm:h-[340px]"
+      loading="eager"
+      fetchpriority="high"
+      sizes="100vw"
+    />
+    <div class="absolute inset-0 bg-gradient-to-r from-carbon-950/85 via-carbon-950/40 to-transparent"></div>
+    <div class="container-x absolute inset-0 flex items-center">
+      <div class="max-w-md">
+        <span class="eyebrow !text-accent-400">In-house laboratory</span>
+        <h2 class="mt-2 !text-white !text-2xl sm:!text-3xl">Tested eight ways, every batch</h2>
+        <p class="mt-2 text-white/80">From iodine number to particle distribution — no carbon leaves without a Certificate of Analysis.</p>
+      </div>
+    </div>
+  </section>
+
+  {/* Certifications */}
+  <Section eyebrow="Certifications" title="Audited and accredited">
+    <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+      {certs.map((c, i) => (
+        <div data-reveal style={`--reveal-delay:${i * 60}ms`} class="card card-hover h-full p-6">
+          <div class="flex size-14 items-center justify-center rounded-sm bg-brand-600 text-white">
+            <Icon name="award" class="size-7" />
+          </div>
+          <p class="mt-5 font-condensed text-lg font-800 uppercase tracking-wide text-accent-600">{c.code}</p>
+          <h3 class="mt-1 !text-base">{c.t}</h3>
+          <p class="mt-2 text-sm leading-relaxed text-carbon-500">{c.d}</p>
+        </div>
+      ))}
+    </div>
+  </Section>
+
+  {/* Testing */}
+  <Section tone="alt" eyebrow="Laboratory testing" title="Every batch, eight tests">
+    <div class="overflow-hidden rounded-md border border-carbon-100">
+      <table class="w-full text-left text-sm">
+        <thead class="bg-brand-50 text-brand-600">
+          <tr>
+            <th class="px-5 py-3.5 font-700">Parameter</th>
+            <th class="hidden px-5 py-3.5 font-700 sm:table-cell">Standard Method</th>
+            <th class="px-5 py-3.5 font-700">What it tells you</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-carbon-50 bg-white">
+          {tests.map((t) => (
+            <tr class="transition hover:bg-carbon-50">
+              <td class="px-5 py-3.5 font-700 text-carbon-800">{t.label}</td>
+              <td class="hidden px-5 py-3.5 text-carbon-500 sm:table-cell">{t.m}</td>
+              <td class="px-5 py-3.5 text-carbon-600">{t.d}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </Section>
+
+  {/* Process */}
+  <Section eyebrow="Our QA process" title="Quality is built in, not inspected on">
+    <div class="grid gap-8 lg:grid-cols-3">
+      {[
+        { icon: "flask", t: "Raw-material screening", d: "Incoming feedstock is tested for moisture, ash and purity before it enters production." },
+        { icon: "ruler", t: "In-process control", d: "Activation temperature, residence time and sizing are continuously monitored and logged." },
+        { icon: "shield", t: "Final batch release", d: "Each finished batch passes all eight ASTM tests and is issued a CoA before release." },
+      ].map((s, i) => (
+        <div data-reveal style={`--reveal-delay:${i * 80}ms`} class="relative rounded-md border border-carbon-100 p-7">
+          <span class="absolute right-6 top-6 font-condensed text-3xl font-800 text-carbon-100">0{i + 1}</span>
+          <span class="flex size-12 items-center justify-center rounded-sm bg-accent-500/10 text-accent-600">
+            <Icon name={s.icon} class="size-6" />
+          </span>
+          <h3 class="mt-5 !text-lg">{s.t}</h3>
+          <p class="mt-2 text-carbon-500">{s.d}</p>
+        </div>
+      ))}
+    </div>
+    <div class="mt-10">
+      <button class="btn btn-brand" onclick="openContactModal({ sourcePage: '/quality', ctaLabel: 'Request a sample CoA' })">
+        Request a sample CoA <Icon name="arrowRight" class="size-[1.15em]" />
+      </button>
+    </div>
+  </Section>
+</BaseLayout>

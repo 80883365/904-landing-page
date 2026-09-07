@@ -1,0 +1,75 @@
+---
+/**
+ * Product card — image-led, used on product index, home and related grids.
+ * Pass a LOCAL optimized image via `image` (ImageMetadata from an import).
+ */
+import Icon from "./Icon.astro";
+import OptimizedImage from "./OptimizedImage.astro";
+
+interface Props {
+  href: string;
+  title: string;
+  excerpt: string;
+  icon?: string;
+  category?: string;
+  image?: ImageMetadata | string;
+  imageAlt?: string;
+  class?: string;
+}
+const {
+  href,
+  title,
+  excerpt,
+  icon = "layers",
+  category,
+  image,
+  imageAlt,
+  class: className = "",
+} = Astro.props;
+---
+<a
+  href={href}
+  data-reveal
+  class={`card card-hover group flex h-full flex-col overflow-hidden ${className}`.trim()}
+>
+  {/* Media */}
+  {image ? (
+    <div class="relative aspect-[4/3] shrink-0 overflow-hidden">
+      <OptimizedImage
+        src={image}
+        alt={imageAlt ?? `${title} for mineral processing`}
+        class="h-full w-full object-cover transition duration-500 group-hover:scale-105"
+        loading="lazy"
+      />
+      <div class="absolute inset-0 bg-gradient-to-t from-carbon-950/55 via-transparent to-transparent"></div>
+      <span class="absolute left-4 top-4 flex size-10 items-center justify-center rounded-sm bg-white/90 text-brand-600 shadow-sm backdrop-blur">
+        <Icon name={icon} class="size-5" />
+      </span>
+      {category && (
+        <span class="absolute bottom-4 left-4 chip !bg-white/90 !text-brand-600 !border-transparent backdrop-blur">
+          {category}
+        </span>
+      )}
+    </div>
+  ) : (
+    <div class="border-b border-carbon-100 p-6 pb-5">
+      <div class="flex items-center justify-between">
+        <span class="flex size-12 items-center justify-center rounded-sm bg-brand-50 text-brand-600 transition group-hover:bg-accent-500 group-hover:text-white">
+          <Icon name={icon} class="size-6" />
+        </span>
+        <Icon name="arrowUpRight" class="size-5 text-carbon-300 transition group-hover:text-accent-500" />
+      </div>
+      {category && <span class="chip mt-5">{category}</span>}
+    </div>
+  )}
+
+  {/* Body */}
+  <div class="flex flex-1 flex-col p-6">
+    <h3 class="!text-xl !text-brand-600 group-hover:text-accent-600">{title}</h3>
+    <p class="mt-2 flex-1 text-[0.9375rem] leading-relaxed text-carbon-500">{excerpt}</p>
+    <span class="mt-4 inline-flex items-center gap-1.5 text-sm font-700 text-accent-600">
+      View product
+      <Icon name="arrowRight" class="size-4 transition group-hover:translate-x-1" />
+    </span>
+  </div>
+</a>

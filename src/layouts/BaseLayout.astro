@@ -1,0 +1,102 @@
+---
+/**
+ * BaseLayout — wraps every page with <head> SEO, fonts, header, footer,
+ * and the scroll-reveal controller. Pass per-page frontmatter via props.
+ */
+import "../styles/global.css";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import ScrollReveal from "../components/ScrollReveal.astro";
+import ContactModal from "../components/ContactModal.astro";
+import { SITE } from "../consts";
+
+interface Props {
+  title?: string;
+  description?: string;
+  /** OG image — absolute or root-relative path (1200x630px recommended) */
+  image?: string;
+  noindex?: boolean;
+  /** Optional JSON-LD object injected as structured data */
+  jsonLd?: Record<string, any>;
+  /** Page type for og:type */
+  type?: "website" | "article";
+  class?: string;
+  chrome?: boolean;
+}
+
+const {
+  title,
+  description = SITE.description,
+  image = "/og-default.jpg",
+  noindex = false,
+  jsonLd,
+  type = "website",
+  class: className = "",
+  chrome = true,
+} = Astro.props;
+
+const pageTitle = title ? `${title} | ${SITE.name}` : `${SITE.name} — ${SITE.tagline}`;
+const canonical = new URL(Astro.url.pathname, SITE.url).href;
+const ogImage = new URL(image, SITE.url).href;
+---
+<!doctype html>
+<html lang={SITE.lang}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+
+    <title>{pageTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
+
+    {/* Open Graph */}
+    <meta property="og:type" content={type} />
+    <meta property="og:site_name" content={SITE.name} />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={pageTitle} />
+    <meta property="og:locale" content={SITE.locale} />
+
+    {/* Twitter */}
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={pageTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+    <meta name="twitter:image:alt" content={pageTitle} />
+
+    {/* Additional SEO meta tags */}
+    <meta name="author" content={SITE.name} />
+    <meta name="format-detection" content="telephone=no" />
+
+    <meta name="theme-color" content="#e3a319" />
+
+    {jsonLd && (
+      <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+    )}
+  </head>
+  <body class={className}>
+    <a
+      href="#main"
+      class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-xs focus:bg-brand-600 focus:px-4 focus:py-2 focus:text-white"
+    >
+      Skip to content
+    </a>
+
+    {chrome && <Header />}
+
+    <main id="main">
+      <slot />
+    </main>
+
+    {chrome && <Footer />}
+    <ScrollReveal />
+    <ContactModal />
+  </body>
+</html>

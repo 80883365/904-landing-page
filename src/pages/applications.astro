@@ -1,0 +1,16 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Section from "../components/Section.astro";
+import Icon from "../components/Icon.astro";
+import OptimizedImage from "../components/OptimizedImage.astro";
+import appImg from "../assets/images/applications/gold-grinding-circuit.webp";
+const routes=[
+ {id:"small-scale-gold-mining",title:"Small-scale gold mining",text:"A wet pan mill offers a compact route where capital, installed power and operator resources are limited.",fit:"Wet pan mill + gravity concentration",checks:["Crushed feed below the model limit","Consistent water addition","Replaceable roller and ring wear parts"]},
+ {id:"hard-rock-gold",title:"Hard-rock gold processing",text:"A ball mill provides continuous, controlled grinding ahead of gravity, flotation or leaching circuits.",fit:"Gold ore ball mill + classification",checks:["Ore hardness and required P80","Circulating load and discharge type","Liner and grinding media selection"]},
+ {id:"grinding-media",title:"Grinding media supply",text:"Forged steel balls are matched to mill diameter, impact conditions and wear targets to control total grinding cost.",fit:"20–150 mm forged steel balls",checks:["Current wear rate and breakage","Hardness profile and alloy grade","Top-up schedule and delivery volume"]}
+];
+---
+<BaseLayout title="Gold Ore Grinding Applications" description="Compare grinding routes for small-scale gold mining, hard-rock gold processing and forged steel ball supply, with the inputs needed for model selection." image={appImg.src}>
+  <section class="relative overflow-hidden bg-carbon-950 text-white"><OptimizedImage src={appImg} alt="Gold mine grinding circuit with industrial mineral processing equipment" class="absolute inset-0 h-full w-full object-cover opacity-40" loading="eager" fetchpriority="high"/><div class="absolute inset-0 bg-gradient-to-r from-carbon-950 via-carbon-950/85 to-transparent"></div><div class="container-x relative py-20"><nav class="text-sm text-white/65"><a href="/">Home</a> / Applications</nav><h1 class="mt-5 max-w-3xl !text-white">Match the grinding route to the mine</h1><p class="mt-5 max-w-2xl text-lg text-white/80">Scale, mineralogy and target liberation size decide whether a wet pan mill, ball mill or media optimization should lead the project.</p></div></section>
+  {routes.map((route,i)=><Section id={route.id} tone={i%2?"alt":"light"}><div class="grid gap-8 lg:grid-cols-[.8fr_1.2fr]"><div><h2>{route.title}</h2><p class="mt-4 text-lg text-carbon-500">{route.text}</p><p class="mt-6 font-700 text-brand-700">Typical fit: {route.fit}</p></div><div class="card p-7"><h3 class="!text-lg">Selection checkpoints</h3><ul class="mt-5 space-y-3">{route.checks.map(c=><li class="flex gap-3 text-carbon-600"><Icon name="checkCircle" class="mt-0.5 size-5 shrink-0 text-accent-600"/>{c}</li>)}</ul><button class="btn btn-primary mt-7" onclick={`openContactModal({ sourcePage: '/applications', applicationInterest: '${route.title}', ctaLabel: 'Discuss this application' })`}>Discuss this application <Icon name="arrowRight" class="size-4"/></button></div></div></Section>)}
+</BaseLayout>

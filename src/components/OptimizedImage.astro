@@ -1,0 +1,68 @@
+---
+/**
+ * OptimizedImage 鈥?supports TWO image sources:
+ *
+ * 1. LOCAL imported asset (Sharp-optimized):
+ *    import hero from "../assets/images/hero-wide.webp";
+ *    <OptimizedImage src={hero} alt="..." />          鈫?uses <Image /> with srcset
+ *
+ * 2. Public string path (e.g. CMS uploads in /images):
+ *    <OptimizedImage src="/images/x.webp" alt="..." />  鈫?renders plain <img>
+ *
+ * - Always provide a meaningful English `alt`.
+ * - Set `class` to control object-fit / sizing at the usage site.
+ */
+import { Image } from "astro:assets";
+
+interface Props {
+  src: ImageMetadata | string;
+  alt: string;
+  width?: number;
+  height?: number;
+  densities?: number[];
+  class?: string;
+  loading?: "lazy" | "eager";
+  fetchpriority?: "high" | "low" | "auto";
+  sizes?: string;
+}
+
+const {
+  src,
+  alt,
+  width,
+  height,
+  class: className = "h-full w-full object-cover",
+  loading = "lazy",
+  fetchpriority,
+  densities,
+  sizes,
+} = Astro.props;
+
+const isString = typeof src === "string";
+---
+
+{
+  isString ? (
+    <img
+      src={src as string}
+      alt={alt}
+      width={width}
+      height={height}
+      loading={loading}
+      fetchpriority={fetchpriority}
+      class={className}
+    />
+  ) : (
+    <Image
+      src={src as ImageMetadata}
+      alt={alt}
+      width={width}
+      height={height}
+      loading={loading}
+      fetchpriority={fetchpriority}
+      densities={densities}
+      sizes={sizes}
+      class={className}
+    />
+  )
+}

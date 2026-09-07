@@ -1,0 +1,119 @@
+# =============================================================================
+# Decap CMS configuration — GoldCore
+# Docs: https://decapcms.org/docs/configuration-options/
+# =============================================================================
+#
+# AUTHENTICATION
+#   Decap needs an auth/identity backend. Two common options:
+#
+#   1) Git Gateway + Netlify Identity (easiest on Netlify):
+#        - Enable Netlify Identity on your site
+#        - Enable Git Gateway under Identity > Services
+#        - Uncomment the `backend` block below marked "Netlify"
+#
+#   2) GitHub / GitLab backend with OAuth (any host):
+#        - See https://decapcms.org/docs/github-backend/
+#        - Use the `backend` block marked "GitHub" below
+#
+#   The default below is Netlify Git Gateway.
+# =============================================================================
+
+# ---- Proxy Backend (Local Development - Reads Real Files) ----
+backend:
+  name: proxy
+  proxy_url: http://localhost:8081/api/v1
+
+# ---- Netlify (Git Gateway) - For Production ----
+# backend:
+#   name: git-gateway
+#   branch: main
+
+# ---- GitHub (alternative) ----
+# backend:
+#   name: github
+#   repo: your-org/your-repo
+#   branch: main
+#   auth_type: oauth
+#   app_id: your-oauth-app-id
+
+# Publish content through commits to the repo above
+publish_mode: editorial_workflow
+local_backend: true  # Required for proxy backend
+site_url: https://www.goldcore-machinery.com
+display_url: https://www.goldcore-machinery.com
+
+# Where media uploads are stored (matches the Astro content layout)
+media_folder: "public/images"
+public_folder: "/images"
+
+
+# -----------------------------------------------------------------------------
+# Collections
+# -----------------------------------------------------------------------------
+collections:
+  # ============================ PRODUCTS ============================
+  - name: "products"
+    label: "Products"
+    label_singular: "Product"
+    folder: "src/content/products"
+    create: true
+    delete: true
+    extension: "md"
+    format: "frontmatter"
+    slug: "{{slug}}"
+    summary: "{{title}} — {{category}}"
+    sortable_fields: ["order", "title"]
+    fields:
+      - { label: "Title", name: "title", widget: "string" }
+      - {
+          label: "URL slug",
+          name: "slug",
+          widget: "string",
+          hint: "Used in the URL: /products/<slug>",
+          pattern: ['^[a-z0-9]+(?:-[a-z0-9]+)*$', "Must be lowercase letters, numbers, and hyphens only"]
+        }
+      - { label: "Short excerpt (cards)", name: "excerpt", widget: "string" }
+      - { label: "Meta description", name: "description", widget: "text" }
+      - { label: "Featured Image", name: "heroImage", widget: "image", required: false, hint: "Product hero image (recommended: 1200x800px)" }
+      - { label: "Category", name: "category", widget: "select", options: ["Grinding Equipment", "Grinding Media"] }
+      - { label: "Icon", name: "icon", widget: "select", default: "layers", options: ["layers","drop","wind","factory","flask","beaker","leaf","shield","globe","award","ruler","spark","truck"] }
+      - { label: "Badge (optional)", name: "badge", widget: "string", required: false }
+      - { label: "Featured on home", name: "featured", widget: "boolean", default: false }
+      - { label: "Sort order (lower = first)", name: "order", widget: "number", default: 100, value_type: "int" }
+      - { label: "Key features", name: "features", widget: "list", required: false, field: { label: "Feature", name: "value", widget: "string" } }
+      - { label: "Applications", name: "applications", widget: "list", required: false, field: { label: "Application", name: "value", widget: "string" } }
+      - label: "Technical specs"
+        name: "specs"
+        widget: "list"
+        required: false
+        fields:
+          - { label: "Label", name: "label", widget: "string" }
+          - { label: "Value", name: "value", widget: "string" }
+      - { label: "Packaging options", name: "packaging", widget: "list", required: false, field: { label: "Option", name: "value", widget: "string" } }
+      - { label: "Certifications", name: "certifications", widget: "list", required: false, field: { label: "Certification", name: "value", widget: "string" } }
+      - { label: "Body content", name: "body", widget: "markdown", hint: "Use the image button above to insert images from the media library" }
+
+  # ============================== BLOG =============================
+  - name: "blog"
+    label: "Blog"
+    label_singular: "Article"
+    folder: "src/content/blog"
+    create: true
+    delete: true
+    extension: "md"
+    format: "frontmatter"
+    slug: "{{slug}}"
+    summary: "{{title}} — {{pubDate}}"
+    fields:
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "URL slug", name: "slug", widget: "string", hint: "Used in the URL: /blog/<slug>" }
+      - { label: "Description", name: "description", widget: "text" }
+      - { label: "Featured Image", name: "heroImage", widget: "image", required: false, hint: "Blog hero image (recommended: 1200x675px)" }
+      - { label: "Publish date", name: "pubDate", widget: "datetime", date_format: "YYYY-MM-DD", time_format: false }
+      - { label: "Updated date (optional)", name: "updatedDate", widget: "datetime", date_format: "YYYY-MM-DD", time_format: false, required: false }
+      - { label: "Author", name: "author", widget: "string", default: "CarboPure Technical Team" }
+      - { label: "Category", name: "category", widget: "select", options: ["Technical Guide", "Buying Guide", "Industry Insights", "Case Studies", "Company News"], default: "Industry Insights" }
+      - { label: "Tags", name: "tags", widget: "list", required: false, field: { label: "Tag", name: "value", widget: "string" } }
+      - { label: "Featured", name: "featured", widget: "boolean", default: false }
+      - { label: "Draft", name: "draft", widget: "boolean", default: false }
+      - { label: "Body content", name: "body", widget: "markdown", hint: "Use the image button above to insert images from the media library" }

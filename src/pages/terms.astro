@@ -1,0 +1,43 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PageHero from "../components/PageHero.astro";
+import Section from "../components/Section.astro";
+import { SITE, CONTACT } from "../consts";
+---
+<BaseLayout title="Terms of Service" description="Terms governing use of the CarboPure website." noindex={true}>
+  <PageHero
+    tone="light"
+    eyebrow="Legal"
+    title="Terms of Service"
+    intro={`Last updated: June 2026. The terms governing your use of this website.`}
+    crumbs={[{ label: "Home", href: "/" }, { label: "Terms of Service" }]}
+  />
+  <Section containerClass="!max-w-3xl">
+    <div class="prose-cp">
+      <p>These terms govern access to and use of the {SITE.legalName} website. By using this site you agree to them.</p>
+
+      <h2>Use of the site</h2>
+      <p>You may use this site for lawful business and informational purposes. You may not misuse it, attempt to disrupt it, or scrape content in violation of applicable law.</p>
+
+      <h2>Product information</h2>
+      <p>Specifications, capacities and other technical data are provided in good faith for general guidance and may change without notice. They do not constitute a warranty. Binding specifications are confirmed in the quotation and sales contract. Always validate performance with samples before bulk purchase.</p>
+
+      <h2>Quotes & orders</h2>
+      <p>All quotations are subject to prior sale and confirmation. Prices, lead times and Incoterms are those stated in the written quotation and resulting contract. Samples may be provided for evaluation and may carry separate terms.</p>
+
+      <h2>Intellectual property</h2>
+      <p>Site content — including the {SITE.name} name, logos, text and design — is owned by or licensed to us. You may not reproduce trademarks or substantial content without written permission.</p>
+
+      <h2>Limitation of liability</h2>
+      <p>This site and its content are provided "as is" without warranties of any kind. To the maximum extent permitted by law, we are not liable for indirect or consequential damages arising from use of the site.</p>
+
+      <h2>Governing law</h2>
+      <p>These terms are governed by the laws of the People's Republic of China without regard to conflict-of-law principles, unless otherwise agreed in a written contract.</p>
+
+      <h2>Contact</h2>
+      <p>Questions about these terms? Email <a href={`mailto:${CONTACT.email}`}>{CONTACT.email}</a>.</p>
+
+      <p class="text-sm text-carbon-400">This is a template for a starter site. Have it reviewed by qualified counsel before going live.</p>
+    </div>
+  </Section>
+</BaseLayout>

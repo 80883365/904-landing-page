@@ -1,0 +1,30 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Button from "../components/Button.astro";
+import Icon from "../components/Icon.astro";
+---
+<BaseLayout title="Page not found" noindex={true}>
+  <section class="relative flex min-h-[70vh] items-center overflow-hidden bg-carbon-900 text-white">
+    <div class="pointer-events-none absolute inset-0 opacity-[0.14]" style="background-image:radial-gradient(circle at 1px 1px, white 1px, transparent 0); background-size:24px 24px;" aria-hidden="true"></div>
+    <div class="pointer-events-none absolute -right-32 top-1/2 size-96 -translate-y-1/2 rounded-full bg-accent-500/20 blur-3xl" aria-hidden="true"></div>
+
+    <div class="container-x relative max-w-2xl text-center">
+      <p class="font-condensed text-7xl font-800 text-accent-500 sm:text-9xl">404</p>
+      <h1 class="mt-4 !text-white">This page filtered out</h1>
+      <p class="mx-auto mt-4 max-w-md text-lg text-white/70">
+        Like a spent carbon bed, this URL has nothing left to adsorb. Let's get you back to clean water.
+      </p>
+      <div class="mt-8 flex flex-wrap justify-center gap-3">
+        <Button href="/" variant="primary" icon="arrowRight">Back to home</Button>
+        <Button href="/products" variant="ghostLight" icon="layers" iconRight={false}>Browse products</Button>
+      </div>
+
+      <div class="mt-10 flex flex-wrap justify-center gap-x-6 gap-y-2 text-sm text-white/50">
+        <a href="/products" class="transition hover:text-accent-300">Products</a>
+        <a href="/applications" class="transition hover:text-accent-300">Applications</a>
+        <a href="/blog" class="transition hover:text-accent-300">Blog</a>
+        <a href="/contact" class="transition hover:text-accent-300">Contact</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,179 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Section from "../../components/Section.astro";
+import Icon from "../../components/Icon.astro";
+import ProductCard from "../../components/ProductCard.astro";
+import { getCollection, render } from "astro:content";
+import type { GetStaticPaths } from "astro";
+import OptimizedImage from "../../components/OptimizedImage.astro";
+import ballMillImg from "../../assets/images/gold-ore-ball-mill/industrial-ball-mill.webp";
+import wetPanImg from "../../assets/images/wet-pan-mill-for-gold/double-wheel-wet-pan-mill.webp";
+import steelBallsImg from "../../assets/images/forged-grinding-steel-balls/forged-steel-grinding-balls.webp";
+import { generateProductSchema, generateBreadcrumbSchema } from "../../config/seo";
+import { SITE } from "../../config/site";
+
+export const getStaticPaths = (async () => {
+  const products = await getCollection("products");
+  return products.map((p) => ({
+    params: { slug: p.id },
+    props: { product: p },
+  }));
+}) satisfies GetStaticPaths;
+
+const { product } = Astro.props;
+const { Content } = await render(product);
+
+// Related products: same category, or fall back to others
+const all = (await getCollection("products")).filter((p) => p.id !== product.id);
+const related = [
+  ...all.filter((p) => p.data.category === product.data.category),
+  ...all.filter((p) => p.data.category !== product.data.category),
+].slice(0, 3);
+
+const d = product.data;
+
+const productImages: Record<string, ImageMetadata> = {
+  "gold-ore-ball-mill": ballMillImg,
+  "wet-pan-mill-for-gold": wetPanImg,
+  "forged-grinding-steel-balls": steelBallsImg,
+};
+const heroImage = productImages[product.id];
+const heroImageAlt = d.heroImageAlt || d.title;
+
+// Generate Product Schema
+const schemaImage = new URL(heroImage.src, SITE.url).href;
+const contactAction = `openContactModal(${JSON.stringify({ sourcePage: `/products/${product.id}`, productInterest: d.title, ctaLabel: "Request a Quote" })})`;
+
+const productSchema = generateProductSchema({
+  name: d.title,
+  description: d.description,
+  image: schemaImage,
+  url: new URL(`/products/${product.id}`, SITE.url).href,
+});
+
+// Generate Breadcrumb Schema
+const breadcrumbSchema = generateBreadcrumbSchema([
+  { name: "Home", url: SITE.url },
+  { name: "Products", url: new URL("/products", SITE.url).href },
+  { name: d.title, url: new URL(`/products/${product.id}`, SITE.url).href },
+]);
+
+// Combine schemas
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [productSchema, breadcrumbSchema],
+};
+---
+<BaseLayout title={d.title} description={d.description} image={heroImage.src} type="website" jsonLd={jsonLd}>
+  {/* ============================= HERO */}
+  <section class="relative overflow-hidden bg-brand-600 text-white">
+    <div class="container-x relative py-14 sm:py-20">
+      <div class="grid gap-8 lg:grid-cols-2 lg:items-start lg:gap-10">
+        {/* Left: text */}
+        <div class="min-w-0">
+          <nav aria-label="Breadcrumb" class="mb-5 min-w-0">
+            <ol class="flex min-w-0 items-center gap-2 text-sm text-white/65">
+              <li class="shrink-0"><a href="/" class="transition hover:text-accent-300">Home</a></li>
+              <li class="shrink-0"><Icon name="chevronRight" class="size-3.5 opacity-50" /></li>
+              <li class="shrink-0"><a href="/products" class="transition hover:text-accent-300">Products</a></li>
+              <li class="shrink-0"><Icon name="chevronRight" class="size-3.5 opacity-50" /></li>
+              <li class="min-w-0 flex-1">
+                <span class="block truncate text-white/90">{d.title}</span>
+              </li>
+            </ol>
+          </nav>
+
+          <h1 class="mt-5 !text-white">{d.title}</h1>
+          <p class="mt-4 max-w-xl text-lg leading-relaxed text-white/80">{d.description}</p>
+
+          <div class="mt-7">
+            <button class="btn btn-primary" onclick={contactAction}>
+              Request a Quote <Icon name="arrowRight" class="size-[1.15em]" />
+            </button>
+          </div>
+        </div>
+
+        {/* Right: hero product image */}
+        <div class="lg:pl-8">
+          <div class="relative overflow-hidden rounded-md border border-white/15 shadow-2xl">
+            <OptimizedImage
+              src={heroImage}
+              alt={heroImageAlt}
+              class="aspect-[4/3] w-full object-cover"
+              loading="eager"
+              fetchpriority="high"
+            />
+            <div class="absolute inset-0 bg-gradient-to-t from-carbon-950/50 to-transparent"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {/* ============================= BODY */}
+  <Section>
+    <div class="grid gap-12 lg:grid-cols-3">
+      {/* Main copy */}
+      <article class="prose-cp lg:col-span-2">
+        <Content />
+      </article>
+
+      {/* Sticky spec / CTA sidebar */}
+      <aside class="lg:col-span-1">
+        <div class="sticky top-28 space-y-6">
+          <div class="card p-6">
+            <h3 class="!text-base">Preliminary technical data</h3>
+            <dl class="mt-4 divide-y divide-carbon-50">
+              {d.specs.map((s) => (
+                <div class="flex items-baseline justify-between gap-4 py-2.5">
+                  <dt class="text-sm text-carbon-500">{s.label}</dt>
+                  <dd class="text-right text-sm font-700 text-carbon-800">{s.value}</dd>
+                </div>
+              ))}
+            </dl>
+          </div>
+
+          {d.packaging.length > 0 && (
+            <div class="card p-6">
+              <h3 class="!text-base flex items-center gap-2"><Icon name="truck" class="size-4 text-accent-600" /> Packaging</h3>
+              <ul class="mt-3 space-y-2">
+                {d.packaging.map((p) => (
+                  <li class="flex items-start gap-2 text-sm text-carbon-600">
+                    <Icon name="check" class="mt-0.5 size-4 shrink-0 text-accent-500" />{p}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+
+          <div class="rounded-md bg-brand-800 p-6 text-white">
+            <h3 class="!text-white !text-base">Need model selection?</h3>
+            <p class="mt-2 text-sm text-white/80">Send ore data, required throughput and site power. We will prepare a preliminary recommendation.</p>
+            <button class="btn btn-primary mt-4 w-full" onclick={contactAction}>
+              Ask an Engineer <Icon name="arrowRight" class="size-[1.15em]" />
+            </button>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </Section>
+
+  {/* ============================= RELATED */}
+  {related.length > 0 && (
+    <Section eyebrow="Related products" title="You may also need" tone="alt">
+      <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        {related.map((p) => (
+          <ProductCard
+            href={`/products/${p.id}`}
+            title={p.data.title}
+            excerpt={p.data.excerpt}
+            icon={p.data.icon}
+            category={p.data.category}
+            image={productImages[p.id]}
+            imageAlt={p.data.heroImageAlt}
+          />
+        ))}
+      </div>
+    </Section>
+  )}
+</BaseLayout>

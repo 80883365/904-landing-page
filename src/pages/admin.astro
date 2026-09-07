@@ -1,0 +1,24 @@
+---
+// Redirect /admin to /admin/ or serve CMS directly
+const { redirect } = Astro;
+
+// If accessed without trailing slash, redirect
+if (!Astro.url.pathname.endsWith('/')) {
+  return redirect('/admin/', 301);
+}
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex" />
+    <title>Content Manager · CarboPure</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  </head>
+  <body>
+    <!-- Decap CMS -->
+    <script is:inline src="https://unpkg.com/decap-cms@^3.6.0/dist/decap-cms.js"></script>
+    <script is:inline src="/admin/preview.js"></script>
+  </body>
+</html>

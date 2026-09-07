@@ -1,0 +1,133 @@
+---
+/**
+ * ContactModal - 询盘弹窗容器组件
+ * 必须在每个页面的 BaseLayout 中引入，以便全局可用
+ */
+import ContactForm from "./ContactForm.astro";
+import Icon from "./Icon.astro";
+---
+
+<div
+  id="contact-modal"
+  class="fixed inset-0 z-50 hidden items-center justify-center bg-carbon-900/60 backdrop-blur-sm p-4"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="modal-title"
+>
+  <div
+    class="relative w-full max-w-lg rounded-md border border-carbon-100 bg-white p-6 shadow-xl sm:p-8"
+    role="document"
+  >
+    {/* Close button */}
+    <button
+      type="button"
+      id="close-modal"
+      class="absolute right-4 top-4 flex size-8 items-center justify-center rounded-xs text-carbon-400 transition hover:bg-carbon-100 hover:text-carbon-600"
+      aria-label="Close modal"
+    >
+      <Icon name="close" class="size-5" />
+    </button>
+
+    {/* Modal header */}
+    <h2 id="modal-title" class="!text-xl pr-8">Request a Quote</h2>
+    <p class="mt-1 text-sm text-carbon-500">Share your requirements and we’ll reply with the next technical questions.</p>
+
+    {/* Form */}
+    <div class="mt-6">
+      <ContactForm />
+    </div>
+  </div>
+</div>
+
+<script>
+  // Modal open/close logic
+  const modal = document.getElementById("contact-modal");
+  const closeBtn = document.getElementById("close-modal");
+
+  // Open modal function - globally accessible
+  (window as any).openContactModal = (options?: {
+    sourcePage?: string;
+    productInterest?: string;
+    applicationInterest?: string;
+    ctaLabel?: string;
+  }) => {
+    if (!modal) return;
+
+    // Set hidden field values if provided
+    if (options) {
+      const form = document.getElementById("contact-modal-form") as HTMLFormElement;
+      if (form) {
+        if (options.sourcePage) {
+          let input = form.querySelector('input[name="source_page"]') as HTMLInputElement;
+          if (!input) {
+            input = document.createElement("input");
+            input.type = "hidden";
+            input.name = "source_page";
+            form.appendChild(input);
+          }
+          input.value = options.sourcePage;
+        }
+        if (options.productInterest) {
+          let input = form.querySelector('input[name="product_interest"]') as HTMLInputElement;
+          if (!input) {
+            input = document.createElement("input");
+            input.type = "hidden";
+            input.name = "product_interest";
+            form.appendChild(input);
+          }
+          input.value = options.productInterest;
+        }
+        if (options.applicationInterest) {
+          let input = form.querySelector('input[name="application_interest"]') as HTMLInputElement;
+          if (!input) {
+            input = document.createElement("input");
+            input.type = "hidden";
+            input.name = "application_interest";
+            form.appendChild(input);
+          }
+          input.value = options.applicationInterest;
+        }
+        if (options.ctaLabel) {
+          let input = form.querySelector('input[name="cta_label"]') as HTMLInputElement;
+          if (!input) {
+            input = document.createElement("input");
+            input.type = "hidden";
+            input.name = "cta_label";
+            form.appendChild(input);
+          }
+          input.value = options.ctaLabel;
+        }
+      }
+    }
+
+    modal.classList.remove("hidden");
+    modal.classList.add("flex");
+    document.body.style.overflow = "hidden";
+  };
+
+  // Close modal
+  const closeModal = () => {
+    if (!modal) return;
+    modal.classList.add("hidden");
+    modal.classList.remove("flex");
+    document.body.style.overflow = "";
+  };
+
+  if (closeBtn) {
+    closeBtn.addEventListener("click", closeModal);
+  }
+
+  // Close on backdrop click
+  if (modal) {
+    modal.addEventListener("click", (e) => {
+      if (e.target === modal) closeModal();
+    });
+  }
+
+  // Close on Escape key
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && modal && !modal.classList.contains("hidden")) {
+      closeModal();
+    }
+  });
+</script>

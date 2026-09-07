@@ -1,0 +1,47 @@
+---
+/**
+ * Flexible button / link. Renders <a> when href is given, else <button>.
+ * variant: primary | brand | dark | outline | ghostLight
+ * size:    md | lg
+ */
+import Icon from "./Icon.astro";
+interface Props {
+  href?: string;
+  variant?: "primary" | "brand" | "dark" | "outline" | "ghostLight";
+  size?: "md" | "lg";
+  icon?: string;
+  iconRight?: boolean;
+  type?: "button" | "submit";
+  class?: string;
+  [key: string]: any;
+}
+const {
+  href,
+  variant = "primary",
+  size = "md",
+  icon,
+  iconRight = true,
+  type = "button",
+  class: className = "",
+  ...rest
+} = Astro.props;
+
+const variantClass = {
+  primary: "btn-primary",
+  brand: "btn-brand",
+  dark: "btn-dark",
+  outline: "btn-outline",
+  ghostLight: "btn-ghost-light",
+}[variant];
+
+const sizeClass = size === "lg" ? "text-base px-7 py-4" : "";
+const cls = `btn ${variantClass} ${sizeClass} ${className}`.trim();
+
+const Tag = href ? "a" : "button";
+const extra = href ? { href } : { type };
+---
+<Tag class={cls} {...extra} {...rest}>
+  {icon && !iconRight && <Icon name={icon} class="size-[1.15em] shrink-0" />}
+  <slot />
+  {icon && iconRight && <Icon name={icon} class="size-[1.15em] shrink-0" />}
+</Tag>

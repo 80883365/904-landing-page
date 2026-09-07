@@ -1,0 +1,162 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PageHero from "../components/PageHero.astro";
+import Section from "../components/Section.astro";
+import Icon from "../components/Icon.astro";
+import Field from "../components/Field.astro";
+import { SITE, CONTACT } from "../consts";
+
+const contactPoints = [
+  { icon: "mail", label: "Email", value: CONTACT.email },
+  { icon: "phone", label: "Call sales", value: CONTACT.phone, href: `tel:${CONTACT.phone.replace(/\s/g, "")}` },
+  { icon: "pin", label: "Visit", value: `${CONTACT.addressLine1}, ${CONTACT.addressLine2}` },
+  { icon: "clock", label: "Hours", value: CONTACT.hours },
+];
+---
+<BaseLayout
+  title="Contact"
+  description="Contact GoldCore for ball mill, wet pan mill and forged grinding steel ball selection, technical questions and export quotations."
+>
+  <PageHero
+    tone="dark"
+    eyebrow="Contact us"
+    title="Discuss your grinding requirement"
+    intro="Request a quote or send the ore, capacity and site details needed for preliminary mill and grinding media selection."
+    crumbs={[{ label: "Home", href: "/" }, { label: "Contact" }]}
+  />
+
+  <Section>
+    <div class="grid gap-10 lg:grid-cols-5">
+      {/* Contact info */}
+      <div class="lg:col-span-2">
+        <span class="eyebrow">Get in touch</span>
+        <h2 class="mt-3">Talk to a real engineer</h2>
+        <p class="mt-3 text-carbon-500">Your inquiry reaches a mining equipment specialist who can review ore data, narrow the model and prepare an export quotation.</p>
+
+        <ul class="mt-8 space-y-5">
+          {contactPoints.map((c) => (
+            <li class="flex gap-4">
+              <span class="flex size-11 shrink-0 items-center justify-center rounded-sm bg-brand-50 text-brand-600">
+                <Icon name={c.icon} class="size-5" />
+              </span>
+              <div>
+                <p class="text-sm font-700 text-carbon-800">{c.label}</p>
+                {c.href ? (
+                  <a href={c.href} class="text-carbon-500 transition hover:text-accent-600">{c.value}</a>
+                ) : (
+                  <p class="text-carbon-500">{c.value}</p>
+                )}
+              </div>
+            </li>
+          ))}
+        </ul>
+
+        <div class="mt-8 rounded-md border border-carbon-100 bg-carbon-50 p-5">
+          <p class="flex items-center gap-2 text-sm font-700 text-brand-600">
+            <Icon name="truck" class="size-5 text-accent-600" /> Global shipping
+          </p>
+          <p class="mt-1.5 text-sm text-carbon-500">EXW, FOB and CIF quotation options can be prepared against your destination port and packing requirements.</p>
+        </div>
+      </div>
+
+      {/* Form */}
+      <div class="lg:col-span-3">
+        <form
+          id="contact-form"
+          action="https://api.web3forms.com/submit"
+          method="POST"
+          class="rounded-md border border-carbon-100 bg-white p-6 sm:p-8"
+        >
+          {/* Web3Forms config */}
+          <input type="hidden" name="access_key" value={SITE.web3formsKey} />
+          <input type="hidden" name="subject" value="New inquiry from GoldCore website" />
+          <input type="hidden" name="from_name" value="GoldCore Website" />
+          <input type="checkbox" name="botcheck" class="hidden" style="display:none" tabindex="-1" autocomplete="off" aria-hidden="true" />
+          {/* Redirect after success (optional) */}
+          <input type="hidden" name="redirect" value={`${SITE.url}/contact?sent=1`} />
+
+          <h2 class="!text-xl">Request a quote</h2>
+          <p class="mt-1 text-sm text-carbon-500">Fields marked * are required.</p>
+
+          <div class="mt-6 grid gap-5 sm:grid-cols-2">
+            <Field label="Name" name="name" placeholder="Jane Doe" />
+            <Field label="Email *" name="email" type="email" required placeholder="jane@example.com" />
+          </div>
+
+          <div class="mt-5">
+            <Field label="Phone / WhatsApp" name="phone" type="tel" placeholder="+1 555 000 0000" />
+          </div>
+
+          <div class="mt-5">
+            <label class="mb-1.5 block text-sm font-700 text-carbon-700">Message *</label>
+            <textarea
+              name="message"
+              required
+              rows="5"
+              placeholder="Tell us about your requirements, application, or questions..."
+              class="w-full rounded-xs border border-carbon-200 bg-white px-3.5 py-2.5 text-sm outline-none transition focus:border-accent-500 focus:ring-2 focus:ring-accent-500/20"
+            ></textarea>
+          </div>
+
+          <label class="mt-5 flex items-start gap-2.5 text-sm text-carbon-500">
+            <input type="checkbox" name="consent" required class="mt-0.5 size-4 rounded-xs border-carbon-300 text-accent-500 focus:ring-accent-500" />
+            I agree to be contacted about my inquiry and accept the privacy policy.
+          </label>
+
+          <button type="submit" class="btn btn-primary mt-6 w-full text-base">
+            Send inquiry <Icon name="arrowRight" class="size-4" />
+          </button>
+
+          <p id="form-status" class="mt-4 hidden rounded-xs border p-4 text-sm" role="status" aria-live="polite"></p>
+        </form>
+      </div>
+    </div>
+  </Section>
+</BaseLayout>
+
+<script>
+  // AJAX submission for the Web3Forms contact form.
+  const form = document.getElementById("contact-form") as HTMLFormElement | null;
+  const status = document.getElementById("form-status");
+
+  if (form) {
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const btn = form.querySelector('button[type="submit"]') as HTMLButtonElement;
+      const original = btn.innerHTML;
+      btn.disabled = true;
+      btn.innerHTML = "Sending…";
+
+      try {
+        const res = await fetch(form.action, {
+          method: "POST",
+          headers: { Accept: "application/json" },
+          body: new FormData(form),
+        });
+        const data = await res.json();
+
+        if (data.success) {
+          if (status) {
+            status.className =
+              "mt-4 block rounded-xs border border-cat-lime/30 bg-cat-lime/10 p-4 text-sm text-brand-700";
+            status.innerHTML =
+              "✓ Thank you — your inquiry has been sent. We'll reply within 24 hours.";
+          }
+          form.reset();
+        } else {
+          throw new Error(data.message || "Submission failed");
+        }
+      } catch (err) {
+        if (status) {
+          status.className =
+            "mt-4 block rounded-xs border border-cat-red/30 bg-cat-red/10 p-4 text-sm text-cat-red";
+          status.innerHTML =
+            "Something went wrong. Please email us directly at sales@carbopure.com or try again.";
+        }
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = original;
+      }
+    });
+  }
+</script>
