@@ -20,13 +20,16 @@ import Icon from "./Icon.astro";
   <div class="container-x grid grid-cols-2 gap-8 py-14 md:grid-cols-3 lg:grid-cols-5">
     {/* Brand col */}
     <div class="col-span-2 lg:col-span-2">
-      <a href="/" class="flex items-center gap-2.5">
-        <span class="flex size-9 items-center justify-center rounded-xs bg-brand-600 text-white">
-          <Icon name="layers" class="size-5" />
-        </span>
-        <span class="font-display text-lg font-700 text-white">
-          Gold<span class="text-accent-500">Core</span>
-        </span>
+      <a href="/" class="flex items-center" aria-label={`${SITE.name} home`}>
+        <img
+          src="/brand/zd-mining-logo-footer.webp"
+          alt="ZD Mining Products"
+          width="180"
+          height="60"
+          class="h-14 w-auto object-contain"
+          loading="lazy"
+          decoding="async"
+        />
       </a>
       <p class="mt-4 max-w-sm text-sm leading-relaxed text-white/60">
         {SITE.description}

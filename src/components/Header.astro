@@ -36,18 +36,15 @@ const isActive = (href: string) => {
   {/* Main bar */}
   <div class="container-x flex h-16 items-center justify-between gap-4 lg:h-[4.5rem]">
     {/* Logo */}
-    <a href="/" class="flex shrink-0 items-center gap-2.5" aria-label={`${SITE.name} home`}>
-      <span class="flex size-9 items-center justify-center rounded-xs bg-brand-600 text-white">
-        <Icon name="layers" class="size-5" />
-      </span>
-      <span class="flex flex-col leading-none">
-        <span class="font-display text-lg font-700 tracking-tight text-brand-600">
-          Gold<span class="text-accent-500">Core</span>
-        </span>
-        <span class="font-condensed text-[0.6rem] font-800 uppercase tracking-[0.18em] text-carbon-400">
-          Mining Equipment
-        </span>
-      </span>
+    <a href="/" class="flex shrink-0 items-center" aria-label={`${SITE.name} home`}>
+      <img
+        src="/brand/zd-mining-logo-header.webp"
+        alt="ZD Mining Products"
+        width="180"
+        height="65"
+        class="h-12 w-auto object-contain sm:h-14"
+        decoding="async"
+      />
     </a>
 
     {/* Desktop nav */}
