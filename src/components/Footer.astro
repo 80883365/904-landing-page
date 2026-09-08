@@ -3,19 +3,6 @@ import { SITE, CONTACT, FOOTER_LINKS, SOCIAL } from "../consts";
 import Icon from "./Icon.astro";
 ---
 <footer class="bg-carbon-950 text-white/70">
-  {/* CTA band */}
-  <div class="border-b border-white/10">
-    <div class="container-x flex flex-col items-center justify-between gap-6 py-10 text-center lg:flex-row lg:text-left">
-      <div>
-        <h2 class="!text-white text-2xl sm:text-3xl">Need equipment matched to your ore?</h2>
-        <p class="mt-2 text-white/60">Send the feed size, target grind and throughput for preliminary model selection.</p>
-      </div>
-      <button class="btn btn-primary shrink-0" onclick="openContactModal({ sourcePage: window.location.pathname, ctaLabel: 'Talk to an Engineer' })">
-        Talk to an Engineer <Icon name="arrowRight" class="size-4" />
-      </button>
-    </div>
-  </div>
-
   {/* Main footer */}
   <div class="container-x grid grid-cols-2 gap-8 py-14 md:grid-cols-3 lg:grid-cols-5">
     {/* Brand col */}
@@ -26,7 +13,7 @@ import Icon from "./Icon.astro";
           alt="ZD Mining Products"
           width="180"
           height="60"
-          class="h-14 w-auto object-contain"
+          class="h-[4.5rem] w-auto object-contain sm:h-20"
           loading="lazy"
           decoding="async"
         />
