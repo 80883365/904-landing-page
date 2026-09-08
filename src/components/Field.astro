@@ -18,6 +18,7 @@ interface Props {
   required?: boolean;
   placeholder?: string;
   autocomplete?: string;
+  id?: string;
 }
 const {
   label,
@@ -26,14 +27,15 @@ const {
   required = false,
   placeholder = "",
   autocomplete,
+  id,
 } = Astro.props;
 ---
 <div>
-  <label for={name} class="mb-1.5 block text-sm font-700 text-carbon-700">
+  <label for={id || name} class="mb-1.5 block text-sm font-700 text-carbon-700">
     {label}
   </label>
   <input
-    id={name}
+    id={id || name}
     name={name}
     type={type}
     required={required}

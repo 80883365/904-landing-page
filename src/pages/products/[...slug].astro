@@ -2,6 +2,7 @@
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import Section from "../../components/Section.astro";
 import Icon from "../../components/Icon.astro";
+import ContactForm from "../../components/ContactForm.astro";
 import ProductCard from "../../components/ProductCard.astro";
 import { getCollection, render } from "astro:content";
 import type { GetStaticPaths } from "astro";
@@ -79,45 +80,52 @@ const jsonLd = {
 };
 ---
 <BaseLayout title={d.title} description={d.description} image={heroImage.src} type="website" jsonLd={jsonLd}>
-  {/* ============================= HERO */}
-  <section class="relative overflow-hidden bg-brand-600 text-white">
-    <div class="container-x relative py-14 sm:py-20">
-      <div class="grid gap-8 lg:grid-cols-2 lg:items-start lg:gap-10">
-        {/* Left: text */}
+  {/* ============================= BUYER-LED HERO */}
+  <section class="relative overflow-hidden bg-carbon-950 text-white">
+    <div class="absolute inset-y-0 right-0 hidden w-1/2 bg-brand-700/20 lg:block"></div>
+    <div class="container-x relative py-12 sm:py-16 lg:py-20">
+      <nav aria-label="Breadcrumb" class="mb-8 min-w-0">
+        <ol class="flex min-w-0 items-center gap-2 text-sm text-white/55">
+          <li class="shrink-0"><a href="/" class="transition hover:text-accent-300">Home</a></li>
+          <li class="shrink-0"><Icon name="chevronRight" class="size-3.5 opacity-50" /></li>
+          <li class="shrink-0"><a href="/products" class="transition hover:text-accent-300">Products</a></li>
+          <li class="shrink-0"><Icon name="chevronRight" class="size-3.5 opacity-50" /></li>
+          <li class="min-w-0 flex-1"><span class="block truncate text-white/85">{d.title}</span></li>
+        </ol>
+      </nav>
+
+      <div class="grid gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:items-center lg:gap-16">
         <div class="min-w-0">
-          <nav aria-label="Breadcrumb" class="mb-5 min-w-0">
-            <ol class="flex min-w-0 items-center gap-2 text-sm text-white/65">
-              <li class="shrink-0"><a href="/" class="transition hover:text-accent-300">Home</a></li>
-              <li class="shrink-0"><Icon name="chevronRight" class="size-3.5 opacity-50" /></li>
-              <li class="shrink-0"><a href="/products" class="transition hover:text-accent-300">Products</a></li>
-              <li class="shrink-0"><Icon name="chevronRight" class="size-3.5 opacity-50" /></li>
-              <li class="min-w-0 flex-1">
-                <span class="block truncate text-white/90">{d.title}</span>
-              </li>
-            </ol>
-          </nav>
+          <p class="eyebrow !text-accent-400">{isBallMill ? "Gold ore ball mill supplier" : d.category}</p>
+          <h1 class="mt-4 max-w-3xl !text-white">{isBallMill ? "A gold ore ball mill selected for your recovery target" : d.title}</h1>
+          <p class="mt-5 max-w-2xl text-lg leading-relaxed text-white/72">{isBallMill ? "Continuous wet or dry grinding for gold, copper and hard-rock mineral circuits—sized around feed, throughput, target P80 and downstream recovery." : d.description}</p>
 
-          <h1 class="mt-5 !text-white">{d.title}</h1>
-          <p class="mt-4 max-w-xl text-lg leading-relaxed text-white/80">{d.description}</p>
+          <ul class="mt-7 grid gap-3 sm:grid-cols-2">
+            {d.features.slice(0, 4).map((feature) => (
+              <li class="flex items-start gap-2 text-sm text-white/82"><Icon name="check" class="mt-0.5 size-4 shrink-0 text-accent-400" />{feature}</li>
+            ))}
+          </ul>
 
-          <div class="mt-7">
-            <button class="btn btn-primary" onclick={contactAction}>
-              Request a Quote <Icon name="arrowRight" class="size-[1.15em]" />
-            </button>
+          <div class="mt-8 flex flex-col gap-3 sm:flex-row">
+            <button class="btn btn-primary" onclick={contactAction}>Get a matched model <Icon name="arrowRight" class="size-[1.15em]" /></button>
+            <a href="#technical-data" class="btn btn-ghost-light">View parameters <Icon name="chevronDown" class="size-[1.15em]" /></a>
           </div>
+          <p class="mt-5 text-xs text-white/45">Tell us the ore, feed size, target fineness and tonnes per hour. We will reply with the next technical questions.</p>
         </div>
 
-        {/* Right: hero product image */}
-        <div class="lg:pl-8">
-          <div class="relative overflow-hidden rounded-md border border-white/15 shadow-2xl">
-            <OptimizedImage
-              src={heroImage}
-              alt={heroImageAlt}
-              class="aspect-[4/3] w-full object-cover"
-              loading="eager"
-              fetchpriority="high"
-            />
-            <div class="absolute inset-0 bg-gradient-to-t from-carbon-950/50 to-transparent"></div>
+        <div class="relative lg:pl-4">
+          <div class="relative overflow-hidden border border-white/15 bg-carbon-900 shadow-2xl">
+            <OptimizedImage src={heroImage} alt={heroImageAlt} class="aspect-[4/3] w-full object-cover" loading="eager" fetchpriority="high" />
+            <div class="absolute inset-0 bg-gradient-to-t from-carbon-950/80 via-transparent to-transparent"></div>
+            <div class="absolute inset-x-0 bottom-0 p-5 sm:p-6">
+              <p class="eyebrow !text-accent-300">Preliminary fit</p>
+              <p class="mt-2 text-lg font-700 text-white">{isBallMill ? "Crushing → grinding → classification → recovery" : d.applications[0]}</p>
+            </div>
+          </div>
+          <div class="mt-4 grid grid-cols-3 gap-px border border-white/10 bg-white/10">
+            {(isBallMill ? [["0.65–12", "reference t/h"] , ["≤25", "feed mm"], ["0.074–0.89", "discharge mm"]] : d.specs.slice(0, 3).map((s) => [s.value, s.label])).map(([value, label]) => (
+              <div class="bg-carbon-950 px-3 py-4 sm:px-4"><p class="text-base font-700 text-accent-400 sm:text-lg">{value}</p><p class="mt-1 text-[0.68rem] uppercase tracking-wider text-white/45">{label}</p></div>
+            ))}
           </div>
         </div>
       </div>
@@ -187,7 +195,7 @@ const jsonLd = {
       </Section>
 
       {/* ============================= MODEL TABLE */}
-      <Section tone="alt" eyebrow="Reference sizing" title="Ball mill models for preliminary selection" intro="The table below is a starting range for discussion, not a guaranteed production schedule. Final capacity depends on ore hardness, feed distribution, target P80, circulating load and operating conditions.">
+      <Section id="technical-data" tone="alt" eyebrow="Reference sizing" title="Ball mill models for preliminary selection" intro="The table below is a starting range for discussion, not a guaranteed production schedule. Final capacity depends on ore hardness, feed distribution, target P80, circulating load and operating conditions.">
         <div class="overflow-x-auto border border-carbon-200 bg-white">
           <table class="w-full min-w-[60rem] text-left text-sm">
             <thead class="bg-brand-700 text-xs uppercase tracking-wider text-white">
@@ -349,17 +357,50 @@ const jsonLd = {
     </div>
   </Section>
 
-  {/* ============================= FINAL CTA */}
-  <section class="bg-brand-700 text-white">
-    <div class="container-x flex flex-col items-start justify-between gap-6 py-14 sm:py-16 lg:flex-row lg:items-center">
-      <div>
-        <p class="eyebrow !text-accent-300">Ready to size the product?</p>
-        <h2 class="mt-3 !text-white">Turn your process data into a practical proposal.</h2>
-        <p class="mt-3 max-w-2xl text-white/70">Tell us what you are processing, what you need to achieve and where the equipment will operate.</p>
+  {/* ============================= PROCUREMENT CTA */}
+  {isBallMill ? (
+    <section id="request-quote" class="bg-carbon-950 py-16 text-white sm:py-20 lg:py-24">
+      <div class="container-x grid gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:items-start lg:gap-16">
+        <div class="lg:sticky lg:top-28">
+          <p class="eyebrow !text-accent-300">Request a ball mill proposal</p>
+          <h2 class="mt-4 !text-white">Send the inputs your supplier actually needs.</h2>
+          <p class="mt-5 text-lg leading-relaxed text-white/70">A useful quotation starts with the process, not a catalogue model. Share the ore and production target, and we will help narrow the mill size, discharge type, liner/media route and supporting equipment.</p>
+          <ul class="mt-7 space-y-3">
+            {["Model and capacity recommendation", "Wet/dry and discharge guidance", "Preliminary technical scope", "Export packing and delivery discussion"].map((item) => (
+              <li class="flex items-start gap-3 text-sm text-white/78"><Icon name="check" class="mt-0.5 size-4 shrink-0 text-accent-400" />{item}</li>
+            ))}
+          </ul>
+        </div>
+        <div class="bg-white p-6 text-carbon-800 shadow-2xl sm:p-8">
+          <div class="mb-6 border-b border-carbon-100 pb-5">
+            <p class="eyebrow">Ball mill enquiry</p>
+            <h3 class="mt-2 !text-2xl">Get a matched recommendation</h3>
+            <p class="mt-2 text-sm text-carbon-500">Name and phone are optional. Please include as much process detail as you have in the message.</p>
+          </div>
+          <ContactForm
+            formId="ball-mill-inquiry-form"
+            statusId="ball-mill-inquiry-status"
+            fieldIdPrefix="ball-mill"
+            sourcePage="/products/gold-ore-ball-mill"
+            productInterest="Gold Ore Ball Mill"
+            ctaLabel="Get a matched model"
+            closeModalOnSuccess={false}
+          />
+        </div>
       </div>
-      <button class="btn btn-primary shrink-0" onclick={contactAction}>Request a Quote <Icon name="arrowRight" class="size-[1.15em]" /></button>
-    </div>
-  </section>
+    </section>
+  ) : (
+    <section class="bg-brand-700 text-white">
+      <div class="container-x flex flex-col items-start justify-between gap-6 py-14 sm:py-16 lg:flex-row lg:items-center">
+        <div>
+          <p class="eyebrow !text-accent-300">Ready to size the product?</p>
+          <h2 class="mt-3 !text-white">Turn your process data into a practical proposal.</h2>
+          <p class="mt-3 max-w-2xl text-white/70">Tell us what you are processing, what you need to achieve and where the equipment will operate.</p>
+        </div>
+        <button class="btn btn-primary shrink-0" onclick={contactAction}>Request a Quote <Icon name="arrowRight" class="size-[1.15em]" /></button>
+      </div>
+    </section>
+  )}
 
   {/* ============================= RELATED */}
   {related.length > 0 && (

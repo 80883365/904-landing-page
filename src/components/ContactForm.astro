@@ -17,13 +17,30 @@ interface Props {
   applicationInterest?: string;
   /** CTA 按钮文案（hidden 字段） */
   ctaLabel?: string;
+  /** Allows this form to be rendered inline as well as inside the modal. */
+  formId?: string;
+  statusId?: string;
+  fieldIdPrefix?: string;
+  closeModalOnSuccess?: boolean;
 }
 
-const { sourcePage, productInterest, applicationInterest, ctaLabel } = Astro.props;
+const {
+  sourcePage,
+  productInterest,
+  applicationInterest,
+  ctaLabel,
+  formId = "contact-modal-form",
+  statusId = "modal-form-status",
+  fieldIdPrefix = "",
+  closeModalOnSuccess = true,
+} = Astro.props;
+const fieldId = (name: string) => fieldIdPrefix ? `${fieldIdPrefix}-${name}` : name;
 ---
 
 <form
-  id="contact-modal-form"
+  id={formId}
+  data-inquiry-form
+  data-close-modal={closeModalOnSuccess}
   action="https://api.web3forms.com/submit"
   method="POST"
   class="space-y-5"
@@ -42,15 +59,16 @@ const { sourcePage, productInterest, applicationInterest, ctaLabel } = Astro.pro
 
   {/* Form fields */}
   <div class="grid gap-5 sm:grid-cols-2">
-    <Field label="Name" name="name" placeholder="Jane Doe" />
-    <Field label="Email *" name="email" type="email" required placeholder="jane@example.com" />
+    <Field label="Name" name="name" id={fieldId("name")} placeholder="Jane Doe" />
+    <Field label="Email *" name="email" id={fieldId("email")} type="email" required placeholder="jane@example.com" />
   </div>
 
-  <Field label="Phone / WhatsApp" name="phone" type="tel" placeholder="+1 555 000 0000" />
+  <Field label="Phone / WhatsApp" name="phone" id={fieldId("phone")} type="tel" placeholder="+1 555 000 0000" />
 
   <div>
     <label class="mb-1.5 block text-sm font-700 text-carbon-700">Message *</label>
     <textarea
+      id={fieldId("message")}
       name="message"
       required
       rows="4"
@@ -68,15 +86,16 @@ const { sourcePage, productInterest, applicationInterest, ctaLabel } = Astro.pro
     Send inquiry <Icon name="arrowRight" class="size-4" />
   </button>
 
-  <p id="modal-form-status" class="hidden rounded-xs border p-4 text-sm" role="status" aria-live="polite"></p>
+  <p id={statusId} data-form-status class="hidden rounded-xs border p-4 text-sm" role="status" aria-live="polite"></p>
 </form>
 
 <script>
-  // AJAX submission for the modal contact form
-  const form = document.getElementById("contact-modal-form") as HTMLFormElement | null;
-  const status = document.getElementById("modal-form-status");
-
-  if (form) {
+  // AJAX submission for modal and inline inquiry forms
+  document.querySelectorAll("form[data-inquiry-form]").forEach((formElement) => {
+    if ((formElement as HTMLFormElement).dataset.inquiryBound === "true") return;
+    (formElement as HTMLFormElement).dataset.inquiryBound = "true";
+    const form = formElement as HTMLFormElement;
+    const status = form.querySelector("[data-form-status]");
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
       const btn = form.querySelector('button[type="submit"]') as HTMLButtonElement;
@@ -101,11 +120,12 @@ const { sourcePage, productInterest, applicationInterest, ctaLabel } = Astro.pro
           }
           form.reset();
 
-          // Close modal after 2 seconds
-          setTimeout(() => {
-            const modal = document.getElementById("contact-modal");
-            if (modal) modal.classList.add("hidden");
-          }, 2000);
+          if (form.dataset.closeModal === "true") {
+            setTimeout(() => {
+              const modal = document.getElementById("contact-modal");
+              if (modal) modal.classList.add("hidden");
+            }, 2000);
+          }
         } else {
           throw new Error(data.message || "Submission failed");
         }
@@ -121,5 +141,5 @@ const { sourcePage, productInterest, applicationInterest, ctaLabel } = Astro.pro
         btn.innerHTML = original;
       }
     });
-  }
+  });
 </script>
