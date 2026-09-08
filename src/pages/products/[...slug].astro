@@ -110,53 +110,147 @@ const jsonLd = {
     </div>
   </section>
 
-  {/* ============================= BODY */}
-  <Section>
-    <div class="grid gap-12 lg:grid-cols-3">
-      {/* Main copy */}
-      <article class="prose-cp lg:col-span-2">
+  {/* ============================= PRODUCT SNAPSHOT */}
+  <section class="border-b border-carbon-100 bg-white">
+    <div class="container-x grid gap-px overflow-hidden rounded-md border border-carbon-100 bg-carbon-100 sm:grid-cols-3">
+      <div class="bg-white px-6 py-6 sm:px-8">
+        <p class="eyebrow">Product category</p>
+        <p class="mt-2 text-lg font-700 text-brand-700">{d.category}</p>
+      </div>
+      <div class="bg-white px-6 py-6 sm:px-8">
+        <p class="eyebrow">Best for</p>
+        <p class="mt-2 text-lg font-700 text-brand-700">{d.applications[0]}</p>
+      </div>
+      <div class="bg-white px-6 py-6 sm:px-8">
+        <p class="eyebrow">Selection support</p>
+        <p class="mt-2 text-lg font-700 text-brand-700">Application-matched proposal</p>
+      </div>
+    </div>
+  </section>
+
+  {/* ============================= VALUE PROPOSITION */}
+  <Section eyebrow="Why this product" title={`Built around the conditions that matter for ${d.title}`}>
+    <div class="grid gap-5 md:grid-cols-2 lg:grid-cols-4">
+      {d.features.map((feature, index) => (
+        <div class="card group p-6 transition hover:-translate-y-1 hover:shadow-[0_18px_40px_-24px_rgba(5,42,104,0.45)]">
+          <span class="flex size-10 items-center justify-center rounded-full bg-accent-100 font-display text-lg font-800 text-accent-700">0{index + 1}</span>
+          <h3 class="mt-5 !text-lg">{feature}</h3>
+          <span class="mt-5 block h-1 w-10 bg-accent-500 transition-all group-hover:w-16"></span>
+        </div>
+      ))}
+    </div>
+  </Section>
+
+  {/* ============================= DETAILS + SPEC TABLE */}
+  <Section tone="alt">
+    <div class="grid gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(20rem,0.8fr)] lg:items-start">
+      <article class="prose-cp min-w-0">
+        <div class="mb-8 flex items-center gap-3">
+          <span class="h-px w-10 bg-accent-500"></span>
+          <p class="eyebrow">Product intelligence</p>
+        </div>
         <Content />
       </article>
 
-      {/* Sticky spec / CTA sidebar */}
-      <aside class="lg:col-span-1">
-        <div class="sticky top-28 space-y-6">
-          <div class="card p-6">
-            <h3 class="!text-base">Preliminary technical data</h3>
-            <dl class="mt-4 divide-y divide-carbon-50">
-              {d.specs.map((s) => (
-                <div class="flex items-baseline justify-between gap-4 py-2.5">
-                  <dt class="text-sm text-carbon-500">{s.label}</dt>
-                  <dd class="text-right text-sm font-700 text-carbon-800">{s.value}</dd>
-                </div>
-              ))}
-            </dl>
+      <div class="space-y-6 lg:sticky lg:top-28">
+        <div class="overflow-hidden rounded-md border border-carbon-200 bg-white shadow-sm">
+          <div class="bg-brand-700 px-6 py-5 text-white">
+            <p class="eyebrow !text-accent-300">Technical data</p>
+            <h2 class="mt-2 !text-2xl !text-white">Preliminary parameters</h2>
+            <p class="mt-2 text-sm text-white/70">Use these values for initial sizing. Final selection follows your ore and site data.</p>
           </div>
-
-          {d.packaging.length > 0 && (
-            <div class="card p-6">
-              <h3 class="!text-base flex items-center gap-2"><Icon name="truck" class="size-4 text-accent-600" /> Packaging</h3>
-              <ul class="mt-3 space-y-2">
-                {d.packaging.map((p) => (
-                  <li class="flex items-start gap-2 text-sm text-carbon-600">
-                    <Icon name="check" class="mt-0.5 size-4 shrink-0 text-accent-500" />{p}
-                  </li>
+          <div class="overflow-x-auto">
+            <table class="w-full min-w-[26rem] text-left text-sm">
+              <thead class="bg-carbon-50 text-xs uppercase tracking-wider text-carbon-500">
+                <tr><th class="px-6 py-3 font-700">Parameter</th><th class="px-6 py-3 text-right font-700">Reference value</th></tr>
+              </thead>
+              <tbody class="divide-y divide-carbon-100">
+                {d.specs.map((s) => (
+                  <tr class="align-top">
+                    <th scope="row" class="px-6 py-3.5 font-600 text-carbon-600">{s.label}</th>
+                    <td class="px-6 py-3.5 text-right font-700 text-brand-700">{s.value}</td>
+                  </tr>
                 ))}
-              </ul>
-            </div>
-          )}
-
-          <div class="rounded-md bg-brand-800 p-6 text-white">
-            <h3 class="!text-white !text-base">Need model selection?</h3>
-            <p class="mt-2 text-sm text-white/80">Send ore data, required throughput and site power. We will prepare a preliminary recommendation.</p>
-            <button class="btn btn-primary mt-4 w-full" onclick={contactAction}>
-              Ask an Engineer <Icon name="arrowRight" class="size-[1.15em]" />
-            </button>
+              </tbody>
+            </table>
           </div>
         </div>
-      </aside>
+
+        <div class="rounded-md bg-carbon-950 p-6 text-white">
+          <p class="eyebrow !text-accent-300">What we need from you</p>
+          <ul class="mt-4 space-y-3">
+            {d.applications.slice(0, 3).map((application) => (
+              <li class="flex items-start gap-2 text-sm text-white/75"><Icon name="check" class="mt-0.5 size-4 shrink-0 text-accent-400" />{application}</li>
+            ))}
+          </ul>
+          <button class="btn btn-primary mt-6 w-full" onclick={contactAction}>
+            Ask for a matched proposal <Icon name="arrowRight" class="size-[1.15em]" />
+          </button>
+        </div>
+      </div>
     </div>
   </Section>
+
+  {/* ============================= APPLICATIONS */}
+  <Section eyebrow="Where it fits" title="Designed for a complete processing decision" tone="dark">
+    <div class="grid gap-4 md:grid-cols-3">
+      {d.applications.map((application, index) => (
+        <div class="relative overflow-hidden rounded-md border border-white/10 bg-white/5 p-6">
+          <span class="font-display text-5xl font-800 text-accent-400/30">0{index + 1}</span>
+          <h3 class="mt-4 !text-xl !text-white">{application}</h3>
+          <p class="mt-3 text-sm leading-relaxed text-white/60">Configuration, wear parts and delivery scope can be matched to this operating environment.</p>
+        </div>
+      ))}
+    </div>
+  </Section>
+
+  {/* ============================= DELIVERY */}
+  <Section eyebrow="From enquiry to operation" title="A clearer path to the right configuration">
+    <div class="grid gap-0 md:grid-cols-3">
+      {[
+        ["01", "Share the inputs", "Send feed size, ore type, target output and site power so the recommendation starts from real conditions."],
+        ["02", "Review the configuration", "We align the model, wear materials, drive arrangement, packing scope and practical operating assumptions."],
+        ["03", "Prepare for delivery", "Receive a clear quotation with technical scope, inspection points and export-ready packing details."],
+      ].map(([number, title, text], index) => (
+        <div class={`relative border-l border-carbon-200 px-6 py-2 md:px-8 ${index === 0 ? "md:border-l-0 md:pl-0" : ""}`}>
+          <span class="font-display text-sm font-800 tracking-[0.2em] text-accent-600">{number}</span>
+          <h3 class="mt-3 !text-xl">{title}</h3>
+          <p class="mt-3 text-sm leading-relaxed text-carbon-600">{text}</p>
+        </div>
+      ))}
+    </div>
+  </Section>
+
+  {/* ============================= PACKAGING CTA */}
+  <Section tone="alt">
+    <div class="grid gap-10 lg:grid-cols-[1fr_0.8fr] lg:items-center">
+      <div>
+        <p class="eyebrow">Export and site readiness</p>
+        <h2 class="mt-3">The technical scope continues beyond the machine.</h2>
+        <p class="mt-4 max-w-2xl text-lg leading-relaxed text-carbon-600">From protective wrapping and wooden cases to wear-parts lists and installation notes, the delivery package is planned around how the product will reach and operate at your site.</p>
+      </div>
+      <div class="rounded-md border border-carbon-200 bg-white p-6 shadow-sm">
+        <h3 class="!text-lg flex items-center gap-2"><Icon name="truck" class="size-5 text-accent-600" /> Packaging scope</h3>
+        <ul class="mt-4 space-y-3">
+          {d.packaging.map((p) => (
+            <li class="flex items-start gap-2 text-sm text-carbon-600"><Icon name="check" class="mt-0.5 size-4 shrink-0 text-accent-500" />{p}</li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  </Section>
+
+  {/* ============================= FINAL CTA */}
+  <section class="bg-brand-700 text-white">
+    <div class="container-x flex flex-col items-start justify-between gap-6 py-14 sm:py-16 lg:flex-row lg:items-center">
+      <div>
+        <p class="eyebrow !text-accent-300">Ready to size the product?</p>
+        <h2 class="mt-3 !text-white">Turn your process data into a practical proposal.</h2>
+        <p class="mt-3 max-w-2xl text-white/70">Tell us what you are processing, what you need to achieve and where the equipment will operate.</p>
+      </div>
+      <button class="btn btn-primary shrink-0" onclick={contactAction}>Request a Quote <Icon name="arrowRight" class="size-[1.15em]" /></button>
+    </div>
+  </section>
 
   {/* ============================= RELATED */}
   {related.length > 0 && (
