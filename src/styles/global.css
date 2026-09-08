@@ -7,6 +7,51 @@
 
 @import "tailwindcss";
 
+/* Local typography: downloaded from the reference site's public Google Fonts
+   declarations and served locally to avoid any runtime font request. */
+@font-face {
+  font-family: "Roboto";
+  src: url("/fonts/roboto-400.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Roboto";
+  src: url("/fonts/roboto-500.ttf") format("truetype");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Roboto";
+  src: url("/fonts/roboto-700.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Roboto Slab";
+  src: url("/fonts/roboto-slab-500.ttf") format("truetype");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Roboto Slab";
+  src: url("/fonts/roboto-slab-600.ttf") format("truetype");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Roboto Slab";
+  src: url("/fonts/roboto-slab-700.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
 /* ----------------------------------------------------------------------------
    1. Design Tokens  →  exposed as Tailwind utilities (bg-brand, text-accent…)
    ------------------------------------------------------------------------- */
@@ -49,9 +94,9 @@
   --color-cat-red: #b3282e;
 
   /* —— Typography —— */
-  --font-sans: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
-  --font-display: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
-  --font-condensed: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-sans: Roboto, ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-display: "Roboto Slab", Roboto, ui-sans-serif, system-ui, sans-serif;
+  --font-condensed: Roboto, ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
 
   /* —— Type scale — display ramp tightened ~15% for headings —— */
   --text-xs: 0.75rem;

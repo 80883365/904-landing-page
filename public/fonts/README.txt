@@ -1,6 +1,7 @@
 Place your local font files in THIS directory (/public/fonts/).
 
 The site's @font-face declarations (in src/styles/global.css) reference
+the locally stored Roboto and Roboto Slab files in this directory.
 these exact filenames:
 
   NotoSans-Regular.woff2          (400)
