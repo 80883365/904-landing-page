@@ -88,8 +88,7 @@ const jsonLd = {
 <BaseLayout title={d.title} description={d.description} image={heroImage.src} type="website" jsonLd={jsonLd}>
   {/* ============================= BUYER-LED HERO */}
   <section class="relative overflow-hidden bg-carbon-950 text-white">
-    <div class="absolute inset-y-0 right-0 hidden w-1/2 bg-brand-700/20 lg:block"></div>
-    <div class="container-x relative py-12 sm:py-16 lg:pr-0 lg:py-20">
+    <div class="container-x relative py-12 sm:py-16 lg:py-20">
       <nav aria-label="Breadcrumb" class="mb-8 min-w-0">
         <ol class="flex min-w-0 items-center gap-2 text-sm text-white/55">
           <li class="shrink-0"><a href="/" class="transition hover:text-accent-300">Home</a></li>
@@ -100,7 +99,7 @@ const jsonLd = {
         </ol>
       </nav>
 
-      <div class="grid gap-10 lg:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)] lg:items-center lg:gap-12">
+      <div class="grid gap-10 lg:grid-cols-2 lg:items-center lg:gap-12">
         <div class="min-w-0">
           <h1 class="max-w-3xl !text-white">{d.title}</h1>
           <p class="mt-5 max-w-2xl text-lg leading-relaxed text-white/72">{heroDescription}</p>
@@ -116,7 +115,7 @@ const jsonLd = {
           </div>
         </div>
 
-        <div class="relative lg:-mr-[max(0px,calc((100vw-80rem)/2))] lg:ml-8 lg:pl-4">
+        <div class="relative lg:ml-12">
           <div class="relative overflow-hidden border border-white/15 bg-carbon-900 shadow-2xl">
             <OptimizedImage src={heroImage} alt={heroImageAlt} class="aspect-[16/10] w-full object-cover" loading="eager" fetchpriority="high" />
           </div>
