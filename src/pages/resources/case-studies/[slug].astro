@@ -11,8 +11,12 @@ const cases = {
   "new-processing-line-startup": { title: "Planning a new processing line around site conditions", intro: "A project framework for turning site information into a workable supply scope.", image: plantImg, alt: "New mineral processing line startup", challenge: "The project had a target output but needed to connect that target with feed variation, power, water, layout and delivery responsibilities.", approach: ["Collect the information that affects selection and installation.", "Review the product route together with supporting equipment and site readiness.", "Clarify what is included in the quotation, packing plan and commissioning support."], outcome: "The project team can compare quotations on scope and fit, not only on headline equipment price." },
   "grinding-media-supply-program": { title: "Building a more predictable grinding media supply", intro: "A supply example focused on continuity, grade selection and replenishment planning.", image: mediaImg, alt: "Grinding media supply program", challenge: "Unplanned replenishment and inconsistent media specifications can make operating costs and mill performance difficult to control.", approach: ["Review mill size, operating conditions and current wear patterns.", "Match media grade and size range to the operating objective.", "Create a replenishment rhythm around expected usage and delivery lead time."], outcome: "The buyer has a repeatable supply conversation and a clearer basis for comparing grades, quantities and delivery timing." },
 };
-export const getStaticPaths = (async () => Object.entries(cases).map(([slug, data]) => ({ params: { slug }, props: { data } }))) satisfies GetStaticPaths;
-const { data } = Astro.props;
+export const getStaticPaths = (() => [
+  { params: { slug: "small-mine-capacity-upgrade" } },
+  { params: { slug: "new-processing-line-startup" } },
+  { params: { slug: "grinding-media-supply-program" } },
+]) satisfies GetStaticPaths;
+const data = cases[Astro.params.slug as keyof typeof cases];
 ---
 <BaseLayout title={data.title} description={data.intro} image={data.image.src} type="article">
   <section class="bg-carbon-950 text-white"><div class="container-x py-16 sm:py-20"><nav class="text-sm text-white/65"><a href="/">Home</a> / <a href="/resources/case-studies">Case studies</a> / {data.title}</nav><h1 class="mt-6 max-w-4xl !text-white">{data.title}</h1><p class="mt-5 max-w-2xl text-lg text-white/75">{data.intro}</p></div></section>

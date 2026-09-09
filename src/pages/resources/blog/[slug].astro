@@ -11,8 +11,12 @@ const posts = {
   "what-to-prepare-before-equipment-selection": { title: "What to prepare before equipment selection", image: prepImg, alt: "Preparing project information for equipment selection", intro: "The practical information that helps a supplier make a more useful first recommendation.", sections: [["Project context", "Share the application, current process, expected production objective and any limits on space, power, water or handling."], ["Material and operating information", "Provide representative feed details, size range, moisture, hardness or other properties that could affect the product choice."], ["Commercial and delivery needs", "Clarify destination, preferred delivery terms, timing and the level of installation or commissioning support you expect."]] },
   "export-equipment-delivery-checklist": { title: "An export equipment delivery checklist", image: exportImg, alt: "Export equipment delivery checklist", intro: "Key questions about packing, documents, site readiness and follow-up support.", sections: [["Packing and documentation", "Confirm packing method, component marking, manuals, spare parts lists and the documents needed for customs and receiving."], ["Site readiness", "Check foundations, access, lifting, power, water, storage and the people responsible for receiving and installation."], ["After dispatch", "Agree how questions, replacement parts and technical follow-up will be handled after the shipment leaves the factory."]] },
 };
-export const getStaticPaths = (async () => Object.entries(posts).map(([slug, data]) => ({ params: { slug }, props: { data } }))) satisfies GetStaticPaths;
-const { data } = Astro.props;
+export const getStaticPaths = (() => [
+  { params: { slug: "how-to-compare-mining-equipment" } },
+  { params: { slug: "what-to-prepare-before-equipment-selection" } },
+  { params: { slug: "export-equipment-delivery-checklist" } },
+]) satisfies GetStaticPaths;
+const data = posts[Astro.params.slug as keyof typeof posts];
 ---
 <BaseLayout title={data.title} description={data.intro} image={data.image.src} type="article">
   <section class="bg-carbon-950 text-white"><div class="container-x py-16 sm:py-20"><nav class="text-sm text-white/65"><a href="/">Home</a> / <a href="/resources/blog">Blog</a> / {data.title}</nav><h1 class="mt-6 max-w-4xl !text-white">{data.title}</h1><p class="mt-5 max-w-2xl text-lg text-white/75">{data.intro}</p></div></section>
