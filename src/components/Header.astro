@@ -23,9 +23,9 @@ const isActive = (href: string) => {
         Gold ore grinding equipment and media supply
       </p>
       <div class="flex items-center gap-5">
-        <span class="flex items-center gap-1.5">
+        <a href={`mailto:${CONTACT.email}`} class="flex items-center gap-1.5 font-700 text-accent-300 underline decoration-accent-300/40 underline-offset-4 transition hover:text-white hover:decoration-white">
           <Icon name="mail" class="size-3.5" /> {CONTACT.email}
-        </span>
+        </a>
         <a href={`tel:${CONTACT.phone.replace(/\s/g, "")}`} class="flex items-center gap-1.5 transition hover:text-white">
           <Icon name="phone" class="size-3.5" /> {CONTACT.phone}
         </a>
@@ -42,7 +42,7 @@ const isActive = (href: string) => {
         alt="ZD Mining Products"
         width="220"
         height="64"
-        class="h-10 w-auto object-contain sm:h-12"
+        class="h-9 w-auto object-contain sm:h-11"
         decoding="async"
       />
     </a>
@@ -99,7 +99,7 @@ const isActive = (href: string) => {
       {/* Mobile toggle */}
       <button
         id="menu-toggle"
-        class="flex size-10 items-center justify-center rounded-xs border border-carbon-200 bg-white text-carbon-700 xl:hidden"
+        class="flex size-12 items-center justify-center rounded-xs border border-carbon-200 bg-white text-carbon-700 xl:hidden"
         aria-label="Open menu"
         aria-expanded="false"
         aria-controls="mobile-menu"

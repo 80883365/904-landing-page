@@ -26,9 +26,9 @@ import Icon from "./Icon.astro";
           <Icon name="pin" class="mt-0.5 size-4 shrink-0 text-accent-400" />
           <span>{CONTACT.addressLine1}<br />{CONTACT.addressLine2}</span>
         </p>
-        <span class="flex items-center gap-2.5">
+        <a href={`mailto:${CONTACT.email}`} class="flex items-center gap-2.5 font-700 text-accent-300 underline decoration-accent-300/40 underline-offset-4 transition hover:text-white hover:decoration-white">
           <Icon name="mail" class="size-4 shrink-0 text-accent-400" /> {CONTACT.email}
-        </span>
+        </a>
         <a href={`tel:${CONTACT.phone.replace(/\s/g, "")}`} class="flex items-center gap-2.5 transition hover:text-white">
           <Icon name="phone" class="size-4 shrink-0 text-accent-400" /> {CONTACT.phone}
         </a>
