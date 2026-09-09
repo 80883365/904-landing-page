@@ -1,7 +1,7 @@
 ---
 title: "Wet Pan Mill for Gold"
 slug: "wet-pan-mill-for-gold"
-description: "Double-wheel wet pan mills for small-scale gold ore grinding, available in 1100–1600 models with practical capacity and power options."
+description: "Double-wheel wet pan mills for small-scale gold ore grinding, available in 1100–1600 models with practical capacity and power options for export supply."
 excerpt: "A compact, economical gold grinding machine for small and medium gravity-recovery plants."
 category: "Grinding Equipment"
 icon: "layers"

@@ -1,7 +1,7 @@
 ---
 title: "Gold Ore Ball Mill"
 slug: "gold-ore-ball-mill"
-description: "Gold ore ball mills for continuous wet or dry grinding, engineered around your feed size, target fineness, throughput and mineral recovery circuit."
+description: "Gold ore ball mills for continuous wet or dry grinding, matched to feed size, product fineness, throughput and mineral recovery circuit. Request a quote."
 excerpt: "Continuous fine grinding for hard-rock gold plants, with overflow or grate discharge configurations."
 category: "Grinding Equipment"
 icon: "factory"

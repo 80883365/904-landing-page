@@ -1,7 +1,7 @@
 ---
 title: "Forged Grinding Steel Balls"
 slug: "forged-grinding-steel-balls"
-description: "Forged grinding steel balls for gold, copper and mineral processing mills, supplied in application-matched diameters, hardness and alloy grades."
+description: "Forged grinding steel balls for gold, copper and mineral processing mills, supplied in application-matched diameters, hardness and alloy grades for export."
 excerpt: "Wear-resistant grinding media matched to ore hardness, mill diameter and impact conditions."
 category: "Grinding Media"
 icon: "spark"

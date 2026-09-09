@@ -4,412 +4,203 @@ import Section from "../../components/Section.astro";
 import Icon from "../../components/Icon.astro";
 import ContactForm from "../../components/ContactForm.astro";
 import ProductCard from "../../components/ProductCard.astro";
-import { getCollection, render } from "astro:content";
+import { getCollection } from "astro:content";
 import type { GetStaticPaths } from "astro";
 import OptimizedImage from "../../components/OptimizedImage.astro";
-import ballMillImg from "../../assets/images/gold-ore-ball-mill/gold-ore-ball-mill-wide-hero.webp";
-import ballMillPlantImg from "../../assets/images/gold-ore-ball-mill/ball-mill-inside-mining-plant.webp";
-import ballMillCutawayImg from "../../assets/images/gold-ore-ball-mill/ball-mill-cutaway-working-principle.webp";
-import wetPanImg from "../../assets/images/wet-pan-mill-for-gold/gold-wet-pan-mill-wide-hero.webp";
-import steelBallsImg from "../../assets/images/forged-grinding-steel-balls/forged-steel-grinding-balls.webp";
+import ballMillHero from "../../assets/images/gold-ore-ball-mill/gold-ore-ball-mill-wide-hero.webp";
+import ballMillFactory from "../../assets/images/gold-ore-ball-mill/ball-mill-factory-production-line.webp";
+import ballMillDrive from "../../assets/images/gold-ore-ball-mill/compact-ball-mill-drive-assembly.webp";
+import wetPanHero from "../../assets/images/wet-pan-mill-for-gold/gold-wet-pan-mill-wide-hero.webp";
+import wetPanAssembly from "../../assets/images/wet-pan-mill-for-gold/double-wheel-wet-pan-mill-assembly.webp";
+import wetPanLine from "../../assets/images/wet-pan-mill-for-gold/wet-pan-mill-processing-line.webp";
+import steelBallHero from "../../assets/images/forged-grinding-steel-balls/forged-grinding-balls-production-batch.webp";
+import steelBallInspection from "../../assets/images/forged-grinding-steel-balls/grinding-ball-chemical-composition-inspection.webp";
+import steelBallWorkshop from "../../assets/images/forged-grinding-steel-balls/forged-grinding-balls-production-workshop.webp";
 import { generateProductSchema, generateBreadcrumbSchema } from "../../config/seo";
 import { SITE } from "../../config/site";
 
 export const getStaticPaths = (async () => {
   const products = await getCollection("products");
-  return products.map((p) => ({
-    params: { slug: p.id },
-    props: { product: p },
-  }));
+  return products.map((product) => ({ params: { slug: product.id }, props: { product } }));
 }) satisfies GetStaticPaths;
 
-const { product } = Astro.props;
-const { Content } = await render(product);
-
-// Related products: same category, or fall back to others
-const all = (await getCollection("products")).filter((p) => p.id !== product.id);
-const related = [
-  ...all.filter((p) => p.data.category === product.data.category),
-  ...all.filter((p) => p.data.category !== product.data.category),
-].slice(0, 3);
-
-const d = product.data;
-const isBallMill = product.id === "gold-ore-ball-mill";
-const heroDescriptions: Record<string, string> = {
-  "gold-ore-ball-mill": "GoldCore supplies wet and dry ball mills for gold ore, copper ore and hard-rock mineral processing. Share your feed size, required capacity and recovery route to receive a matched configuration and quotation.",
-  "wet-pan-mill-for-gold": "GoldCore supplies wet pan mills for small-scale gold mining, hard-rock gold processing and gravity recovery applications. Send your feed size and target capacity for a matched model and export quotation.",
-  "forged-grinding-steel-balls": "GoldCore supplies forged grinding steel balls for gold, copper and mineral processing ball mills. Tell us your mill size, ball diameter and required grade for a matched quotation and delivery plan.",
+type ProductPlan = {
+  heroDescription: string;
+  heroPoints: string[];
+  snapshot: Array<[string, string]>;
+  selection: { title: string; intro: string; points: Array<[string, string]> };
+  table: { title: string; intro: string; headers: string[]; rows: string[][]; note: string };
+  applications: Array<[string, string]>;
+  process: string[];
+  evidence: { image: ImageMetadata; alt: string; title: string; intro: string; points: string[] };
+  reference: { image: ImageMetadata; alt: string; title: string; intro: string; facts: Array<[string, string]> };
+  questions: Array<[string, string]>;
+  formTitle: string;
+  formIntro: string;
 };
-const heroDescription = heroDescriptions[product.id] ?? d.description;
-const ballMillModels = [
-  { model: "900×1800", feed: "≤20", discharge: "0.075–0.89", capacity: "0.65–2", power: "18.5", weight: "5.8" },
-  { model: "900×3000", feed: "≤20", discharge: "0.075–0.89", capacity: "1.1–3.5", power: "22", weight: "6.8" },
-  { model: "1200×2400", feed: "≤25", discharge: "0.075–0.60", capacity: "1.5–4.8", power: "30", weight: "12" },
-  { model: "1200×3000", feed: "≤25", discharge: "0.074–0.40", capacity: "1.6–5", power: "37", weight: "13.2" },
-  { model: "1200×4500", feed: "≤25", discharge: "0.074–0.40", capacity: "1.6–5.8", power: "55", weight: "13.7" },
-  { model: "1500×3000", feed: "≤25", discharge: "0.074–0.40", capacity: "2–5", power: "75", weight: "16.5" },
-  { model: "1500×4500", feed: "≤25", discharge: "0.074–0.40", capacity: "3–6", power: "110", weight: "21" },
-  { model: "1830×3000", feed: "≤25", discharge: "0.074–0.40", capacity: "4–10", power: "130", weight: "34.5" },
-  { model: "1830×4500", feed: "≤25", discharge: "0.074–0.40", capacity: "4.5–12", power: "155", weight: "38" },
-];
 
 const productImages: Record<string, ImageMetadata> = {
-  "gold-ore-ball-mill": ballMillImg,
-  "wet-pan-mill-for-gold": wetPanImg,
-  "forged-grinding-steel-balls": steelBallsImg,
+  "gold-ore-ball-mill": ballMillHero,
+  "wet-pan-mill-for-gold": wetPanHero,
+  "forged-grinding-steel-balls": steelBallHero,
 };
-const heroImage = productImages[product.id];
+
+const productPlans: Record<string, ProductPlan> = {
+  "gold-ore-ball-mill": {
+    heroDescription: "GoldCore supplies wet and dry ball mills for gold ore, copper ore and hard-rock mineral processing. Send your feed size, required capacity and recovery route for a matched configuration and quotation.",
+    heroPoints: ["Wet or dry grinding configurations for mineral processing circuits", "Overflow or grate discharge matched to product size and slurry flow", "Liner, grinding-media and drive options specified as one working system"],
+    snapshot: [["Reference models", "Φ900×1800 to Φ1830×4500"], ["Feed size", "Up to 25 mm, duty dependent"], ["Reference capacity", "0.65–12 t/h"], ["Process options", "Wet/dry · overflow/grate"]],
+    selection: {
+      title: "Choose a gold ore ball mill by duty, not shell diameter",
+      intro: "A reliable quotation begins with the material and recovery route. The same shell size can perform very differently when ore hardness, feed distribution or the final product target changes.",
+      points: [["Feed and throughput", "Confirm the crusher discharge, planned tonnes per hour and the variation expected across a normal shift."], ["Target product size", "State the required P80 or downstream liberation target so the mill length, discharge and classification route can be aligned."], ["Circuit interface", "Tell us whether the mill feeds gravity concentration, flotation, leaching or a dry product-handling route."]],
+    },
+    table: {
+      title: "Gold ore ball mill model and capacity guide",
+      intro: "Use these figures to shortlist a model. Final capacity depends on ore competency, feed distribution, target product size, circulating load and operating conditions.",
+      headers: ["Model", "Feed ≤ mm", "Discharge mm", "Capacity t/h", "Motor kW", "Weight t"],
+      rows: [["Φ900×1800", "20", "0.075–0.89", "0.65–2", "18.5", "5.8"], ["Φ900×3000", "20", "0.075–0.89", "1.1–3.5", "22", "6.8"], ["Φ1200×2400", "25", "0.075–0.60", "1.5–4.8", "30", "12"], ["Φ1200×3000", "25", "0.074–0.40", "1.6–5", "37", "13.2"], ["Φ1200×4500", "25", "0.074–0.40", "1.6–5.8", "55", "13.7"], ["Φ1500×3000", "25", "0.074–0.40", "2–5", "75", "16.5"], ["Φ1500×4500", "25", "0.074–0.40", "3–6", "110", "21"], ["Φ1830×3000", "25", "0.074–0.40", "4–10", "130", "34.5"], ["Φ1830×4500", "25", "0.074–0.40", "4.5–12", "155", "38"]],
+      note: "Reference values are for preliminary selection only. Confirm the final model with representative ore data and the complete process route.",
+    },
+    applications: [["Hard-rock gold ore", "Continuous grinding after crushing where a defined liberation size is required before recovery."], ["Gravity, flotation or leaching feed", "Wet-milling configurations can be matched to classification and slurry handling downstream."], ["Copper and mineral processing", "Mill, liner and media choices can be adjusted for abrasive ores and conventional mineral circuits."]],
+    process: ["Crush to a controlled feed", "Grind with a selected media charge", "Classify to the target size", "Send a stable feed to recovery"],
+    evidence: {
+      image: ballMillDrive,
+      alt: "Compact ball mill drive assembly prepared in the workshop for mineral processing equipment supply",
+      title: "Specify the operating system, not only the mill shell",
+      intro: "The mill body, feed and discharge arrangement, girth gear, motor, bearings, liners and media all affect how the equipment performs after installation.",
+      points: ["Select overflow or grate discharge around the target product and slurry flow.", "Match liner material and grinding-ball charge to ore abrasiveness and impact conditions.", "Confirm drive voltage, frequency, lubrication and the scope of auxiliary equipment before shipment."],
+    },
+    reference: {
+      image: ballMillFactory,
+      alt: "Multiple gold ore ball mills assembled in a manufacturing workshop",
+      title: "Reference supply scenario: match the mill to the whole circuit",
+      intro: "A practical proposal identifies the mill duty and its interfaces with crushing, classification, pumping and recovery—rather than quoting a model number in isolation.",
+      facts: [["Send", "Ore type, feed distribution and target tonnes per hour"], ["Confirm", "Target product size and wet or dry operation"], ["Include", "Recovery method, site power and delivery destination"]],
+    },
+    questions: [["What capacity can a gold ore ball mill handle?", "Capacity changes with mill dimensions, ore hardness, feed size, product fineness and circulating load. The table is a preliminary guide; representative ore data produces a more useful recommendation."], ["Should I choose wet or dry grinding?", "Wet grinding is common before classification, gravity concentration, flotation or leaching. Dry grinding can suit restricted-water or dry-product duties when dust control and handling are planned."], ["Should I choose overflow or grate discharge?", "Overflow discharge is often selected for controlled fine grinding. Grate discharge can support faster slurry removal. The correct choice depends on the circuit, not capacity alone."]],
+    formTitle: "Request a gold ore ball mill quotation",
+    formIntro: "Share the duty you know today. Our team will use it to narrow the mill size, discharge arrangement and supporting scope.",
+  },
+  "wet-pan-mill-for-gold": {
+    heroDescription: "GoldCore supplies double-wheel wet pan mills for small-scale gold mining, hard-rock gold processing and gravity-recovery applications. Send your feed size and target capacity for a matched model and export quotation.",
+    heroPoints: ["1100–1600 model range for practical small- and medium-scale duties", "Double-wheel grinding with a compact footprint and modest installed power", "Configuration matched to crusher discharge, available power and downstream recovery"],
+    snapshot: [["Common models", "1100 · 1200 · 1400 · 1500 · 1600"], ["Feed size", "Up to 20–30 mm"], ["Reference capacity", "0.5–3 t/h"], ["Installed power", "5.5–37 kW"]],
+    selection: {
+      title: "Select a wet pan mill around the site, feed and recovery step",
+      intro: "A wet pan mill is a grinding and slurry-mixing stage. It should be selected with the crusher, water supply and downstream concentrator or shaking table—not treated as a standalone recovery claim.",
+      points: [["Feed after crushing", "Keep rock below the stated feed limit. Oversize material increases wear and makes the grinding duty unstable."], ["Hourly throughput", "Choose the pan diameter and motor power around the normal operating rate, not a short-term peak."], ["Site utilities and recovery", "Confirm available power, water and whether the mill feeds a concentrator, shaking table or another separation stage."]],
+    },
+    table: {
+      title: "Wet pan mill models for preliminary selection",
+      intro: "These common model ranges help compare feed, power and nominal throughput. Final output depends on ore hardness, water addition, feed consistency and operating practice.",
+      headers: ["Model", "Feed < mm", "Output < mm", "Capacity t/h", "Speed rpm", "Power kW", "Weight t"],
+      rows: [["1100", "20", "1", "0.5", "11–19", "5.5", "4.8"], ["1200", "20", "1", "0.5–1", "11–19", "7.5", "5.2"], ["1400", "20", "1", "1–1.5", "18–21", "15", "9.5"], ["1500", "30", "1", "1.5–2", "18–22", "22", "11"], ["1600", "30", "1", "2–3", "18–20", "30/37", "12.5"]],
+      note: "Model data is a reference selection range. The final specification should be confirmed against your ore, operating target and available site utilities.",
+    },
+    applications: [["Small-scale rock gold", "A compact grinding stage for crushed hard-rock gold ore before the selected recovery step."], ["Gravity recovery preparation", "Grinds and mixes feed for a process route that may include a concentrator or shaking table."], ["Remote or modest-power sites", "A practical option when footprint, installed power and straightforward maintenance are central to the purchase decision."]],
+    process: ["Crush below the feed limit", "Add water and grind in the pan", "Control the slurry and product size", "Feed the chosen recovery equipment"],
+    evidence: {
+      image: wetPanAssembly,
+      alt: "Double-wheel wet pan mill assembly with pan, rollers and support frame for gold ore processing",
+      title: "Focus the quote on wear parts, drive and working access",
+      intro: "For a wet pan mill, the roller and ring materials, drive arrangement and access for routine maintenance have a direct effect on operation after delivery.",
+      points: ["Confirm the roller, ring and pan material for the planned ore and expected wear conditions.", "Specify motor, reducer and electrical compatibility with the site power supply.", "Include the starter wear-parts list and installation dimensions in the supply scope."],
+    },
+    reference: {
+      image: wetPanLine,
+      alt: "Multiple wet pan mills arranged in a mineral processing equipment workshop",
+      title: "Reference supply scenario: build a simple, connected gold-processing step",
+      intro: "The mill performs best when its feed and discharge are planned with the equipment on either side of it. A basic circuit can stay simple while still making each interface clear.",
+      facts: [["Before the mill", "Crusher discharge and any screening step"], ["At the mill", "Ore feed rate, water addition and available power"], ["After the mill", "Concentrator, shaking table or other chosen recovery route"]],
+    },
+    questions: [["Is a wet pan mill better than a ball mill?", "They suit different duties. Wet pan mills are commonly used for lower-throughput, compact gold-processing routes; ball mills suit continuous and higher-capacity circuits with tighter product-size control."], ["Does a wet pan mill recover gold by itself?", "No. It grinds and mixes the ore. Recovery depends on mineralogy, liberation and the concentration or leaching stage that follows."], ["How do I choose between the 1200 and 1500 models?", "Start with maximum feed size, normal hourly throughput, site power and the recovery route. A larger model is not automatically a better result if the crusher and downstream equipment cannot support it."]],
+    formTitle: "Request a wet pan mill quotation",
+    formIntro: "Tell us your ore, feed size, expected tonnes per hour and site power. We will help you shortlist the model and supply scope.",
+  },
+  "forged-grinding-steel-balls": {
+    heroDescription: "GoldCore supplies forged grinding steel balls for gold, copper and mineral processing ball mills. Tell us your mill size, ball diameter and required grade for a matched quotation and delivery plan.",
+    heroPoints: ["20–150 mm diameter range for mineral grinding and ball-mill top-up programs", "Forged or hot-rolled options with grade, hardness and impact needs reviewed together", "Batch-oriented supply planning for inspection, packing and scheduled replenishment"],
+    snapshot: [["Diameter range", "20–150 mm"], ["Typical hardness", "HRC 55–65, grade dependent"], ["Manufacturing", "Forged or hot rolled"], ["Packing options", "Bulk bags, drums or export packing"]],
+    selection: {
+      title: "Choose grinding steel balls by wear, impact and mill conditions",
+      intro: "Grinding media is a recurring operating cost. A useful recommendation considers the working mill and the ore—not only the requested ball diameter or the highest possible hardness number.",
+      points: [["Mill and charge practice", "Share mill diameter, operating speed, current ball-size mix and normal top-up practice."], ["Ore and impact severity", "Hardness, abrasiveness and feed size influence the balance required between wear resistance and toughness."], ["Consumption and delivery", "Current media consumption and delivery frequency help define a practical batch size and replenishment plan."]],
+    },
+    table: {
+      title: "Forged grinding steel ball size and application guide",
+      intro: "These ranges provide a practical discussion starting point. The recommended charge is usually a size mix, selected around feed size, mill dimensions and the required product size.",
+      headers: ["Diameter range", "Typical duty", "Selection focus", "Supply discussion"],
+      rows: [["20–40 mm", "Fine or regrind duties", "Product-size control and wear rate", "Confirm the existing small-ball fraction"], ["50–80 mm", "Conventional ball-mill grinding", "Balance impact and abrasion", "Match to feed size and mill diameter"], ["90–125 mm", "Coarser feed or higher-impact duties", "Toughness, roundness and breakage resistance", "Review mill speed and impact conditions"], ["125–150 mm", "Heavy-duty or large-media requirements", "Grade selection and handling plan", "Confirm mill design and lifting equipment"]],
+      note: "Final diameter mix, chemical composition and hardness profile should be agreed from the actual mill, ore and consumption data. Do not select solely by one headline HRC value.",
+    },
+    applications: [["Gold and copper ball mills", "Application-matched media for conventional mineral grinding circuits and scheduled top-up supply."], ["High-impact mineral grinding", "Forged media is commonly considered when toughness and resistance to breakage are critical in the operating duty."], ["Cement and processing plants", "Diameter, material and packing can be tailored to the mill, expected wear pattern and purchasing schedule."]],
+    process: ["Review the mill and current charge", "Set the grade and diameter mix", "Inspect the agreed batch", "Plan packing and replenishment"],
+    evidence: {
+      image: steelBallInspection,
+      alt: "Forged grinding balls beside an optical spectrometer during chemical composition inspection",
+      title: "Make inspection points part of the purchase specification",
+      intro: "For grinding media, batch consistency matters as much as the product name. Inspection should focus on the characteristics that affect consumption and breakage in the actual mill.",
+      points: ["Agree the requested diameter range, size tolerance and intended ball-size mix before production.", "Review the grade, chemical-composition check and hardness requirements for the duty.", "Confirm packing format, net weight per unit and shipment schedule before the batch is released."],
+    },
+    reference: {
+      image: steelBallWorkshop,
+      alt: "Forged grinding steel ball production workshop with material stock and manufacturing line",
+      title: "Reference supply scenario: connect media selection with replenishment planning",
+      intro: "The most useful media order combines a fit-for-duty grade with a delivery plan that supports the mill's normal top-up practice and site handling capability.",
+      facts: [["Identify", "Mill type, ball-size mix and current consumption"], ["Confirm", "Ore abrasiveness, breakage concern and grade requirements"], ["Plan", "Monthly volume, packing format and delivery destination"]],
+    },
+    questions: [["What ball size is used in gold ore mills?", "Most mills run a graded charge, not one diameter. The mix depends on feed size, mill dimensions, operating speed and the target product size."], ["Forged or cast grinding balls—which should I choose?", "Forged media is commonly preferred for high-impact duties where toughness matters. Cast media can suit other conditions. The right choice should be based on the working duty and total consumption, not a general rule."], ["What information is needed for a comparable steel-ball quote?", "Send the current ball size, grade or composition if known, hardness requirement, mill details, monthly consumption and delivery destination. These inputs allow a more meaningful comparison than price per tonne alone."]],
+    formTitle: "Request a forged grinding steel ball quotation",
+    formIntro: "Share the mill duty, diameter range and expected volume. We will help define the most relevant grade, packing and delivery basis.",
+  },
+};
+
+const { product } = Astro.props;
+const d = product.data;
+const plan = productPlans[product.id] ?? productPlans["gold-ore-ball-mill"];
+const seoTitles: Record<string, string> = {
+  "gold-ore-ball-mill": "Gold Ore Ball Mill Supplier & Model Guide",
+  "wet-pan-mill-for-gold": "Wet Pan Mill for Gold Model Guide & Supplier",
+  "forged-grinding-steel-balls": "Forged Grinding Steel Ball Supplier & Size Guide",
+};
+const seoTitle = seoTitles[product.id] ?? d.title;
+const heroImage = productImages[product.id] ?? ballMillHero;
 const heroImageAlt = d.heroImageAlt || d.title;
-
-// Generate Product Schema
-const schemaImage = new URL(heroImage.src, SITE.url).href;
+const allProducts = (await getCollection("products")).filter((item) => item.id !== product.id);
+const related = [...allProducts.filter((item) => item.data.category === d.category), ...allProducts.filter((item) => item.data.category !== d.category)].slice(0, 3);
 const contactAction = `openContactModal(${JSON.stringify({ sourcePage: `/products/${product.id}`, productInterest: d.title, ctaLabel: "Request a Quote" })})`;
-
-const productSchema = generateProductSchema({
-  name: d.title,
-  description: d.description,
-  image: schemaImage,
-  url: new URL(`/products/${product.id}`, SITE.url).href,
-});
-
-// Generate Breadcrumb Schema
-const breadcrumbSchema = generateBreadcrumbSchema([
-  { name: "Home", url: SITE.url },
-  { name: "Products", url: new URL("/products", SITE.url).href },
-  { name: d.title, url: new URL(`/products/${product.id}`, SITE.url).href },
-]);
-
-// Combine schemas
-const jsonLd = {
-  "@context": "https://schema.org",
-  "@graph": [productSchema, breadcrumbSchema],
-};
+const productSchema = generateProductSchema({ name: d.title, description: d.description, image: new URL(heroImage.src, SITE.url).href, url: new URL(`/products/${product.id}`, SITE.url).href });
+const breadcrumbSchema = generateBreadcrumbSchema([{ name: "Home", url: SITE.url }, { name: "Products", url: new URL("/products", SITE.url).href }, { name: d.title, url: new URL(`/products/${product.id}`, SITE.url).href }]);
+const jsonLd = { "@context": "https://schema.org", "@graph": [productSchema, breadcrumbSchema] };
 ---
-<BaseLayout title={d.title} description={d.description} image={heroImage.src} type="website" jsonLd={jsonLd}>
-  {/* ============================= BUYER-LED HERO */}
+
+<BaseLayout title={seoTitle} description={d.description} image={heroImage.src} type="website" jsonLd={jsonLd}>
   <section class="relative overflow-hidden bg-carbon-950 text-white">
     <div class="container-x relative py-12 sm:py-16 lg:py-20">
-      <nav aria-label="Breadcrumb" class="mb-8 min-w-0">
-        <ol class="flex min-w-0 items-center gap-2 text-sm text-white/55">
-          <li class="shrink-0"><a href="/" class="transition hover:text-accent-300">Home</a></li>
-          <li class="shrink-0"><Icon name="chevronRight" class="size-3.5 opacity-50" /></li>
-          <li class="shrink-0"><a href="/products" class="transition hover:text-accent-300">Products</a></li>
-          <li class="shrink-0"><Icon name="chevronRight" class="size-3.5 opacity-50" /></li>
-          <li class="min-w-0 flex-1"><span class="block truncate text-white/85">{d.title}</span></li>
-        </ol>
-      </nav>
-
+      <nav aria-label="Breadcrumb" class="mb-8 min-w-0"><ol class="flex min-w-0 items-center gap-2 text-sm text-white/55"><li class="shrink-0"><a href="/" class="transition hover:text-accent-300">Home</a></li><li class="shrink-0"><Icon name="chevronRight" class="size-3.5 opacity-50" /></li><li class="shrink-0"><a href="/products" class="transition hover:text-accent-300">Products</a></li><li class="shrink-0"><Icon name="chevronRight" class="size-3.5 opacity-50" /></li><li class="min-w-0 flex-1"><span class="block truncate text-white/85">{d.title}</span></li></ol></nav>
       <div class="grid gap-10 lg:grid-cols-2 lg:items-center lg:gap-12">
-        <div class="min-w-0">
-          <h1 class="max-w-3xl !text-white">{d.title}</h1>
-          <p class="mt-5 max-w-2xl text-lg leading-relaxed text-white/72">{heroDescription}</p>
-
-          <ul class="mt-7 space-y-3">
-            {d.features.slice(0, 4).map((feature) => (
-              <li class="flex items-start gap-2 text-sm text-white/82"><Icon name="check" class="mt-0.5 size-4 shrink-0 text-accent-400" />{feature}</li>
-            ))}
-          </ul>
-
-          <div class="mt-8">
-            <button class="btn btn-primary" onclick={contactAction}>Request a Quote <Icon name="arrowRight" class="size-[1.15em]" /></button>
-          </div>
-        </div>
-
-        <div class="relative lg:-mr-[max(2rem,calc((100vw-80rem)/2+2rem))]">
-          <div class="relative overflow-hidden border border-white/15 bg-carbon-900 shadow-2xl">
-            <OptimizedImage src={heroImage} alt={heroImageAlt} class="aspect-[16/10] w-full object-cover" loading="eager" fetchpriority="high" />
-          </div>
-        </div>
+        <div class="min-w-0"><h1 class="max-w-3xl !text-white">{d.title}</h1><p class="mt-5 max-w-2xl text-lg leading-relaxed text-white/72">{plan.heroDescription}</p><ul class="mt-7 space-y-3">{plan.heroPoints.map((point) => <li class="flex items-start gap-2 text-sm text-white/82"><Icon name="check" class="mt-0.5 size-4 shrink-0 text-accent-400" />{point}</li>)}</ul><div class="mt-8"><button class="btn btn-primary" onclick={contactAction}>Request a Quote <Icon name="arrowRight" class="size-[1.15em]" /></button></div></div>
+        <div class="relative lg:-mr-[max(2rem,calc((100vw-80rem)/2+2rem))]"><div class="overflow-hidden border border-white/15 bg-carbon-900 shadow-2xl"><OptimizedImage src={heroImage} alt={heroImageAlt} class="aspect-[16/10] w-full object-cover" loading="eager" fetchpriority="high" /></div></div>
       </div>
     </div>
   </section>
 
-  {isBallMill && (
-    <>
-      {/* ============================= BALL MILL INTRO */}
-      <Section>
-        <div class="grid gap-12 lg:grid-cols-[1.05fr_0.95fr] lg:items-center">
-          <div>
-            <p class="eyebrow">Gold ore grinding, made selectable</p>
-            <h2 class="mt-3">A ball mill is not selected by diameter alone.</h2>
-            <p class="mt-5 max-w-2xl text-lg leading-relaxed text-carbon-600">The mill has to match the ore, the target liberation size, the slurry route and the way the downstream circuit will classify and recover the valuable mineral. This page is designed to help you make that decision before you request a quotation.</p>
-            <div class="mt-8 grid gap-4 sm:grid-cols-2">
-              <div class="border-l-2 border-accent-500 pl-4"><p class="font-700 text-brand-700">Wet or dry grinding</p><p class="mt-1 text-sm text-carbon-500">Choose the route around moisture, dust control and recovery circuit requirements.</p></div>
-              <div class="border-l-2 border-accent-500 pl-4"><p class="font-700 text-brand-700">Overflow or grate discharge</p><p class="mt-1 text-sm text-carbon-500">Match discharge behavior to target fineness, slurry flow and required throughput.</p></div>
-            </div>
-          </div>
-          <figure class="overflow-hidden border border-carbon-200 bg-carbon-50">
-            <OptimizedImage src={ballMillPlantImg} alt="Ball mill operating inside a mineral processing plant" class="aspect-[4/3] w-full object-cover" loading="lazy" />
-            <figcaption class="px-4 py-3 text-xs leading-relaxed text-carbon-500">Reference image: ball mill inside the Mayflower Mill, Wikimedia Commons, CC BY-SA 3.0.</figcaption>
-          </figure>
-        </div>
-      </Section>
+  <section class="border-b border-carbon-200 bg-white"><div class="container-x grid gap-px overflow-hidden border-x border-carbon-200 bg-carbon-200 sm:grid-cols-2 lg:grid-cols-4">{plan.snapshot.map(([label, value]) => <div class="bg-white px-6 py-6 sm:px-7"><p class="text-xs font-700 uppercase tracking-[0.14em] text-carbon-500">{label}</p><p class="mt-2 text-base font-700 leading-snug text-brand-700">{value}</p></div>)}</div></section>
 
-      {/* ============================= CIRCUIT LOGIC */}
-      <Section tone="dark" eyebrow="How the grinding circuit works" title="From crushed ore to a controllable recovery feed">
-        <div class="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
-          <figure class="overflow-hidden border border-white/10 bg-white p-3">
-            <OptimizedImage src={ballMillCutawayImg} alt="Cutaway diagram showing grinding media and ore movement inside a ball mill" class="aspect-[4/3] w-full object-contain" loading="lazy" />
-            <figcaption class="px-2 py-3 text-xs leading-relaxed text-carbon-500">Working-principle reference diagram from Wikimedia Commons, public-domain source.</figcaption>
-          </figure>
-          <div class="grid gap-4 sm:grid-cols-2">
-            {[
-              ["01", "Feed", "Crushed ore enters through the feed spout at a controlled rate."],
-              ["02", "Impact + attrition", "The rotating shell lifts and drops the grinding media through the ore charge."],
-              ["03", "Slurry or product", "Wet grinding carries fine particles away in slurry; dry grinding discharges powder."],
-              ["04", "Classification", "A screen, spiral classifier or hydrocyclone controls the material returning to the mill."],
-            ].map(([number, title, text]) => (
-              <div class="border border-white/10 bg-white/5 p-5">
-                <span class="font-display text-sm font-800 tracking-[0.2em] text-accent-400">{number}</span>
-                <h3 class="mt-3 !text-lg !text-white">{title}</h3>
-                <p class="mt-2 text-sm leading-relaxed text-white/65">{text}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </Section>
+  <Section><div class="grid gap-10 lg:grid-cols-[0.78fr_1.22fr] lg:items-start"><div><h2>{plan.selection.title}</h2><p class="mt-5 max-w-xl text-lg leading-relaxed text-carbon-600">{plan.selection.intro}</p></div><div class="grid gap-px border border-carbon-200 bg-carbon-200 md:grid-cols-3">{plan.selection.points.map(([title, text], index) => <div class="bg-white p-6"><span class="font-display text-sm font-800 tracking-[0.16em] text-accent-600">0{index + 1}</span><h3 class="mt-4 !text-xl">{title}</h3><p class="mt-3 text-sm leading-relaxed text-carbon-600">{text}</p></div>)}</div></div></Section>
 
-      {/* ============================= TYPES */}
-      <Section eyebrow="Configuration choices" title="Choose the mill around the process, not the other way around">
-        <div class="grid gap-5 md:grid-cols-3">
-          {[
-            ["Wet grinding", "For slurry circuits feeding gravity concentration, flotation or leaching. Water helps transport fines and suppresses dust, but the drainage and pump route must be planned."],
-            ["Dry grinding", "For operations that need a dry powder product or have limited process water. Dust collection, feed moisture and downstream handling become key design inputs."],
-            ["Discharge design", "Overflow discharge suits controlled fine grinding; grate discharge supports faster slurry removal when higher throughput is the priority."],
-          ].map(([title, text]) => (
-            <div class="card p-7">
-              <span class="block h-1 w-12 bg-accent-500"></span>
-              <h3 class="mt-6 !text-xl">{title}</h3>
-              <p class="mt-3 text-sm leading-relaxed text-carbon-600">{text}</p>
-            </div>
-          ))}
-        </div>
-      </Section>
+  <Section tone="alt"><div><h2>{plan.table.title}</h2><p class="mt-4 max-w-3xl text-lg leading-relaxed text-carbon-600">{plan.table.intro}</p></div><div class="mt-10 overflow-x-auto border border-carbon-200 bg-white"><table class="w-full min-w-[50rem] text-left text-sm"><thead class="bg-brand-700 text-xs uppercase tracking-wider text-white"><tr>{plan.table.headers.map((header) => <th class="px-5 py-4 font-700">{header}</th>)}</tr></thead><tbody class="divide-y divide-carbon-100">{plan.table.rows.map((row, rowIndex) => <tr class={rowIndex % 2 ? "bg-carbon-50/70" : "bg-white"}>{row.map((value, cellIndex) => <td class={`px-5 py-4 ${cellIndex === 0 ? "font-700 text-brand-700" : "text-carbon-600"}`}>{value}</td>)}</tr>)}</tbody></table></div><p class="mt-4 text-sm leading-relaxed text-carbon-500">{plan.table.note}</p></Section>
 
-      {/* ============================= MODEL TABLE */}
-      <Section id="technical-data" tone="alt" eyebrow="Reference sizing" title="Ball mill models for preliminary selection" intro="The table below is a starting range for discussion, not a guaranteed production schedule. Final capacity depends on ore hardness, feed distribution, target P80, circulating load and operating conditions.">
-        <div class="overflow-x-auto border border-carbon-200 bg-white">
-          <table class="w-full min-w-[60rem] text-left text-sm">
-            <thead class="bg-brand-700 text-xs uppercase tracking-wider text-white">
-              <tr>
-                <th class="px-5 py-4 font-700">Model</th>
-                <th class="px-5 py-4 font-700">Feed ≤ mm</th>
-                <th class="px-5 py-4 font-700">Discharge mm</th>
-                <th class="px-5 py-4 font-700">Capacity t/h</th>
-                <th class="px-5 py-4 font-700">Motor kW</th>
-                <th class="px-5 py-4 font-700">Weight t</th>
-              </tr>
-            </thead>
-            <tbody class="divide-y divide-carbon-100">
-              {ballMillModels.map((row, index) => (
-                <tr class={index % 2 ? "bg-carbon-50/70" : "bg-white"}>
-                  <th class="px-5 py-3.5 font-700 text-brand-700">Φ{row.model}</th>
-                  <td class="px-5 py-3.5 text-carbon-600">{row.feed}</td>
-                  <td class="px-5 py-3.5 text-carbon-600">{row.discharge}</td>
-                  <td class="px-5 py-3.5 font-700 text-carbon-800">{row.capacity}</td>
-                  <td class="px-5 py-3.5 text-carbon-600">{row.power}</td>
-                  <td class="px-5 py-3.5 text-carbon-600">{row.weight}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-        <p class="mt-4 text-xs leading-relaxed text-carbon-500">Reference ranges synthesized from publicly available ball mill tables published by HXJQ and Hengxing Machinery. Confirm the final model, capacity and power against your ore test data before purchase.</p>
-      </Section>
-    </>
-  )}
+  <Section tone="dark"><div class="grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:items-center"><div><h2 class="!text-white">Where {d.title} fits in the decision</h2><p class="mt-5 max-w-xl text-lg leading-relaxed text-white/65">The product page should help you clarify the application before any model, grade or delivery scope is confirmed.</p><div class="mt-8 grid gap-3">{plan.applications.map(([title, text]) => <div class="border-l-2 border-accent-400 bg-white/5 p-5"><h3 class="!text-lg !text-white">{title}</h3><p class="mt-2 text-sm leading-relaxed text-white/65">{text}</p></div>)}</div></div><div class="min-w-0"><div class="grid gap-px border border-white/15 bg-white/10 sm:grid-cols-2">{plan.process.map((step, index) => <div class="bg-carbon-900 p-6"><span class="font-display text-sm font-800 tracking-[0.16em] text-accent-400">0{index + 1}</span><p class="mt-4 text-lg font-700 leading-snug text-white">{step}</p></div>)}</div></div></div></Section>
 
-  {/* ============================= PRODUCT SNAPSHOT */}
-  <section class="border-b border-carbon-100 bg-white">
-    <div class="container-x grid gap-px overflow-hidden rounded-md border border-carbon-100 bg-carbon-100 sm:grid-cols-3">
-      <div class="bg-white px-6 py-6 sm:px-8">
-        <p class="eyebrow">Product category</p>
-        <p class="mt-2 text-lg font-700 text-brand-700">{d.category}</p>
-      </div>
-      <div class="bg-white px-6 py-6 sm:px-8">
-        <p class="eyebrow">Typical fit</p>
-        <p class="mt-2 text-lg font-700 text-brand-700">{d.applications[0]}</p>
-      </div>
-      <div class="bg-white px-6 py-6 sm:px-8">
-        <p class="eyebrow">Selection support</p>
-        <p class="mt-2 text-lg font-700 text-brand-700">Application-matched proposal</p>
-      </div>
-    </div>
-  </section>
+  <Section><div class="grid gap-10 lg:grid-cols-2 lg:items-center"><figure class="overflow-hidden border border-carbon-200 bg-carbon-50"><OptimizedImage src={plan.evidence.image} alt={plan.evidence.alt} class="aspect-[16/10] w-full object-cover" loading="lazy" /></figure><div><h2>{plan.evidence.title}</h2><p class="mt-5 text-lg leading-relaxed text-carbon-600">{plan.evidence.intro}</p><ul class="mt-7 space-y-4">{plan.evidence.points.map((point) => <li class="flex items-start gap-3 border-t border-carbon-200 pt-4 text-sm leading-relaxed text-carbon-700"><Icon name="check" class="mt-0.5 size-4 shrink-0 text-accent-600" />{point}</li>)}</ul></div></div></Section>
 
-  {/* ============================= VALUE PROPOSITION */}
-  <Section eyebrow="Why this product" title={`Built around the conditions that matter for ${d.title}`}>
-    <div class="grid gap-5 md:grid-cols-2 lg:grid-cols-4">
-      {d.features.map((feature, index) => (
-        <div class="card group p-6 transition hover:-translate-y-1 hover:shadow-[0_18px_40px_-24px_rgba(5,42,104,0.45)]">
-          <span class="flex size-10 items-center justify-center rounded-full bg-accent-100 font-display text-lg font-800 text-accent-700">0{index + 1}</span>
-          <h3 class="mt-5 !text-lg">{feature}</h3>
-          <span class="mt-5 block h-1 w-10 bg-accent-500 transition-all group-hover:w-16"></span>
-        </div>
-      ))}
-    </div>
-  </Section>
+  <Section tone="alt"><div class="grid gap-10 lg:grid-cols-[1.08fr_0.92fr] lg:items-center"><figure class="overflow-hidden border border-carbon-200 bg-white"><OptimizedImage src={plan.reference.image} alt={plan.reference.alt} class="aspect-[16/10] w-full object-cover" loading="lazy" /></figure><div><h2>{plan.reference.title}</h2><p class="mt-5 text-lg leading-relaxed text-carbon-600">{plan.reference.intro}</p><dl class="mt-8 divide-y divide-carbon-200 border-y border-carbon-200">{plan.reference.facts.map(([term, detail]) => <div class="grid gap-1 py-4 sm:grid-cols-[7rem_1fr] sm:gap-5"><dt class="font-700 text-brand-700">{term}</dt><dd class="text-sm leading-relaxed text-carbon-600">{detail}</dd></div>)}</dl></div></div></Section>
 
-  {/* ============================= DETAILS + SPEC TABLE */}
-  <Section tone="alt">
-    <div class="grid gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(20rem,0.8fr)] lg:items-start">
-      <article class="prose-cp min-w-0">
-        <div class="mb-8 flex items-center gap-3">
-          <span class="h-px w-10 bg-accent-500"></span>
-          <p class="eyebrow">Product information</p>
-        </div>
-        <Content />
-      </article>
+  <Section><div class="grid gap-10 lg:grid-cols-[0.72fr_1.28fr] lg:items-start"><div><h2>Buyer questions before you request a quote</h2><p class="mt-4 max-w-md text-lg leading-relaxed text-carbon-600">Clear inputs and realistic expectations produce a more useful technical and commercial response.</p></div><div class="divide-y divide-carbon-200 border-y border-carbon-200">{plan.questions.map(([question, answer]) => <details class="group py-6"><summary class="flex cursor-pointer list-none items-center justify-between gap-5 font-700 text-brand-800"><span>{question}</span><span class="text-2xl font-400 text-accent-600 transition-transform group-open:rotate-45">+</span></summary><p class="mt-4 max-w-3xl pr-8 text-sm leading-relaxed text-carbon-600">{answer}</p></details>)}</div></div></Section>
 
-      <div class="space-y-6 lg:sticky lg:top-28">
-        <div class="overflow-hidden rounded-md border border-carbon-200 bg-white shadow-sm">
-          <div class="bg-brand-700 px-6 py-5 text-white">
-            <p class="eyebrow !text-accent-300">Technical data</p>
-            <h2 class="mt-2 !text-2xl !text-white">Preliminary parameters</h2>
-            <p class="mt-2 text-sm text-white/70">Use these values for initial sizing. Final selection follows your ore and site data.</p>
-          </div>
-          <div class="overflow-x-auto">
-            <table class="w-full min-w-[26rem] text-left text-sm">
-              <thead class="bg-carbon-50 text-xs uppercase tracking-wider text-carbon-500">
-                <tr><th class="px-6 py-3 font-700">Parameter</th><th class="px-6 py-3 text-right font-700">Reference value</th></tr>
-              </thead>
-              <tbody class="divide-y divide-carbon-100">
-                {d.specs.map((s) => (
-                  <tr class="align-top">
-                    <th scope="row" class="px-6 py-3.5 font-600 text-carbon-600">{s.label}</th>
-                    <td class="px-6 py-3.5 text-right font-700 text-brand-700">{s.value}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
+  <section id="request-quote" class="bg-carbon-950 py-16 text-white sm:py-20 lg:py-24"><div class="container-x grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:items-start lg:gap-16"><div class="lg:sticky lg:top-28"><h2 class="!text-white">{plan.formTitle}</h2><p class="mt-5 max-w-xl text-lg leading-relaxed text-white/70">{plan.formIntro}</p><ul class="mt-8 space-y-3">{["A product configuration or grade matched to the information supplied", "Clear technical scope and preliminary supply discussion", "Export packing and delivery options when the destination is known"].map((item) => <li class="flex items-start gap-3 text-sm text-white/78"><Icon name="check" class="mt-0.5 size-4 shrink-0 text-accent-400" />{item}</li>)}</ul></div><div class="bg-white p-6 text-carbon-800 shadow-2xl sm:p-8"><div class="mb-6 border-b border-carbon-100 pb-5"><h3 class="!text-2xl">Send your requirements</h3><p class="mt-2 text-sm leading-relaxed text-carbon-500">Name and phone are optional. Use the message field for the operating conditions, specification or delivery details you already have.</p></div><ContactForm formId={`${product.id}-inquiry-form`} statusId={`${product.id}-inquiry-status`} fieldIdPrefix={`${product.id}-inquiry`} sourcePage={`/products/${product.id}`} productInterest={d.title} ctaLabel="Request a Quote" closeModalOnSuccess={false} /></div></div></section>
 
-        <div class="rounded-md bg-carbon-950 p-6 text-white">
-          <p class="eyebrow !text-accent-300">Useful information</p>
-          <ul class="mt-4 space-y-3">
-            {d.applications.slice(0, 3).map((application) => (
-              <li class="flex items-start gap-2 text-sm text-white/75"><Icon name="check" class="mt-0.5 size-4 shrink-0 text-accent-400" />{application}</li>
-            ))}
-          </ul>
-          <button class="btn btn-primary mt-6 w-full" onclick={contactAction}>
-            Ask for a matched proposal <Icon name="arrowRight" class="size-[1.15em]" />
-          </button>
-        </div>
-      </div>
-    </div>
-  </Section>
-
-  {/* ============================= APPLICATIONS */}
-  <Section eyebrow="Where it fits" title="Designed for a practical product decision" tone="dark">
-    <div class="grid gap-4 md:grid-cols-3">
-      {d.applications.map((application, index) => (
-        <div class="relative overflow-hidden rounded-md border border-white/10 bg-white/5 p-6">
-          <span class="font-display text-5xl font-800 text-accent-400/30">0{index + 1}</span>
-          <h3 class="mt-4 !text-xl !text-white">{application}</h3>
-          <p class="mt-3 text-sm leading-relaxed text-white/60">Configuration, wear parts and delivery scope can be matched to this operating environment.</p>
-        </div>
-      ))}
-    </div>
-  </Section>
-
-  {/* ============================= DELIVERY */}
-  <Section eyebrow="From enquiry to delivery" title="A clearer path to the right configuration">
-    <div class="grid gap-0 md:grid-cols-3">
-      {[
-          ["01", "Share the inputs", "Send the key operating conditions, target output and site requirements so the recommendation starts from real conditions."],
-        ["02", "Review the configuration", "We align the model, wear materials, drive arrangement, packing scope and practical operating assumptions."],
-        ["03", "Prepare for delivery", "Receive a clear quotation with technical scope, inspection points and export-ready packing details."],
-      ].map(([number, title, text], index) => (
-        <div class={`relative border-l border-carbon-200 px-6 py-2 md:px-8 ${index === 0 ? "md:border-l-0 md:pl-0" : ""}`}>
-          <span class="font-display text-sm font-800 tracking-[0.2em] text-accent-600">{number}</span>
-          <h3 class="mt-3 !text-xl">{title}</h3>
-          <p class="mt-3 text-sm leading-relaxed text-carbon-600">{text}</p>
-        </div>
-      ))}
-    </div>
-  </Section>
-
-  {/* ============================= PACKAGING CTA */}
-  <Section tone="alt">
-    <div class="grid gap-10 lg:grid-cols-[1fr_0.8fr] lg:items-center">
-      <div>
-        <p class="eyebrow">Export and site readiness</p>
-        <h2 class="mt-3">The technical scope continues beyond the machine.</h2>
-        <p class="mt-4 max-w-2xl text-lg leading-relaxed text-carbon-600">From protective wrapping and wooden cases to wear-parts lists and installation notes, the delivery package is planned around how the product will reach and operate at your site.</p>
-      </div>
-      <div class="rounded-md border border-carbon-200 bg-white p-6 shadow-sm">
-        <h3 class="!text-lg flex items-center gap-2"><Icon name="truck" class="size-5 text-accent-600" /> Packaging scope</h3>
-        <ul class="mt-4 space-y-3">
-          {d.packaging.map((p) => (
-            <li class="flex items-start gap-2 text-sm text-carbon-600"><Icon name="check" class="mt-0.5 size-4 shrink-0 text-accent-500" />{p}</li>
-          ))}
-        </ul>
-      </div>
-    </div>
-  </Section>
-
-  {/* ============================= PROCUREMENT CTA */}
-  {isBallMill ? (
-    <section id="request-quote" class="bg-carbon-950 py-16 text-white sm:py-20 lg:py-24">
-      <div class="container-x grid gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:items-start lg:gap-16">
-        <div class="lg:sticky lg:top-28">
-          <p class="eyebrow !text-accent-300">Request a ball mill proposal</p>
-          <h2 class="mt-4 !text-white">Send the inputs your supplier actually needs.</h2>
-          <p class="mt-5 text-lg leading-relaxed text-white/70">A useful quotation starts with the process, not a catalogue model. Share the ore and production target, and we will help narrow the mill size, discharge type, liner/media route and supporting equipment.</p>
-          <ul class="mt-7 space-y-3">
-            {["Model and capacity recommendation", "Wet/dry and discharge guidance", "Preliminary technical scope", "Export packing and delivery discussion"].map((item) => (
-              <li class="flex items-start gap-3 text-sm text-white/78"><Icon name="check" class="mt-0.5 size-4 shrink-0 text-accent-400" />{item}</li>
-            ))}
-          </ul>
-        </div>
-        <div class="bg-white p-6 text-carbon-800 shadow-2xl sm:p-8">
-          <div class="mb-6 border-b border-carbon-100 pb-5">
-            <p class="eyebrow">Ball mill enquiry</p>
-            <h3 class="mt-2 !text-2xl">Get a matched recommendation</h3>
-            <p class="mt-2 text-sm text-carbon-500">Name and phone are optional. Please include as much process detail as you have in the message.</p>
-          </div>
-          <ContactForm
-            formId="ball-mill-inquiry-form"
-            statusId="ball-mill-inquiry-status"
-            fieldIdPrefix="ball-mill"
-            sourcePage="/products/gold-ore-ball-mill"
-            productInterest="Gold Ore Ball Mill"
-            ctaLabel="Get a matched model"
-            closeModalOnSuccess={false}
-          />
-        </div>
-      </div>
-    </section>
-  ) : (
-    <section class="bg-brand-700 text-white">
-      <div class="container-x flex flex-col items-start justify-between gap-6 py-14 sm:py-16 lg:flex-row lg:items-center">
-        <div>
-          <p class="eyebrow !text-accent-300">Ready to size the product?</p>
-          <h2 class="mt-3 !text-white">Turn your process data into a practical proposal.</h2>
-          <p class="mt-3 max-w-2xl text-white/70">Tell us what you are processing, what you need to achieve and where the equipment will operate.</p>
-        </div>
-        <button class="btn btn-primary shrink-0" onclick={contactAction}>Request a Quote <Icon name="arrowRight" class="size-[1.15em]" /></button>
-      </div>
-    </section>
-  )}
-
-  {/* ============================= RELATED */}
-  {related.length > 0 && (
-    <Section eyebrow="Related products" title="You may also need" tone="alt">
-      <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-        {related.map((p) => (
-          <ProductCard
-            href={`/products/${p.id}`}
-            title={p.data.title}
-            excerpt={p.data.excerpt}
-            icon={p.data.icon}
-            category={p.data.category}
-            image={productImages[p.id]}
-            imageAlt={p.data.heroImageAlt}
-          />
-        ))}
-      </div>
-    </Section>
-  )}
+  {related.length > 0 && <Section title="Related products" tone="alt"><div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">{related.map((item) => <ProductCard href={`/products/${item.id}`} title={item.data.title} excerpt={item.data.excerpt} icon={item.data.icon} category={item.data.category} image={productImages[item.id]} imageAlt={item.data.heroImageAlt} />)}</div></Section>}
 </BaseLayout>
