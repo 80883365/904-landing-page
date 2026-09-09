@@ -23,9 +23,9 @@ export const SITE = {
 
   // Contact Information
   contact: {
-    email: "sales@goldcore-machinery.com",
-    phone: "+86 371 0000 0000",
-    whatsapp: "+86 138 0000 0000",
+    email: "info@miningzd.com",
+    phone: "+86 173 3579 1762",
+    whatsapp: "+86 173 3579 1762",
     addressLine1: "Mining Equipment Industrial Zone",
     addressLine2: "Zhengzhou, Henan, China",
     hours: "Mon – Fri, 8:30 – 17:30 (GMT+8)",

@@ -34,9 +34,9 @@ export const SEO_DEFAULTS = {
     },
     contactPoint: {
       "@type": "ContactPoint",
-      telephone: "+86-371-0000-0000",
+      telephone: "+86-173-3579-1762",
       contactType: "sales",
-      email: "sales@goldcore-machinery.com",
+      email: "info@miningzd.com",
       availableLanguage: ["en", "zh"],
     },
     sameAs: [
