@@ -7,10 +7,10 @@ import ProductCard from "../../components/ProductCard.astro";
 import { getCollection, render } from "astro:content";
 import type { GetStaticPaths } from "astro";
 import OptimizedImage from "../../components/OptimizedImage.astro";
-import ballMillImg from "../../assets/images/gold-ore-ball-mill/industrial-ball-mill.webp";
+import ballMillImg from "../../assets/images/gold-ore-ball-mill/gold-ore-ball-mill-supplier-hero.webp";
 import ballMillPlantImg from "../../assets/images/gold-ore-ball-mill/ball-mill-inside-mining-plant.webp";
 import ballMillCutawayImg from "../../assets/images/gold-ore-ball-mill/ball-mill-cutaway-working-principle.webp";
-import wetPanImg from "../../assets/images/wet-pan-mill-for-gold/double-wheel-wet-pan-mill.webp";
+import wetPanImg from "../../assets/images/wet-pan-mill-for-gold/gold-wet-pan-mill-supplier-hero.webp";
 import steelBallsImg from "../../assets/images/forged-grinding-steel-balls/forged-steel-grinding-balls.webp";
 import { generateProductSchema, generateBreadcrumbSchema } from "../../config/seo";
 import { SITE } from "../../config/site";
@@ -35,6 +35,12 @@ const related = [
 
 const d = product.data;
 const isBallMill = product.id === "gold-ore-ball-mill";
+const heroDescriptions: Record<string, string> = {
+  "gold-ore-ball-mill": "GoldCore supplies wet and dry ball mills for gold ore, copper ore and hard-rock mineral processing. Share your feed size, required capacity and recovery route to receive a matched configuration and quotation.",
+  "wet-pan-mill-for-gold": "GoldCore supplies wet pan mills for small-scale gold mining, hard-rock gold processing and gravity recovery applications. Send your feed size and target capacity for a matched model and export quotation.",
+  "forged-grinding-steel-balls": "GoldCore supplies forged grinding steel balls for gold, copper and mineral processing ball mills. Tell us your mill size, ball diameter and required grade for a matched quotation and delivery plan.",
+};
+const heroDescription = heroDescriptions[product.id] ?? d.description;
 const ballMillModels = [
   { model: "900×1800", feed: "≤20", discharge: "0.075–0.89", capacity: "0.65–2", power: "18.5", weight: "5.8" },
   { model: "900×3000", feed: "≤20", discharge: "0.075–0.89", capacity: "1.1–3.5", power: "22", weight: "6.8" },
@@ -96,31 +102,23 @@ const jsonLd = {
 
       <div class="grid gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:items-center lg:gap-16">
         <div class="min-w-0">
-          <p class="eyebrow !text-accent-400">{isBallMill ? "Gold ore ball mill supplier" : d.category}</p>
-          <h1 class="mt-4 max-w-3xl !text-white">{isBallMill ? "A gold ore ball mill selected for your recovery target" : d.title}</h1>
-          <p class="mt-5 max-w-2xl text-lg leading-relaxed text-white/72">{isBallMill ? "Continuous wet or dry grinding for gold, copper and hard-rock mineral circuits—sized around feed, throughput, target P80 and downstream recovery." : d.description}</p>
+          <h1 class="max-w-3xl !text-white">{d.title}</h1>
+          <p class="mt-5 max-w-2xl text-lg leading-relaxed text-white/72">{heroDescription}</p>
 
-          <ul class="mt-7 grid gap-3 sm:grid-cols-2">
+          <ul class="mt-7 space-y-3">
             {d.features.slice(0, 4).map((feature) => (
               <li class="flex items-start gap-2 text-sm text-white/82"><Icon name="check" class="mt-0.5 size-4 shrink-0 text-accent-400" />{feature}</li>
             ))}
           </ul>
 
-          <div class="mt-8 flex flex-col gap-3 sm:flex-row">
-            <button class="btn btn-primary" onclick={contactAction}>Get a matched model <Icon name="arrowRight" class="size-[1.15em]" /></button>
-            <a href="#technical-data" class="btn btn-ghost-light">View parameters <Icon name="chevronDown" class="size-[1.15em]" /></a>
+          <div class="mt-8">
+            <button class="btn btn-primary" onclick={contactAction}>Request a Quote <Icon name="arrowRight" class="size-[1.15em]" /></button>
           </div>
-          <p class="mt-5 text-xs text-white/45">Tell us the ore, feed size, target fineness and tonnes per hour. We will reply with the next technical questions.</p>
         </div>
 
         <div class="relative lg:pl-4">
           <div class="relative overflow-hidden border border-white/15 bg-carbon-900 shadow-2xl">
             <OptimizedImage src={heroImage} alt={heroImageAlt} class="aspect-[4/3] w-full object-cover" loading="eager" fetchpriority="high" />
-            <div class="absolute inset-0 bg-gradient-to-t from-carbon-950/80 via-transparent to-transparent"></div>
-            <div class="absolute inset-x-0 bottom-0 p-5 sm:p-6">
-              <p class="eyebrow !text-accent-300">Preliminary fit</p>
-              <p class="mt-2 text-lg font-700 text-white">{isBallMill ? "Crushing → grinding → classification → recovery" : d.applications[0]}</p>
-            </div>
           </div>
           <div class="mt-4 grid grid-cols-3 gap-px border border-white/10 bg-white/10">
             {(isBallMill ? [["0.65–12", "reference t/h"] , ["≤25", "feed mm"], ["0.074–0.89", "discharge mm"]] : d.specs.slice(0, 3).map((s) => [s.value, s.label])).map(([value, label]) => (
