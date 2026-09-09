@@ -255,7 +255,7 @@
   .btn:active { transform: translateY(0); }
 
   .btn-primary { background: var(--color-accent-400); color: var(--color-carbon-950); }
-  .btn-primary:hover { background: var(--color-accent-600); }
+  .btn-primary:hover { background: var(--color-accent-600); color: white; }
 
   .btn-brand { background: var(--color-brand-600); color: white; }
   .btn-brand:hover { background: var(--color-brand-700); }
