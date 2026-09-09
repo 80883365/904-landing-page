@@ -226,7 +226,7 @@
     letter-spacing: 0.14em;
     font-size: 0.8125rem;
     color: var(--color-accent-600);
-    display: inline-flex;
+    display: none;
     align-items: center;
     gap: 0.5rem;
   }
