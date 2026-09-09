@@ -235,7 +235,7 @@ const jsonLd = {
         <p class="mt-2 text-lg font-700 text-brand-700">{d.category}</p>
       </div>
       <div class="bg-white px-6 py-6 sm:px-8">
-        <p class="eyebrow">Best for</p>
+        <p class="eyebrow">Typical fit</p>
         <p class="mt-2 text-lg font-700 text-brand-700">{d.applications[0]}</p>
       </div>
       <div class="bg-white px-6 py-6 sm:px-8">
@@ -264,7 +264,7 @@ const jsonLd = {
       <article class="prose-cp min-w-0">
         <div class="mb-8 flex items-center gap-3">
           <span class="h-px w-10 bg-accent-500"></span>
-          <p class="eyebrow">Product intelligence</p>
+          <p class="eyebrow">Product information</p>
         </div>
         <Content />
       </article>
@@ -294,7 +294,7 @@ const jsonLd = {
         </div>
 
         <div class="rounded-md bg-carbon-950 p-6 text-white">
-          <p class="eyebrow !text-accent-300">What we need from you</p>
+          <p class="eyebrow !text-accent-300">Useful information</p>
           <ul class="mt-4 space-y-3">
             {d.applications.slice(0, 3).map((application) => (
               <li class="flex items-start gap-2 text-sm text-white/75"><Icon name="check" class="mt-0.5 size-4 shrink-0 text-accent-400" />{application}</li>
@@ -309,7 +309,7 @@ const jsonLd = {
   </Section>
 
   {/* ============================= APPLICATIONS */}
-  <Section eyebrow="Where it fits" title="Designed for a complete processing decision" tone="dark">
+  <Section eyebrow="Where it fits" title="Designed for a practical product decision" tone="dark">
     <div class="grid gap-4 md:grid-cols-3">
       {d.applications.map((application, index) => (
         <div class="relative overflow-hidden rounded-md border border-white/10 bg-white/5 p-6">
@@ -322,10 +322,10 @@ const jsonLd = {
   </Section>
 
   {/* ============================= DELIVERY */}
-  <Section eyebrow="From enquiry to operation" title="A clearer path to the right configuration">
+  <Section eyebrow="From enquiry to delivery" title="A clearer path to the right configuration">
     <div class="grid gap-0 md:grid-cols-3">
       {[
-        ["01", "Share the inputs", "Send feed size, ore type, target output and site power so the recommendation starts from real conditions."],
+          ["01", "Share the inputs", "Send the key operating conditions, target output and site requirements so the recommendation starts from real conditions."],
         ["02", "Review the configuration", "We align the model, wear materials, drive arrangement, packing scope and practical operating assumptions."],
         ["03", "Prepare for delivery", "Receive a clear quotation with technical scope, inspection points and export-ready packing details."],
       ].map(([number, title, text], index) => (

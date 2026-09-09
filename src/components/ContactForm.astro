@@ -59,11 +59,11 @@ const fieldId = (name: string) => fieldIdPrefix ? `${fieldIdPrefix}-${name}` : n
 
   {/* Form fields */}
   <div class="grid gap-5 sm:grid-cols-2">
-    <Field label="Name" name="name" id={fieldId("name")} placeholder="Jane Doe" />
-    <Field label="Email *" name="email" id={fieldId("email")} type="email" required placeholder="jane@example.com" />
+    <Field label="Name" name="name" id={fieldId("name")} />
+    <Field label="Email *" name="email" id={fieldId("email")} type="email" required />
   </div>
 
-  <Field label="Phone / WhatsApp" name="phone" id={fieldId("phone")} type="tel" placeholder="+1 555 000 0000" />
+  <Field label="Phone" name="phone" id={fieldId("phone")} type="tel" />
 
   <div>
     <label class="mb-1.5 block text-sm font-700 text-carbon-700">Message *</label>
@@ -72,15 +72,9 @@ const fieldId = (name: string) => fieldIdPrefix ? `${fieldIdPrefix}-${name}` : n
       name="message"
       required
       rows="4"
-      placeholder="Tell us about your requirements, application, or questions..."
-      class="w-full rounded-xs border border-carbon-200 bg-white px-3.5 py-2.5 text-sm outline-none transition focus:border-accent-500 focus:ring-2 focus:ring-accent-500/20"
+      class="w-full rounded-xs border border-carbon-200 bg-white px-3.5 py-2.5 text-base outline-none transition focus:border-accent-500 focus:ring-2 focus:ring-accent-500/20"
     ></textarea>
   </div>
-
-  <label class="flex items-start gap-2.5 text-sm text-carbon-500">
-    <input type="checkbox" name="consent" required class="mt-0.5 size-4 rounded-xs border-carbon-300 text-accent-500 focus:ring-accent-500" />
-    I agree to be contacted about my inquiry and accept the privacy policy.
-  </label>
 
   <button type="submit" class="btn btn-primary w-full text-base">
     Send inquiry <Icon name="arrowRight" class="size-4" />
