@@ -21,5 +21,16 @@ const data = posts[Astro.params.slug as keyof typeof posts];
 ---
 <BaseLayout title={data.title} description={data.intro} image={data.image.src} type="article">
   <PageHero tone="dark" title={data.title} intro={data.intro} crumbs={[{ label: "Home", href: "/" }, { label: "Resources", href: "/resources" }, { label: "Blog", href: "/resources/blog" }, { label: data.title }]} />
-  <Section><div class="grid gap-10 lg:grid-cols-[1.1fr_.9fr] lg:items-start"><OptimizedImage src={data.image} alt={data.alt} class="w-full rounded-md object-cover" loading="eager" fetchpriority="high" /><div class="space-y-8">{data.sections.map((section) => <article><h2 class="!text-2xl">{section[0]}</h2><p class="mt-3 leading-relaxed text-carbon-600">{section[1]}</p></article>)}<button class="btn btn-primary" onclick={`openContactModal({ sourcePage: '/resources/blog/${Astro.params.slug}', ctaLabel: 'Ask a question' })`}>Ask a question</button></div></div></Section>
+  <Section>
+    <div class="grid gap-10 lg:grid-cols-[minmax(0,1fr)_18rem] lg:items-start">
+      <article class="prose-cp min-w-0">
+        <OptimizedImage src={data.image} alt={data.alt} class="mb-10 aspect-[16/9] w-full rounded-md object-cover" loading="eager" fetchpriority="high" />
+        {data.sections.map((section) => <section id={section[0].toLowerCase().replace(/[^a-z0-9]+/g, "-")} class="mb-10"><h2>{section[0]}</h2><p>{section[1]}</p></section>)}
+      </article>
+      <aside class="space-y-5 lg:sticky lg:top-28">
+        <div class="card p-6"><h2 class="!text-lg">In this article</h2><ul class="mt-4 space-y-3">{data.sections.map((section) => <li><a href={`#${section[0].toLowerCase().replace(/[^a-z0-9]+/g, "-")}`} class="font-700 text-accent-700 underline decoration-accent-300 underline-offset-4">{section[0]}</a></li>)}</ul></div>
+        <div class="bg-brand-700 p-6 text-white"><h2 class="!text-lg !text-white">Have a project question?</h2><p class="mt-3 text-sm leading-relaxed text-white/75">Share your project context and our team will help you identify the next useful step.</p><button class="btn btn-primary mt-5 w-full" onclick={`openContactModal({ sourcePage: '/resources/blog/${Astro.params.slug}', ctaLabel: 'Ask a question' })`}>Ask a question</button></div>
+      </aside>
+    </div>
+  </Section>
 </BaseLayout>

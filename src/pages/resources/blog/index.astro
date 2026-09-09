@@ -14,7 +14,7 @@ const posts = [
 ---
 <BaseLayout title="Mining Equipment Blog" description="Read practical articles about mining equipment comparison, project preparation, export delivery and procurement decisions.">
   <PageHero tone="dark" title="Blog" intro="Practical guidance for comparing products, preparing project information and planning delivery." crumbs={[{ label: "Home", href: "/" }, { label: "Resources", href: "/resources" }, { label: "Blog" }]} />
-  <Section title="Blog" intro="Clear, useful guidance for teams comparing products, preparing project information and planning delivery.">
+  <Section>
     <div class="grid gap-7 lg:grid-cols-3">{posts.map((post) => <a href={`/resources/blog/${post.slug}`} class="group card overflow-hidden"><div class="aspect-[4/3] overflow-hidden"><OptimizedImage src={post.image} alt={post.alt} class="h-full w-full object-cover transition duration-500 group-hover:scale-105" loading="lazy" /></div><div class="p-6"><h2 class="!text-xl text-brand-700 underline decoration-transparent underline-offset-4 transition group-hover:decoration-accent-500">{post.title}</h2><p class="mt-3 text-sm leading-relaxed text-carbon-500">{post.summary}</p><span class="mt-5 inline-flex font-700 text-accent-700">Read article →</span></div></a>)}</div>
   </Section>
 </BaseLayout>

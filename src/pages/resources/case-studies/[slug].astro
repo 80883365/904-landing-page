@@ -21,7 +21,19 @@ const data = cases[Astro.params.slug as keyof typeof cases];
 ---
 <BaseLayout title={data.title} description={data.intro} image={data.image.src} type="article">
   <PageHero tone="dark" title={data.title} intro={data.intro} crumbs={[{ label: "Home", href: "/" }, { label: "Resources", href: "/resources" }, { label: "Case studies", href: "/resources/case-studies" }, { label: data.title }]} />
-  <Section><div class="grid gap-10 lg:grid-cols-[1.15fr_.85fr] lg:items-start"><OptimizedImage src={data.image} alt={data.alt} class="w-full rounded-md object-cover" loading="eager" fetchpriority="high" /><div class="card p-7"><h2 class="!text-2xl">Project snapshot</h2><p class="mt-4 text-carbon-600">{data.challenge}</p><button class="btn btn-primary mt-7" onclick={`openContactModal({ sourcePage: '/resources/case-studies/${Astro.params.slug}', ctaLabel: 'Discuss a similar project' })`}>Discuss a similar project</button></div></div></Section>
-  <Section tone="alt" title="What the project team focused on"><div class="grid gap-5 md:grid-cols-3">{data.approach.map((item, i) => <div class="card p-6"><span class="font-display text-3xl font-800 text-accent-600">0{i + 1}</span><p class="mt-4 text-carbon-600">{item}</p></div>)}</div></Section>
-  <Section title="Result"><div class="max-w-3xl"><p class="text-xl leading-relaxed text-carbon-600">{data.outcome}</p><a href="/resources/case-studies" class="mt-7 inline-flex font-700 text-accent-700 underline underline-offset-4">Back to case studies →</a></div></Section>
+  <Section>
+    <div class="grid gap-10 lg:grid-cols-[minmax(0,1fr)_18rem] lg:items-start">
+      <article class="min-w-0">
+        <OptimizedImage src={data.image} alt={data.alt} class="aspect-[16/9] w-full rounded-md object-cover" loading="eager" fetchpriority="high" />
+        <section class="mt-10"><h2>Project overview</h2><p class="mt-4 max-w-3xl text-lg leading-relaxed text-carbon-600">{data.challenge}</p></section>
+        <section class="mt-12 border-t border-carbon-100 pt-10"><h2>What the project team focused on</h2><div class="mt-7 grid gap-5 md:grid-cols-3">{data.approach.map((item, i) => <div class="card p-6"><span class="font-display text-3xl font-800 text-accent-600">0{i + 1}</span><p class="mt-4 text-carbon-600">{item}</p></div>)}</div></section>
+        <section class="mt-12 border-t border-carbon-100 pt-10"><h2>Project result</h2><p class="mt-4 max-w-3xl text-xl leading-relaxed text-carbon-600">{data.outcome}</p></section>
+      </article>
+      <aside class="space-y-5 lg:sticky lg:top-28">
+        <div class="card p-6"><h2 class="!text-lg">Case study summary</h2><dl class="mt-5 space-y-4 text-sm"><div><dt class="font-700 text-carbon-800">Focus</dt><dd class="mt-1 text-carbon-500">Project planning and supply scope</dd></div><div><dt class="font-700 text-carbon-800">Audience</dt><dd class="mt-1 text-carbon-500">Mining project and procurement teams</dd></div><div><dt class="font-700 text-carbon-800">Status</dt><dd class="mt-1 text-carbon-500">Working reference for future verified details</dd></div></dl></div>
+        <div class="bg-brand-700 p-6 text-white"><h2 class="!text-lg !text-white">Planning something similar?</h2><p class="mt-3 text-sm leading-relaxed text-white/75">Tell us about your project and we will help organize the right questions.</p><button class="btn btn-primary mt-5 w-full" onclick={`openContactModal({ sourcePage: '/resources/case-studies/${Astro.params.slug}', ctaLabel: 'Discuss a similar project' })`}>Discuss a similar project</button></div>
+      </aside>
+    </div>
+  </Section>
+  <Section><a href="/resources/case-studies" class="font-700 text-accent-700 underline decoration-accent-300 underline-offset-4">Back to case studies →</a></Section>
 </BaseLayout>
