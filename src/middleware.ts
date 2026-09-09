@@ -10,7 +10,7 @@ export const onRequest = defineMiddleware(async (context, next) => {
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="robots" content="noindex, nofollow, noarchive" />
     <title>Content Manager · CarboPure</title>
-    <link rel="icon" type="image/png" href="/brand/zd-mining-favicon.png" />
+    <link rel="icon" type="image/png" href="/brand/zd-mining-favicon-white.png" />
   </head>
   <body>
     <!-- Decap CMS -->

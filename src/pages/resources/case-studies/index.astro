@@ -1,0 +1,18 @@
+---
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import Section from "../../../components/Section.astro";
+import OptimizedImage from "../../../components/OptimizedImage.astro";
+import mineImg from "../../../assets/images/case-studies/gold-mine-upgrade.webp";
+import plantImg from "../../../assets/images/case-studies/plant-startup.webp";
+import mediaImg from "../../../assets/images/case-studies/media-supply.webp";
+const cases = [
+  { slug: "small-mine-capacity-upgrade", title: "A practical capacity upgrade for a small gold mine", summary: "How a staged equipment plan helped a small operation define its next production step without overcommitting too early.", image: mineImg, alt: "Small gold mine capacity upgrade case study" },
+  { slug: "new-processing-line-startup", title: "Planning a new processing line around site conditions", summary: "A project framework for connecting feed conditions, target output, utilities and delivery scope before quotation.", image: plantImg, alt: "New mineral processing line startup case study" },
+  { slug: "grinding-media-supply-program", title: "Building a more predictable grinding media supply", summary: "A supply approach focused on grade selection, replenishment timing and total operating continuity.", image: mediaImg, alt: "Grinding media supply program case study" },
+];
+---
+<BaseLayout title="Mining Equipment Case Studies" description="Read practical GoldCore case studies covering project planning, equipment selection, line startup and ongoing supply support.">
+  <Section title="Case studies" intro="These initial examples are prepared as working references and can be replaced with verified customer details, photographs and operating data later.">
+    <div class="grid gap-7 lg:grid-cols-3">{cases.map((item) => <a href={`/resources/case-studies/${item.slug}`} class="group card overflow-hidden"><div class="aspect-[4/3] overflow-hidden"><OptimizedImage src={item.image} alt={item.alt} class="h-full w-full object-cover transition duration-500 group-hover:scale-105" loading="lazy" /></div><div class="p-6"><h2 class="!text-xl text-brand-700 underline decoration-transparent underline-offset-4 transition group-hover:decoration-accent-500">{item.title}</h2><p class="mt-3 text-sm leading-relaxed text-carbon-500">{item.summary}</p><span class="mt-5 inline-flex font-700 text-accent-700">Read case study →</span></div></a>)}</div>
+  </Section>
+</BaseLayout>

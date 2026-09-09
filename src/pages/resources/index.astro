@@ -1,0 +1,21 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Section from "../../components/Section.astro";
+import OptimizedImage from "../../components/OptimizedImage.astro";
+import resourceImg from "../../assets/images/resources/resource-hub.webp";
+import caseImg from "../../assets/images/case-studies/gold-mine-upgrade.webp";
+import blogImg from "../../assets/images/blog/choosing-equipment.webp";
+---
+<BaseLayout title="Mining Resources" description="Browse GoldCore case studies and practical articles for evaluating equipment, supply scope and project readiness." image={resourceImg.src}>
+  <section class="relative overflow-hidden bg-carbon-950 text-white">
+    <OptimizedImage src={resourceImg} alt="Industrial project planning and mining resource materials" class="absolute inset-0 h-full w-full object-cover opacity-35" loading="eager" fetchpriority="high" />
+    <div class="absolute inset-0 bg-gradient-to-r from-carbon-950 via-carbon-950/85 to-transparent"></div>
+    <div class="container-x relative py-20 sm:py-24"><nav class="text-sm text-white/65"><a href="/">Home</a> / Resources</nav><h1 class="mt-5 max-w-3xl !text-white">Resources for better project decisions</h1><p class="mt-5 max-w-2xl text-lg text-white/80">Review project examples and practical guidance before you define the next product, quotation or delivery step.</p></div>
+  </section>
+  <Section title="Explore our resources" intro="Use these pages as a starting point. We will continue adding verified project details and technical guidance as the site develops.">
+    <div class="grid gap-6 md:grid-cols-2">
+      <a href="/resources/case-studies" class="group card overflow-hidden"><div class="aspect-[16/9] overflow-hidden"><OptimizedImage src={caseImg} alt="Mining project case study overview" class="h-full w-full object-cover transition duration-500 group-hover:scale-105" loading="lazy" /></div><div class="p-7"><h2 class="!text-2xl text-brand-700 underline decoration-transparent underline-offset-4 transition group-hover:decoration-accent-500">Case studies</h2><p class="mt-3 text-carbon-500">See how project conditions, equipment scope and supply planning come together in practical examples.</p><span class="mt-5 inline-flex font-700 text-accent-700">View case studies →</span></div></a>
+      <a href="/resources/blog" class="group card overflow-hidden"><div class="aspect-[16/9] overflow-hidden"><OptimizedImage src={blogImg} alt="Mining equipment planning article resources" class="h-full w-full object-cover transition duration-500 group-hover:scale-105" loading="lazy" /></div><div class="p-7"><h2 class="!text-2xl text-brand-700 underline decoration-transparent underline-offset-4 transition group-hover:decoration-accent-500">Blog</h2><p class="mt-3 text-carbon-500">Find clear, procurement-focused guidance for comparing products and preparing useful project information.</p><span class="mt-5 inline-flex font-700 text-accent-700">Read the blog →</span></div></a>
+    </div>
+  </Section>
+</BaseLayout>

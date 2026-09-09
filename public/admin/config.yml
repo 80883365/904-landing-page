@@ -81,7 +81,7 @@ collections:
       - { label: "Featured on home", name: "featured", widget: "boolean", default: false }
       - { label: "Sort order (lower = first)", name: "order", widget: "number", default: 100, value_type: "int" }
       - { label: "Key features", name: "features", widget: "list", required: false, field: { label: "Feature", name: "value", widget: "string" } }
-      - { label: "Applications", name: "applications", widget: "list", required: false, field: { label: "Application", name: "value", widget: "string" } }
+      - { label: "Solutions", name: "applications", widget: "list", required: false, field: { label: "Solution", name: "value", widget: "string" } }
       - label: "Technical specs"
         name: "specs"
         widget: "list"

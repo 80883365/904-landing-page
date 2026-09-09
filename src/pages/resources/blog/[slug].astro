@@ -1,0 +1,19 @@
+---
+import BaseLayout from "../../../../layouts/BaseLayout.astro";
+import Section from "../../../../components/Section.astro";
+import OptimizedImage from "../../../../components/OptimizedImage.astro";
+import chooseImg from "../../../../assets/images/blog/choosing-equipment.webp";
+import prepImg from "../../../../assets/images/blog/project-preparation.webp";
+import exportImg from "../../../../assets/images/blog/export-checklist.webp";
+const posts = {
+  "how-to-compare-mining-equipment": { title: "How to compare mining equipment before requesting a quote", image: chooseImg, alt: "Comparing mining equipment before purchase", intro: "A practical checklist for comparing fit, scope, operating conditions and support.", sections: [["Start with the operating objective", "Define what the equipment needs to achieve, then compare capacity, duty, utilities and product fit against that objective."], ["Compare the complete scope", "A useful comparison includes auxiliaries, wear parts, packing, documents and support—not only the main machine."], ["Ask questions that improve the recommendation", "Feed conditions, target output, site limitations and delivery destination help a supplier respond with something more useful than a catalogue model."]] },
+  "what-to-prepare-before-equipment-selection": { title: "What to prepare before equipment selection", image: prepImg, alt: "Preparing project information for equipment selection", intro: "The practical information that helps a supplier make a more useful first recommendation.", sections: [["Project context", "Share the application, current process, expected production objective and any limits on space, power, water or handling."], ["Material and operating information", "Provide representative feed details, size range, moisture, hardness or other properties that could affect the product choice."], ["Commercial and delivery needs", "Clarify destination, preferred delivery terms, timing and the level of installation or commissioning support you expect."]] },
+  "export-equipment-delivery-checklist": { title: "An export equipment delivery checklist", image: exportImg, alt: "Export equipment delivery checklist", intro: "Key questions about packing, documents, site readiness and follow-up support.", sections: [["Packing and documentation", "Confirm packing method, component marking, manuals, spare parts lists and the documents needed for customs and receiving."], ["Site readiness", "Check foundations, access, lifting, power, water, storage and the people responsible for receiving and installation."], ["After dispatch", "Agree how questions, replacement parts and technical follow-up will be handled after the shipment leaves the factory."]] },
+};
+export function getStaticPaths() { return Object.entries(posts).map(([slug, data]) => ({ params: { slug }, props: { data } })); }
+const { data } = Astro.props;
+---
+<BaseLayout title={data.title} description={data.intro} image={data.image.src} type="article">
+  <section class="bg-carbon-950 text-white"><div class="container-x py-16 sm:py-20"><nav class="text-sm text-white/65"><a href="/">Home</a> / <a href="/resources/blog">Blog</a> / {data.title}</nav><h1 class="mt-6 max-w-4xl !text-white">{data.title}</h1><p class="mt-5 max-w-2xl text-lg text-white/75">{data.intro}</p></div></section>
+  <Section><div class="grid gap-10 lg:grid-cols-[1.1fr_.9fr] lg:items-start"><OptimizedImage src={data.image} alt={data.alt} class="w-full rounded-md object-cover" loading="eager" fetchpriority="high" /><div class="space-y-8">{data.sections.map((section) => <article><h2 class="!text-2xl">{section[0]}</h2><p class="mt-3 leading-relaxed text-carbon-600">{section[1]}</p></article>)}<button class="btn btn-primary" onclick={`openContactModal({ sourcePage: '/resources/blog/${Astro.params.slug}', ctaLabel: 'Ask a question' })`}>Ask a question</button></div></div></Section>
+</BaseLayout>

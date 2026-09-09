@@ -63,12 +63,20 @@ export const NAV: NavItem[] = [
     ],
   },
   {
-    label: "Applications",
+    label: "Solutions",
     href: "/applications",
     children: [
       { label: "Small-Scale Gold Mining", href: "/applications#small-scale-gold-mining" },
       { label: "Hard-Rock Gold Processing", href: "/applications#hard-rock-gold" },
       { label: "Grinding Media Supply", href: "/applications#grinding-media" },
+    ],
+  },
+  {
+    label: "Resources",
+    href: "/resources",
+    children: [
+      { label: "Case Studies", href: "/resources/case-studies", blurb: "Project lessons, delivery scope and operating context." },
+      { label: "Blog", href: "/resources/blog", blurb: "Practical guidance for planning and procurement." },
     ],
   },
   { label: "About", href: "/about" },
@@ -89,7 +97,7 @@ export const FOOTER_LINKS: { heading: string; links: NavItem[] }[] = [
     heading: "Company",
     links: [
       { label: "About Us", href: "/about" },
-      { label: "Applications", href: "/applications" },
+      { label: "Solutions", href: "/applications" },
       { label: "Contact", href: "/contact" },
     ],
   },
@@ -99,6 +107,9 @@ export const FOOTER_LINKS: { heading: string; links: NavItem[] }[] = [
       { label: "Ball Mill Selection", href: "/products/gold-ore-ball-mill" },
       { label: "Wet Pan Mill Models", href: "/products/wet-pan-mill-for-gold" },
       { label: "Grinding Media Guide", href: "/products/forged-grinding-steel-balls" },
+      { label: "Resources", href: "/resources" },
+      { label: "Case Studies", href: "/resources/case-studies" },
+      { label: "Blog", href: "/resources/blog" },
       { label: "Privacy Policy", href: "/privacy" },
       { label: "Terms of Service", href: "/terms" },
     ],
