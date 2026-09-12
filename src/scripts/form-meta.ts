@@ -2,26 +2,40 @@
  * Form submission metadata — enriches every Web3Forms submission with
  * visitor context (IP, device, time, page) so the notification email
  * carries actionable lead information.
+ *
+ * IP is prefetched in the background as soon as the visitor focuses a
+ * form, so it never blocks the submit → redirect flow.
  */
 
-let cachedIp: string | null = null;
+let ipPromise: Promise<string> | null = null;
 
-/** Fetch visitor IP (cached, 3s timeout, never blocks submission). */
-async function getIp(): Promise<string> {
-  if (cachedIp !== null) return cachedIp;
-  try {
-    const controller = new AbortController();
-    const timer = setTimeout(() => controller.abort(), 3000);
-    const res = await fetch("https://api.ipify.org?format=json", {
-      signal: controller.signal,
-    });
-    clearTimeout(timer);
-    const data = await res.json();
-    cachedIp = typeof data.ip === "string" ? data.ip : "Unknown";
-  } catch {
-    cachedIp = "Unknown";
+/** Kick off the IP lookup early (idempotent, cached as a promise). */
+export function prefetchIp(): void {
+  if (ipPromise === null) {
+    ipPromise = (async () => {
+      try {
+        const controller = new AbortController();
+        const timer = setTimeout(() => controller.abort(), 4000);
+        const res = await fetch("https://api.ipify.org?format=json", {
+          signal: controller.signal,
+        });
+        clearTimeout(timer);
+        const data = await res.json();
+        return typeof data.ip === "string" ? data.ip : "Unknown";
+      } catch {
+        return "Unknown";
+      }
+    })();
   }
-  return cachedIp;
+}
+
+/** Wait for the prefetched IP, at most `maxWaitMs`, then give up. */
+async function getIp(maxWaitMs = 500): Promise<string> {
+  prefetchIp();
+  const fallback = new Promise<string>((resolve) =>
+    setTimeout(() => resolve("Unknown"), maxWaitMs)
+  );
+  return Promise.race([ipPromise!, fallback]);
 }
 
 /** Human-readable device summary from browser APIs. */
@@ -53,4 +67,12 @@ export async function appendSubmissionMeta(fd: FormData): Promise<void> {
   fd.set("submission_time", getLocalTime());
   fd.set("client_device", getDevice());
   fd.set("client_ip", await getIp());
+}
+
+// Prefetch the IP as soon as the visitor interacts with any form —
+// by the time they hit submit (typically 10s+ later) it is cached.
+if (typeof document !== "undefined") {
+  const start = () => prefetchIp();
+  document.addEventListener("focusin", start, { once: true, capture: true });
+  document.addEventListener("touchstart", start, { once: true, capture: true });
 }
