@@ -1,19 +1,25 @@
 ---
 /**
  * Thank-you page — shown after every successful inquiry form submission.
- * Doubles as the conversion destination for GTM tracking:
- * GTM can fire conversion tags on the /thank-you pageview or the
- * `generate_lead` dataLayer event pushed below.
+ * No header/footer (chrome=false): keep the visitor focused on the single
+ * next action — continuing the conversation on WhatsApp.
+ *
+ * Conversion tracking: GTM can fire conversion tags on the /thank-you
+ * pageview or the `generate_lead` dataLayer event pushed below.
  */
 import BaseLayout from "../layouts/BaseLayout.astro";
 import Icon from "../components/Icon.astro";
+import { CONTACT } from "../consts";
+
+const whatsappLink = "https://wa.me/8617335791762";
 ---
 
 <BaseLayout
   title="Thank You — Inquiry Received"
-  description="Your inquiry has been received. Our sales team will reply within 24 hours with the next technical questions."
+  description="Your inquiry has been received. Continue the conversation on WhatsApp for the fastest reply."
+  chrome={false}
 >
-  <section class="bg-white py-24 sm:py-32">
+  <section class="flex min-h-screen items-center bg-white py-20">
     <div class="mx-auto max-w-2xl px-4 text-center sm:px-6">
       <div
         class="mx-auto flex size-16 items-center justify-center rounded-full bg-brand-600/10 text-brand-600"
@@ -27,16 +33,35 @@ import Icon from "../components/Icon.astro";
       </h1>
 
       <p class="mx-auto mt-5 max-w-xl text-base leading-7 text-carbon-500 sm:text-lg">
-        Our sales engineers will review your requirements and reply within 24
-        hours with the next technical questions, model selection advice and an
-        export quote.
+        Our sales engineers will reply within 24 hours. Want a faster answer?
+        Message us on WhatsApp now — we typically respond within minutes
+        during business hours.
       </p>
 
-      <div class="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
-        <a href="/" class="btn btn-primary">
-          Back to home <Icon name="arrowRight" class="size-4" />
+      {/* WhatsApp primary CTA */}
+      <div class="mt-10 flex flex-col items-center justify-center gap-4">
+        <a
+          href={whatsappLink}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="btn btn-primary inline-flex items-center gap-2.5 text-base"
+          data-gtm-event="whatsapp_click"
+        >
+          <Icon name="whatsapp" class="size-5" />
+          Chat with us on WhatsApp
         </a>
-        <a href="/products/" class="btn btn-secondary">Browse products</a>
+        <p class="text-sm text-carbon-500">
+          {CONTACT.whatsapp} — phone &amp; WhatsApp
+        </p>
+      </div>
+
+      <div class="mt-8 border-t border-carbon-100 pt-8">
+        <a
+          href="/"
+          class="text-sm font-600 text-carbon-500 underline decoration-carbon-300 underline-offset-4 transition hover:text-brand-700"
+        >
+          ← Back to home
+        </a>
       </div>
     </div>
   </section>
@@ -47,4 +72,11 @@ import Icon from "../components/Icon.astro";
   // /thank-you pageview so GTM can trigger conversion tags.
   window.dataLayer = window.dataLayer || [];
   window.dataLayer.push({ event: "generate_lead" });
+
+  // Track WhatsApp CTA clicks as a micro-conversion.
+  document.querySelectorAll("[data-gtm-event='whatsapp_click']").forEach((el) => {
+    el.addEventListener("click", () => {
+      window.dataLayer.push({ event: "whatsapp_click" });
+    });
+  });
 </script>
