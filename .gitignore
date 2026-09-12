@@ -8,3 +8,7 @@ cms-server.log
 *.log
 .DS_Store
 Thumbs.db
+
+# Raw material uploads (kept locally, not for deployment)
+ÉÏ´«ËØ²Ä/
+Codex Í¼Ïñ*.png
