@@ -1,8 +1,8 @@
 ---
 /**
  * Thank-you page — shown after every successful inquiry form submission.
- * No header/footer (chrome=false): keep the visitor focused on the single
- * next action — continuing the conversation on WhatsApp.
+ * No header/footer (chrome=false): keep the visitor focused on continuing
+ * the conversation on WhatsApp / WeChat via QR codes.
  *
  * Conversion tracking: GTM can fire conversion tags on the /thank-you
  * pageview or the `generate_lead` dataLayer event pushed below.
@@ -10,36 +10,49 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import Icon from "../components/Icon.astro";
 import { CONTACT } from "../consts";
+import { Image } from "astro:assets";
+import wechatQr from "../assets/images/thank-you/wechat-qr.webp";
+import whatsappQr from "../assets/images/thank-you/whatsapp-qr.webp";
 
 const whatsappLink = "https://wa.me/8617335791762";
 ---
 
 <BaseLayout
   title="Thank You — Inquiry Received"
-  description="Your inquiry has been received. Continue the conversation on WhatsApp for the fastest reply."
+  description="Your inquiry has been received. Scan the QR code or chat on WhatsApp for the fastest reply."
   chrome={false}
 >
-  <section class="flex min-h-screen items-center bg-white py-20">
-    <div class="mx-auto max-w-2xl px-4 text-center sm:px-6">
+  <section
+    class="relative flex min-h-screen items-center overflow-hidden py-20"
+    style="background:
+      radial-gradient(1100px 500px at 85% -10%, rgba(227,163,25,0.28), transparent 60%),
+      radial-gradient(900px 500px at 0% 110%, rgba(227,163,25,0.16), transparent 55%),
+      linear-gradient(160deg, #0b1220 0%, #111a2e 45%, #1a1508 100%);"
+  >
+    {/* Gold accent lines */}
+    <div class="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-brand-500/60 to-transparent" aria-hidden="true"></div>
+    <div class="pointer-events-none absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-brand-500/40 to-transparent" aria-hidden="true"></div>
+
+    <div class="relative mx-auto w-full max-w-3xl px-4 text-center sm:px-6">
       <div
-        class="mx-auto flex size-16 items-center justify-center rounded-full bg-brand-600/10 text-brand-600"
+        class="mx-auto flex size-16 items-center justify-center rounded-full border border-brand-500/30 bg-brand-500/15 text-brand-400"
         aria-hidden="true"
       >
         <Icon name="check" class="size-8" />
       </div>
 
-      <h1 class="mt-8 text-3xl font-800 text-carbon-900 sm:text-4xl">
+      <h1 class="mt-8 text-3xl font-800 text-white sm:text-4xl">
         Thank You — Your Inquiry Has Been Received
       </h1>
 
-      <p class="mx-auto mt-5 max-w-xl text-base leading-7 text-carbon-500 sm:text-lg">
+      <p class="mx-auto mt-5 max-w-xl text-base leading-7 text-carbon-300 sm:text-lg">
         Our sales engineers will reply within 24 hours. Want a faster answer?
-        Message us on WhatsApp now — we typically respond within minutes
-        during business hours.
+        Scan a code below or message us on WhatsApp — we typically respond
+        within minutes during business hours.
       </p>
 
       {/* WhatsApp primary CTA */}
-      <div class="mt-10 flex flex-col items-center justify-center gap-4">
+      <div class="mt-9 flex flex-col items-center justify-center gap-3">
         <a
           href={whatsappLink}
           target="_blank"
@@ -50,15 +63,41 @@ const whatsappLink = "https://wa.me/8617335791762";
           <Icon name="whatsapp" class="size-5" />
           Chat with us on WhatsApp
         </a>
-        <p class="text-sm text-carbon-500">
+        <p class="text-sm text-carbon-400">
           {CONTACT.whatsapp} — phone &amp; WhatsApp
         </p>
       </div>
 
-      <div class="mt-8 border-t border-carbon-100 pt-8">
+      {/* QR codes */}
+      <div class="mx-auto mt-12 grid max-w-lg grid-cols-1 gap-5 sm:grid-cols-2">
+        <div class="rounded-md border border-brand-500/20 bg-white/95 p-5 shadow-[0_24px_60px_-30px_rgba(227,163,25,0.45)] backdrop-blur">
+          <Image
+            src={whatsappQr}
+            alt="GoldCore WhatsApp QR code"
+            class="mx-auto aspect-square w-full max-w-40"
+            widths={[160, 320]}
+            loading="eager"
+          />
+          <p class="mt-4 text-sm font-700 text-carbon-900">WhatsApp</p>
+          <p class="mt-0.5 text-xs text-carbon-500">Scan to chat instantly</p>
+        </div>
+        <div class="rounded-md border border-brand-500/20 bg-white/95 p-5 shadow-[0_24px_60px_-30px_rgba(227,163,25,0.45)] backdrop-blur">
+          <Image
+            src={wechatQr}
+            alt="GoldCore WeChat QR code"
+            class="mx-auto aspect-square w-full max-w-40"
+            widths={[160, 320]}
+            loading="eager"
+          />
+          <p class="mt-4 text-sm font-700 text-carbon-900">WeChat</p>
+          <p class="mt-0.5 text-xs text-carbon-500">Scan to add us as a friend</p>
+        </div>
+      </div>
+
+      <div class="mt-10 border-t border-white/10 pt-8">
         <a
           href="/"
-          class="text-sm font-600 text-carbon-500 underline decoration-carbon-300 underline-offset-4 transition hover:text-brand-700"
+          class="text-sm font-600 text-carbon-400 underline decoration-white/25 underline-offset-4 transition hover:text-brand-400"
         >
           ← Back to home
         </a>
