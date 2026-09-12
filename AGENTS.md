@@ -7,8 +7,9 @@
 1. **`.claude/rules/TECH-STACK.md`** — 技术栈约束、CTA/表单规范、图片处理、禁止的框架
 2. **`.claude/rules/SEO.md`** — Meta/H1/Schema/图片 alt/URL/性能 SEO 强制要求
 3. **`.claude/rules/CMS-MEDIA.md`** — Decap CMS 图库规则（`public/images/` 唯一根目录）
-4. **`.claude/projects/H------631/memory/no-placeholder-images.md`** — 🚨 最高优先级：禁止占位图、禁止内容重复图片
-5. **`.claude/projects/H------631/memory/image-organization-rules.md`** — 图片按页面分文件夹、禁止跨页面复用
+4. **`.claude/rules/WHATSAPP-TRACKING.md`** — 🚨 WhatsApp 及所有外链转化追踪必须走 BaseLayout 全局脚本，禁止页面内单独埋点
+5. **`.claude/projects/H------631/memory/no-placeholder-images.md`** — 🚨 最高优先级：禁止占位图、禁止内容重复图片
+6. **`.claude/projects/H------631/memory/image-organization-rules.md`** — 图片按页面分文件夹、禁止跨页面复用
 
 其他参考（按需阅读）：
 

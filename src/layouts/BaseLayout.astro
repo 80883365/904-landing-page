@@ -118,5 +118,23 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     {chrome && <Footer />}
     <ScrollReveal />
     <ContactModal />
+
+    {/* Global WhatsApp click tracking (event delegation — catches every
+        wa.me link on any page, present or future). See .claude/rules/WHATSAPP-TRACKING.md */}
+    <script is:inline>
+      document.addEventListener("click", (e) => {
+        const link = (e.target as Element | null)?.closest?.(
+          "a[href*='wa.me'], a[href*='api.whatsapp.com']"
+        );
+        if (link) {
+          window.dataLayer = window.dataLayer || [];
+          window.dataLayer.push({
+            event: "whatsapp_click",
+            page_location: window.location.pathname,
+            whatsapp_url: link.getAttribute("href"),
+          });
+        }
+      });
+    </script>
   </body>
 </html>

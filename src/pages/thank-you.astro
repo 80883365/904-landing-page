@@ -56,7 +56,6 @@ const whatsappLink = "https://wa.me/8617335791762";
           target="_blank"
           rel="noopener noreferrer"
           class="btn btn-primary inline-flex items-center gap-2.5 text-base"
-          data-gtm-event="whatsapp_click"
         >
           <Icon name="whatsapp" class="size-5" />
           Chat with us on WhatsApp
@@ -105,13 +104,7 @@ const whatsappLink = "https://wa.me/8617335791762";
 <script is:inline>
   // Conversion signal for Google Tag Manager: fires alongside the
   // /thank-you pageview so GTM can trigger conversion tags.
+  // (WhatsApp clicks are tracked globally in BaseLayout.)
   window.dataLayer = window.dataLayer || [];
   window.dataLayer.push({ event: "generate_lead" });
-
-  // Track WhatsApp CTA clicks as a micro-conversion.
-  document.querySelectorAll("[data-gtm-event='whatsapp_click']").forEach((el) => {
-    el.addEventListener("click", () => {
-      window.dataLayer.push({ event: "whatsapp_click" });
-    });
-  });
 </script>
