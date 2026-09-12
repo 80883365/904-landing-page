@@ -14,11 +14,9 @@ import { Image } from "astro:assets";
 import wechatQr from "../assets/images/thank-you/wechat-qr.webp";
 import whatsappQr from "../assets/images/thank-you/whatsapp-qr.webp";
 
-const whatsappLink =
-  "https://wa.me/8617335791762?text=" +
-  encodeURIComponent(
-    "Hi GoldCore, I just submitted an inquiry on your website. I'd like to discuss my gold ore processing requirements."
-  );
+// Plain link for now — a prefilled ?text= opener can be added here later
+// if desired. Keep the number in sync with CONTACT.whatsapp.
+const whatsappLink = "https://wa.me/8617335791762";
 ---
 
 <BaseLayout
