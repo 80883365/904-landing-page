@@ -44,7 +44,7 @@ const contactPoints = [
               <div>
                 <p class="text-sm font-700 text-carbon-800">{c.label}</p>
                 {c.href ? (
-                  <a href={c.href} class="font-700 text-accent-700 underline decoration-accent-300 underline-offset-4 transition hover:text-brand-600 hover:decoration-brand-600">{c.value}</a>
+                  <a href={c.href} target="_blank" rel="noopener noreferrer" class="font-700 text-accent-700 underline decoration-accent-300 underline-offset-4 transition hover:text-brand-600 hover:decoration-brand-600">{c.value}</a>
                 ) : (
                   c.label === "Email" ? (
                     <a href={`mailto:${c.value}`} class="font-700 text-accent-700 underline decoration-accent-300 underline-offset-4 transition hover:text-brand-600 hover:decoration-brand-600">{c.value}</a>
