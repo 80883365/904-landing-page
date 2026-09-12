@@ -8,8 +8,8 @@ export const SEO_DEFAULTS = {
   defaultOgImage: "/og-default.jpg",
 
   // Title Template
-  titleTemplate: (title: string) => `${title} | GoldCore`,
-  homeTitleTemplate: () => "GoldCore — Gold Mining Grinding Equipment",
+  titleTemplate: (title: string) => `${title} | ZD Mining`,
+  homeTitleTemplate: () => "ZD Mining — Gold Mining Grinding Equipment",
 
   // Default Meta Description (fallback)
   defaultDescription:
@@ -19,9 +19,9 @@ export const SEO_DEFAULTS = {
   organization: {
     "@context": "https://schema.org",
     "@type": "Organization",
-    name: "GoldCore Mining Equipment Co., Ltd.",
-    url: "https://www.goldcore-machinery.com",
-    logo: "https://www.goldcore-machinery.com/logo.png",
+    name: "ZD Mining Products Co., Ltd.",
+    url: "https://miningzd.com",
+    logo: "https://miningzd.com/logo.png",
     description:
       "Supplier of gold ore grinding equipment and forged grinding media.",
     address: {
@@ -80,7 +80,7 @@ export function generateProductSchema(product: {
     image: product.image,
     brand: {
       "@type": "Brand",
-      name: "GoldCore",
+      name: "ZD Mining",
     },
     offers: {
       "@type": "Offer",
@@ -115,7 +115,7 @@ export function generateArticleSchema(article: {
     },
     publisher: {
       "@type": "Organization",
-      name: "GoldCore",
+      name: "ZD Mining",
       logo: {
         "@type": "ImageObject",
         url: "https://www.carbopure.com/logo.png",

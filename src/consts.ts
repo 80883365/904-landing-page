@@ -1,17 +1,17 @@
 /**
- * GoldCore — central site configuration.
+ * ZD Mining — central site configuration.
  * Single source of truth for brand, navigation, contact info, and Web3Forms.
  * Edit values here to update them across the whole site.
  */
 
 export const SITE = {
-  name: "GoldCore",
-  legalName: "GoldCore Mining Equipment Co., Ltd.",
+  name: "ZD Mining",
+  legalName: "ZD Mining Products Co., Ltd.",
   tagline: "Built for Better Gold Recovery",
   /** Short SEO description used in <meta> + hero subtitles. */
   description:
-    "GoldCore supplies ball mills, wet pan mills and forged grinding steel balls for practical, efficient gold ore grinding and mineral processing projects worldwide.",
-  url: "https://www.goldcore-machinery.com",
+    "ZD Mining supplies ball mills, wet pan mills and forged grinding steel balls for practical, efficient gold ore grinding and mineral processing projects worldwide.",
+  url: "https://miningzd.com",
   // Web3Forms access key (https://web3forms.com) — used by all site forms
   web3formsKey: "10ab1f82-8d01-4e92-9fc2-6067e554eee9",
   locale: "en_US",

@@ -1,5 +1,5 @@
 # =============================================================================
-# Decap CMS configuration — GoldCore
+# Decap CMS configuration — ZD Mining
 # Docs: https://decapcms.org/docs/configuration-options/
 # =============================================================================
 #
@@ -39,8 +39,8 @@ backend:
 # Publish content through commits to the repo above
 publish_mode: editorial_workflow
 local_backend: true  # Required for proxy backend
-site_url: https://www.goldcore-machinery.com
-display_url: https://www.goldcore-machinery.com
+site_url: https://miningzd.com
+display_url: https://miningzd.com
 
 # Where media uploads are stored (matches the Astro content layout)
 media_folder: "public/images"

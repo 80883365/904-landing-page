@@ -5,7 +5,7 @@ import sitemap from "@astrojs/sitemap";
 
 // https://astro.build/config
 export default defineConfig({
-  site: "https://www.carbopure.com",
+  site: "https://miningzd.com",
   integrations: [sitemap()],
   // Sharp is used by Astro's built-in image optimization (astro:assets)
   // for <Image /> and <Picture /> components. No extra integration required.

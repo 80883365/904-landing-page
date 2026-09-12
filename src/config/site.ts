@@ -5,14 +5,14 @@
 
 export const SITE = {
   // Brand Identity
-  name: "GoldCore",
-  legalName: "GoldCore Mining Equipment Co., Ltd.",
+  name: "ZD Mining",
+  legalName: "ZD Mining Products Co., Ltd.",
   tagline: "Built for Better Gold Recovery",
-  url: "https://www.goldcore-machinery.com",
+  url: "https://miningzd.com",
 
   // SEO & Meta
   description:
-    "GoldCore supplies ball mills, wet pan mills and forged grinding steel balls for gold ore processing and mineral grinding projects worldwide.",
+    "ZD Mining supplies ball mills, wet pan mills and forged grinding steel balls for gold ore processing and mineral grinding projects worldwide.",
 
   // Language & Locale
   locale: "en_US",

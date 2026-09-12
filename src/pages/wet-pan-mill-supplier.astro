@@ -22,7 +22,7 @@ const faqs = [
   ["What wear parts should be ordered with the machine?","Ask for a recommended startup spares package covering roller surfaces, grinding ring, bearings, belts and seals based on expected operating hours and local maintenance access."],
   ["How is the machine shipped?","The main frame and pan are secured for container transport; motor, reducer and smaller parts are protected separately. Final packing depends on model and destination."],
 ];
-const jsonLd={"@context":"https://schema.org","@graph":[{"@type":"Product",name:"Wet Pan Mill for Gold Ore",description:"Double-wheel wet pan mills in 1100–1600 models for small and medium gold ore grinding plants.",image:`https://www.goldcore-machinery.com${productImg.src}`,brand:{"@type":"Brand",name:"GoldCore"}},{"@type":"FAQPage",mainEntity:faqs.map(([q,a])=>({"@type":"Question",name:q,acceptedAnswer:{"@type":"Answer",text:a}}))}]};
+const jsonLd={"@context":"https://schema.org","@graph":[{"@type":"Product",name:"Wet Pan Mill for Gold Ore",description:"Double-wheel wet pan mills in 1100–1600 models for small and medium gold ore grinding plants.",image:`https://miningzd.com${productImg.src}`,brand:{"@type":"Brand",name:"ZD Mining"}},{"@type":"FAQPage",mainEntity:faqs.map(([q,a])=>({"@type":"Question",name:q,acceptedAnswer:{"@type":"Answer",text:a}}))}]};
 const quoteAction="openContactModal({ sourcePage: '/wet-pan-mill-supplier/', productInterest: 'Wet Pan Mill', ctaLabel: 'Get Model and Price' })";
 ---
 <BaseLayout chrome={false} title="Wet Pan Mill Supplier for Gold Ore Grinding" description="Source 1100–1600 wet pan mills for gold ore grinding. Compare capacity, power and fit, then request model selection, packing scope and export price." image={productImg.src} jsonLd={jsonLd}>
