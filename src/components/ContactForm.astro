@@ -106,20 +106,11 @@ const fieldId = (name: string) => fieldIdPrefix ? `${fieldIdPrefix}-${name}` : n
         const data = await res.json();
 
         if (data.success) {
-          if (status) {
-            status.className =
-              "block rounded-xs border border-cat-lime/30 bg-cat-lime/10 p-4 text-sm text-brand-700";
-            status.innerHTML =
-              "✓ Thank you! Your inquiry has been sent. We'll reply within 24 hours.";
-          }
           form.reset();
 
-          if (form.dataset.closeModal === "true") {
-            setTimeout(() => {
-              const modal = document.getElementById("contact-modal");
-              if (modal) modal.classList.add("hidden");
-            }, 2000);
-          }
+          // Conversion tracking: redirect to the thank-you page.
+          // GTM can fire conversion tags on the /thank-you pageview.
+          window.location.assign("/thank-you/");
         } else {
           throw new Error(data.message || "Submission failed");
         }

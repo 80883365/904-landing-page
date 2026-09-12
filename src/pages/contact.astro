@@ -82,8 +82,8 @@ const contactPoints = [
           <input type="hidden" name="subject" value="New inquiry from GoldCore website" />
           <input type="hidden" name="from_name" value="GoldCore Website" />
           <input type="checkbox" name="botcheck" class="hidden" style="display:none" tabindex="-1" autocomplete="off" aria-hidden="true" />
-          {/* Redirect after success (optional) */}
-          <input type="hidden" name="redirect" value={`${SITE.url}/contact?sent=1`} />
+          {/* Redirect fallback (non-JS) after success */}
+          <input type="hidden" name="redirect" value={`${SITE.url}/thank-you`} />
 
           <h2 class="!text-xl">Request a quote</h2>
           <p class="mt-1 text-sm text-carbon-500">Fields marked * are required.</p>
@@ -140,13 +140,10 @@ const contactPoints = [
         const data = await res.json();
 
         if (data.success) {
-          if (status) {
-            status.className =
-              "mt-4 block rounded-xs border border-cat-lime/30 bg-cat-lime/10 p-4 text-sm text-brand-700";
-            status.innerHTML =
-              "✓ Thank you — your inquiry has been sent. We'll reply within 24 hours.";
-          }
           form.reset();
+
+          // Conversion tracking: redirect to the thank-you page.
+          window.location.assign("/thank-you/");
         } else {
           throw new Error(data.message || "Submission failed");
         }

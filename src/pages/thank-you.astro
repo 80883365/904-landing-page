@@ -1,0 +1,50 @@
+---
+/**
+ * Thank-you page — shown after every successful inquiry form submission.
+ * Doubles as the conversion destination for GTM tracking:
+ * GTM can fire conversion tags on the /thank-you pageview or the
+ * `generate_lead` dataLayer event pushed below.
+ */
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Icon from "../components/Icon.astro";
+---
+
+<BaseLayout
+  title="Thank You — Inquiry Received"
+  description="Your inquiry has been received. Our sales team will reply within 24 hours with the next technical questions."
+>
+  <section class="bg-white py-24 sm:py-32">
+    <div class="mx-auto max-w-2xl px-4 text-center sm:px-6">
+      <div
+        class="mx-auto flex size-16 items-center justify-center rounded-full bg-brand-600/10 text-brand-600"
+        aria-hidden="true"
+      >
+        <Icon name="check" class="size-8" />
+      </div>
+
+      <h1 class="mt-8 text-3xl font-800 text-carbon-900 sm:text-4xl">
+        Thank You — Your Inquiry Has Been Received
+      </h1>
+
+      <p class="mx-auto mt-5 max-w-xl text-base leading-7 text-carbon-500 sm:text-lg">
+        Our sales engineers will review your requirements and reply within 24
+        hours with the next technical questions, model selection advice and an
+        export quote.
+      </p>
+
+      <div class="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
+        <a href="/" class="btn btn-primary">
+          Back to home <Icon name="arrowRight" class="size-4" />
+        </a>
+        <a href="/products/" class="btn btn-secondary">Browse products</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<script is:inline>
+  // Conversion signal for Google Tag Manager: fires alongside the
+  // /thank-you pageview so GTM can trigger conversion tags.
+  window.dataLayer = window.dataLayer || [];
+  window.dataLayer.push({ event: "generate_lead" });
+</script>
