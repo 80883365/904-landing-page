@@ -12,8 +12,8 @@ export const SITE = {
   description:
     "GoldCore supplies ball mills, wet pan mills and forged grinding steel balls for practical, efficient gold ore grinding and mineral processing projects worldwide.",
   url: "https://www.goldcore-machinery.com",
-  // Replace with your access key from https://web3forms.com
-  web3formsKey: "YOUR_WEB3FORMS_ACCESS_KEY",
+  // Web3Forms access key (https://web3forms.com) — used by all site forms
+  web3formsKey: "10ab1f82-8d01-4e92-9fc2-6067e554eee9",
   locale: "en_US",
   lang: "en",
 } as const;

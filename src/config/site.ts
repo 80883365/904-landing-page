@@ -19,7 +19,7 @@ export const SITE = {
   lang: "en",
 
   // Forms
-  web3formsKey: "YOUR_WEB3FORMS_ACCESS_KEY", // Replace with your key from https://web3forms.com
+  web3formsKey: "10ab1f82-8d01-4e92-9fc2-6067e554eee9", // Web3Forms access key
 
   // Contact Information
   contact: {

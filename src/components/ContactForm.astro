@@ -85,6 +85,7 @@ const fieldId = (name: string) => fieldIdPrefix ? `${fieldIdPrefix}-${name}` : n
 
 <script>
   // AJAX submission for modal and inline inquiry forms
+  import { appendSubmissionMeta } from "../scripts/form-meta";
   document.querySelectorAll("form[data-inquiry-form]").forEach((formElement) => {
     if ((formElement as HTMLFormElement).dataset.inquiryBound === "true") return;
     (formElement as HTMLFormElement).dataset.inquiryBound = "true";
@@ -98,10 +99,12 @@ const fieldId = (name: string) => fieldIdPrefix ? `${fieldIdPrefix}-${name}` : n
       btn.innerHTML = "Sending…";
 
       try {
+        const body = new FormData(form);
+        await appendSubmissionMeta(body);
         const res = await fetch(form.action, {
           method: "POST",
           headers: { Accept: "application/json" },
-          body: new FormData(form),
+          body,
         });
         const data = await res.json();
 

@@ -120,6 +120,7 @@ const contactPoints = [
 
 <script>
   // AJAX submission for the Web3Forms contact form.
+  import { appendSubmissionMeta } from "../scripts/form-meta";
   const form = document.getElementById("contact-form") as HTMLFormElement | null;
   const status = document.getElementById("form-status");
 
@@ -132,10 +133,12 @@ const contactPoints = [
       btn.innerHTML = "Sending…";
 
       try {
+        const body = new FormData(form);
+        await appendSubmissionMeta(body);
         const res = await fetch(form.action, {
           method: "POST",
           headers: { Accept: "application/json" },
-          body: new FormData(form),
+          body,
         });
         const data = await res.json();
 
