@@ -18,8 +18,4 @@ export default defineConfig({
   },
   // Clean, descriptive URLs for the marketing site.
   trailingSlash: "ignore",
-  prefetch: {
-    prefetchAll: true,
-    defaultStrategy: "viewport",
-  },
 });

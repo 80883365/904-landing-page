@@ -45,6 +45,9 @@ const ogImage = new URL(image, SITE.url).href;
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/png" href="/brand/zd-mining-favicon-white.png" />
+    <link rel="preload" href="/fonts/roboto-400.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/roboto-700.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/roboto-slab-700.woff2" as="font" type="font/woff2" crossorigin />
     <meta name="generator" content={Astro.generator} />
 
     <title>{pageTitle}</title>
@@ -86,14 +89,12 @@ const ogImage = new URL(image, SITE.url).href;
       <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
     )}
 
-    {/* Google Tag Manager */}
+    {/* Load analytics after the first render so third-party code cannot compete
+        with the hero image, fonts and other LCP resources. The dataLayer is
+        still available immediately, so early conversion events are retained. */}
     <script
       is:inline
-      set:html={`(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-})(window,document,'script','dataLayer','GTM-N7B74G9D');`}
+      set:html={`(function(w,d){var loaded=false;var load=function(){if(loaded)return;loaded=true;var l='dataLayer',i='GTM-N7B74G9D';w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName('script')[0],j=d.createElement('script'),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f)};var later=function(){w.setTimeout(load,5000)};if(w.requestIdleCallback){w.requestIdleCallback(later,{timeout:5000})}else{w.addEventListener('load',later,{once:true})}['pointerdown','keydown','touchstart'].forEach(function(type){d.addEventListener(type,load,{once:true,passive:true,capture:true})})})(window,document);`}
     />
     {/* End Google Tag Manager */}
   </head>
