@@ -67,8 +67,8 @@ const whatsappLink = "https://wa.me/8617335791762";
       </div>
 
       {/* QR codes */}
-      <div class="mx-auto mt-12 grid max-w-xs grid-cols-2 gap-4">
-        <div class="overflow-hidden rounded-md bg-white shadow-[0_24px_60px_-30px_rgba(227,163,25,0.45)]">
+      <div class="mx-auto mt-12 grid w-full max-w-sm grid-cols-2 gap-4">
+        <div class="overflow-hidden rounded-md bg-white p-2 shadow-[0_24px_60px_-30px_rgba(227,163,25,0.45)]">
           <Image
             src={whatsappQr}
             alt="GoldCore WhatsApp QR code"
@@ -76,9 +76,9 @@ const whatsappLink = "https://wa.me/8617335791762";
             widths={[160, 320]}
             loading="eager"
           />
-          <p class="bg-white pb-2 pt-1.5 text-center text-sm font-700 text-carbon-900">WhatsApp</p>
+          <p class="pb-0.5 pt-1.5 text-center text-sm font-700 text-carbon-900">WhatsApp</p>
         </div>
-        <div class="overflow-hidden rounded-md bg-white shadow-[0_24px_60px_-30px_rgba(227,163,25,0.45)]">
+        <div class="overflow-hidden rounded-md bg-white p-2 shadow-[0_24px_60px_-30px_rgba(227,163,25,0.45)]">
           <Image
             src={wechatQr}
             alt="GoldCore WeChat QR code"
@@ -86,7 +86,7 @@ const whatsappLink = "https://wa.me/8617335791762";
             widths={[160, 320]}
             loading="eager"
           />
-          <p class="bg-white pb-2 pt-1.5 text-center text-sm font-700 text-carbon-900">WeChat</p>
+          <p class="pb-0.5 pt-1.5 text-center text-sm font-700 text-carbon-900">WeChat</p>
         </div>
       </div>
 
