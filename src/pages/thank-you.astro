@@ -45,10 +45,8 @@ const whatsappLink = "https://wa.me/8617335791762";
         Thank You — Your Inquiry Has Been Received
       </h1>
 
-      <p class="mx-auto mt-5 max-w-xl text-base leading-7 text-carbon-300 sm:text-lg">
-        Our sales engineers will reply within 24 hours. Want a faster answer?
-        Scan a code below or message us on WhatsApp — we typically respond
-        within minutes during business hours.
+      <p class="mx-auto mt-5 max-w-md text-base leading-7 text-carbon-300">
+        We'll reply within 24 hours. Need it faster? Scan below.
       </p>
 
       {/* WhatsApp primary CTA */}
@@ -69,28 +67,26 @@ const whatsappLink = "https://wa.me/8617335791762";
       </div>
 
       {/* QR codes */}
-      <div class="mx-auto mt-12 grid max-w-md grid-cols-2 gap-4">
-        <div class="rounded-md border border-brand-500/20 bg-white/95 p-3.5 shadow-[0_24px_60px_-30px_rgba(227,163,25,0.45)] backdrop-blur sm:p-5">
+      <div class="mx-auto mt-12 grid max-w-xs grid-cols-2 gap-4">
+        <div class="overflow-hidden rounded-md bg-white shadow-[0_24px_60px_-30px_rgba(227,163,25,0.45)]">
           <Image
             src={whatsappQr}
             alt="GoldCore WhatsApp QR code"
-            class="mx-auto aspect-square w-full max-w-28 sm:max-w-36"
-            widths={[112, 160, 320]}
+            class="aspect-square w-full"
+            widths={[160, 320]}
             loading="eager"
           />
-          <p class="mt-3 text-sm font-700 text-carbon-900">WhatsApp</p>
-          <p class="mt-0.5 text-xs text-carbon-500">Scan to chat</p>
+          <p class="bg-white pb-2 pt-1.5 text-center text-sm font-700 text-carbon-900">WhatsApp</p>
         </div>
-        <div class="rounded-md border border-brand-500/20 bg-white/95 p-3.5 shadow-[0_24px_60px_-30px_rgba(227,163,25,0.45)] backdrop-blur sm:p-5">
+        <div class="overflow-hidden rounded-md bg-white shadow-[0_24px_60px_-30px_rgba(227,163,25,0.45)]">
           <Image
             src={wechatQr}
             alt="GoldCore WeChat QR code"
-            class="mx-auto aspect-square w-full max-w-28 sm:max-w-36"
-            widths={[112, 160, 320]}
+            class="aspect-square w-full"
+            widths={[160, 320]}
             loading="eager"
           />
-          <p class="mt-3 text-sm font-700 text-carbon-900">WeChat</p>
-          <p class="mt-0.5 text-xs text-carbon-500">Scan to add</p>
+          <p class="bg-white pb-2 pt-1.5 text-center text-sm font-700 text-carbon-900">WeChat</p>
         </div>
       </div>
 
