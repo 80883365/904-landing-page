@@ -25,7 +25,7 @@ const data = cases[Astro.params.slug as keyof typeof cases];
 <BaseLayout title={data.title} description={data.intro} image={data.image.src} type="article">
   <PageHero tone="dark" title={data.title} intro={data.intro} crumbs={[{ label: "Home", href: "/" }, { label: "Resources", href: "/resources" }, { label: "Case studies", href: "/resources/case-studies" }, { label: data.title }]} />
   <Section>
-    <div class="grid gap-10 lg:grid-cols-[minmax(0,1fr)_18rem] lg:items-start">
+    <div class="grid gap-10 lg:grid-cols-[minmax(0,1fr)_22rem] lg:items-start">
       <article class="min-w-0">
         <OptimizedImage src={data.image} alt={data.alt} class="aspect-[16/9] w-full rounded-md object-cover" loading="eager" fetchpriority="high" />
         <section class="mt-10"><h2>Project overview</h2><p class="mt-4 max-w-3xl text-lg leading-relaxed text-carbon-600">{data.challenge}</p></section>
@@ -33,7 +33,7 @@ const data = cases[Astro.params.slug as keyof typeof cases];
         <section class="mt-12 border-t border-carbon-100 pt-10"><h2>Project result</h2><p class="mt-4 max-w-3xl text-xl leading-relaxed text-carbon-600">{data.outcome}</p></section>
       </article>
       <aside class="space-y-5 lg:sticky lg:top-28">
-        <div class="card p-6">
+        <div class="rounded-md border border-carbon-200 bg-carbon-100 p-6 shadow-[0_18px_50px_-32px_rgba(5,42,104,0.35)]">
           <h2 class="!text-lg">Discuss a similar project</h2>
           <p class="mt-2 text-sm text-carbon-500">Tell us your requirements and we'll reply within 24 hours.</p>
           <form
