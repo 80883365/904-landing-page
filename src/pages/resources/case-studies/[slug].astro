@@ -3,6 +3,9 @@ import BaseLayout from "../../../layouts/BaseLayout.astro";
 import PageHero from "../../../components/PageHero.astro";
 import Section from "../../../components/Section.astro";
 import OptimizedImage from "../../../components/OptimizedImage.astro";
+import Field from "../../../components/Field.astro";
+import Icon from "../../../components/Icon.astro";
+import { SITE } from "../../../consts";
 import mineImg from "../../../assets/images/case-studies/gold-mine-upgrade.webp";
 import plantImg from "../../../assets/images/case-studies/plant-startup.webp";
 import mediaImg from "../../../assets/images/case-studies/media-supply.webp";
@@ -30,8 +33,45 @@ const data = cases[Astro.params.slug as keyof typeof cases];
         <section class="mt-12 border-t border-carbon-100 pt-10"><h2>Project result</h2><p class="mt-4 max-w-3xl text-xl leading-relaxed text-carbon-600">{data.outcome}</p></section>
       </article>
       <aside class="space-y-5 lg:sticky lg:top-28">
-        <div class="card p-6"><h2 class="!text-lg">Case study summary</h2><dl class="mt-5 space-y-4 text-sm"><div><dt class="font-700 text-carbon-800">Focus</dt><dd class="mt-1 text-carbon-500">Project planning and supply scope</dd></div><div><dt class="font-700 text-carbon-800">Audience</dt><dd class="mt-1 text-carbon-500">Mining project and procurement teams</dd></div><div><dt class="font-700 text-carbon-800">Status</dt><dd class="mt-1 text-carbon-500">Working reference for future verified details</dd></div></dl></div>
-        <div class="bg-brand-700 p-6 text-white"><h2 class="!text-lg !text-white">Planning something similar?</h2><p class="mt-3 text-sm leading-relaxed text-white/75">Tell us about your project and we will help organize the right questions.</p><button class="btn btn-primary mt-5 w-full" onclick={`openContactModal({ sourcePage: '/resources/case-studies/${Astro.params.slug}', ctaLabel: 'Discuss a similar project' })`}>Discuss a similar project</button></div>
+        <div class="card p-6">
+          <h2 class="!text-lg">Discuss a similar project</h2>
+          <p class="mt-2 text-sm text-carbon-500">Tell us your requirements and we'll reply within 24 hours.</p>
+          <form
+            id="case-study-form"
+            data-inquiry-form
+            data-close-modal="false"
+            action="https://api.web3forms.com/submit"
+            method="POST"
+            class="mt-5 space-y-4"
+          >
+            <input type="hidden" name="access_key" value={SITE.web3formsKey} />
+            <input type="hidden" name="subject" value="New inquiry from ZD Mining website" />
+            <input type="hidden" name="from_name" value="ZD Mining Website" />
+            <input type="hidden" name="redirect" value={`${SITE.url}/thank-you`} />
+            <input type="hidden" name="source_page" value={`/resources/case-studies/${Astro.params.slug}`} />
+            <input type="checkbox" name="botcheck" class="hidden" style="display:none" tabindex="-1" autocomplete="off" aria-hidden="true" />
+
+            <Field label="Name" name="name" id="case-name" />
+            <Field label="Email *" name="email" id="case-email" type="email" required />
+            <div>
+              <label for="case-message" class="mb-1.5 block text-sm font-700 text-carbon-700">Your requirements *</label>
+              <textarea
+                id="case-message"
+                name="message"
+                required
+                rows="4"
+                placeholder="Ore type, capacity, timeline…"
+                class="w-full rounded-xs border border-carbon-200 bg-white px-3.5 py-2.5 text-base outline-none transition focus:border-accent-500 focus:ring-2 focus:ring-accent-500/20"
+              ></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-primary w-full text-base">
+              Send inquiry <Icon name="arrowRight" class="size-4" />
+            </button>
+
+            <p id="case-form-status" data-form-status class="hidden rounded-xs border p-4 text-sm" role="status" aria-live="polite"></p>
+          </form>
+        </div>
       </aside>
     </div>
   </Section>
