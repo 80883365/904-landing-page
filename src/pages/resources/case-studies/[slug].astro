@@ -74,6 +74,12 @@ const data = cases[Astro.params.slug as keyof typeof cases];
         </div>
       </aside>
     </div>
-    <a href="/resources/case-studies" class="mt-10 inline-block font-700 text-accent-700 underline decoration-accent-300 underline-offset-4">Back to case studies →</a>
+    <a
+      href="/resources/case-studies"
+      class="group mt-10 inline-flex items-center gap-1.5 font-700 text-accent-700 underline decoration-accent-300 decoration-2 underline-offset-4 transition-colors duration-200 hover:text-brand-600 hover:decoration-brand-600"
+    >
+      Back to case studies
+      <span class="inline-block transition-transform duration-200 group-hover:translate-x-1" aria-hidden="true">→</span>
+    </a>
   </Section>
 </BaseLayout>
