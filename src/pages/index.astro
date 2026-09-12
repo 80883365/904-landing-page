@@ -16,7 +16,7 @@ const jsonLd = {"@context":"https://schema.org","@type":"Organization",name:SITE
 ---
 <BaseLayout title="Gold Mining Grinding Equipment Manufacturer" description="Ball mills, wet pan mills and forged grinding steel balls for gold ore processing. Get application-led model selection and an export quote." image={heroImg.src} jsonLd={jsonLd}>
   <section class="relative min-h-[680px] overflow-hidden bg-carbon-950 text-white">
-    <OptimizedImage src={heroImg} alt="Gold mine processing plant with grinding and material handling equipment" class="absolute inset-0 h-full w-full object-cover opacity-55" loading="eager" fetchpriority="high" sizes="100vw" />
+    <OptimizedImage src={heroImg} alt="Gold mine processing plant with grinding and material handling equipment" class="absolute inset-0 h-full w-full object-cover opacity-55" loading="eager" fetchpriority="high" widths={[640, 1024, 1536, 1920]} sizes="100vw" />
     <div class="absolute inset-0 bg-gradient-to-r from-carbon-950 via-carbon-950/85 to-carbon-950/20"></div>
     <div class="container-x relative flex min-h-[680px] items-center py-20"><div class="max-w-3xl">
       <h1 class="!text-white !text-5xl sm:!text-6xl">Gold ore grinding equipment built around your recovery circuit</h1>
@@ -33,7 +33,7 @@ const jsonLd = {"@context":"https://schema.org","@type":"Organization",name:SITE
     <div class="grid gap-6 lg:grid-cols-3">{products.map((p) => <ProductCard href={`/products/${p.id}`} title={p.data.title} excerpt={p.data.excerpt} icon={p.data.icon} category={p.data.category} image={productImages[p.id]} imageAlt={p.data.heroImageAlt} />)}</div>
   </Section>
   <Section tone="alt" title="From crushed ore to a controlled grind" intro="A practical selection process connects equipment, grinding media and downstream recovery instead of treating each purchase in isolation.">
-    <div class="grid gap-8 lg:grid-cols-[1.1fr_.9fr] lg:items-center"><div class="overflow-hidden rounded-md"><OptimizedImage src={ballMillImg} alt="Industrial ball mill in a mineral processing grinding circuit" class="aspect-[16/10] w-full object-cover" loading="lazy" /></div><ol class="space-y-6">
+    <div class="grid gap-8 lg:grid-cols-[1.1fr_.9fr] lg:items-center"><div class="overflow-hidden rounded-md"><OptimizedImage src={ballMillImg} alt="Industrial ball mill in a mineral processing grinding circuit" class="aspect-[16/10] w-full object-cover" loading="lazy" widths={[480, 720, 1000]} sizes="(min-width: 1024px) 55vw, 100vw" /></div><ol class="space-y-6">
       <li class="flex gap-4"><span class="flex size-10 shrink-0 items-center justify-center rounded-full bg-accent-400 font-700 text-carbon-950">1</span><div><h3 class="!text-lg">Define the ore and target</h3><p class="mt-1 text-carbon-500">Share feed size, ore hardness, required P80 and hourly throughput.</p></div></li>
       <li class="flex gap-4"><span class="flex size-10 shrink-0 items-center justify-center rounded-full bg-accent-400 font-700 text-carbon-950">2</span><div><h3 class="!text-lg">Match the mill and media</h3><p class="mt-1 text-carbon-500">Select the grinding method, working volume, power and ball charge.</p></div></li>
       <li class="flex gap-4"><span class="flex size-10 shrink-0 items-center justify-center rounded-full bg-accent-400 font-700 text-carbon-950">3</span><div><h3 class="!text-lg">Confirm the complete scope</h3><p class="mt-1 text-carbon-500">Review auxiliaries, shipping, installation requirements and wear parts.</p></div></li>

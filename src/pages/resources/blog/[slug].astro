@@ -24,7 +24,7 @@ const data = posts[Astro.params.slug as keyof typeof posts];
   <Section>
     <div class="grid gap-10 lg:grid-cols-[minmax(0,1fr)_18rem] lg:items-start">
       <article class="prose-cp min-w-0">
-        <OptimizedImage src={data.image} alt={data.alt} class="mb-10 aspect-[16/9] w-full rounded-md object-cover" loading="eager" fetchpriority="high" />
+        <OptimizedImage src={data.image} alt={data.alt} class="mb-10 aspect-[16/9] w-full rounded-md object-cover" loading="eager" fetchpriority="high" widths={[640, 1024, 1280, 1600]} sizes="(min-width: 1024px) 75vw, 100vw" />
         {data.sections.map((section) => <section id={section[0].toLowerCase().replace(/[^a-z0-9]+/g, "-")} class="mb-10"><h2>{section[0]}</h2><p>{section[1]}</p></section>)}
       </article>
       <aside class="space-y-5 lg:sticky lg:top-28">

@@ -16,13 +16,15 @@
     "@astrojs/sitemap": "^3.7.3",
     "@tailwindcss/vite": "^4.3.1",
     "astro": "^6.0.0",
+    "html-escaper": "^3.0.3",
     "sharp": "^0.33.5",
     "tailwindcss": "^4.3.1"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.4",
     "decap-server": "^3.9.1",
-    "typescript": "^5.6.0"
+    "typescript": "^5.6.0",
+    "wawoff2": "^2.0.1"
   },
   "overrides": {
     "vite": "^7.3.6"

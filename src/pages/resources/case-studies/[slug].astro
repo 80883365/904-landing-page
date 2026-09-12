@@ -27,7 +27,7 @@ const data = cases[Astro.params.slug as keyof typeof cases];
   <Section>
     <div class="grid gap-10 lg:grid-cols-[minmax(0,1fr)_22rem] lg:items-start">
       <article class="min-w-0">
-        <OptimizedImage src={data.image} alt={data.alt} class="aspect-[16/9] w-full rounded-md object-cover" loading="eager" fetchpriority="high" />
+        <OptimizedImage src={data.image} alt={data.alt} class="aspect-[16/9] w-full rounded-md object-cover" loading="eager" fetchpriority="high" widths={[640, 1024, 1280, 1600]} sizes="(min-width: 1024px) 75vw, 100vw" />
         <section class="mt-10"><h2>Project overview</h2><p class="mt-4 max-w-3xl text-lg leading-relaxed text-carbon-600">{data.challenge}</p></section>
         <section class="mt-12 border-t border-carbon-100 pt-10"><h2>What the project team focused on</h2><div class="mt-7 grid gap-5 md:grid-cols-3">{data.approach.map((item, i) => <div class="card p-6"><span class="font-display text-3xl font-800 text-accent-600">0{i + 1}</span><p class="mt-4 text-carbon-600">{item}</p></div>)}</div></section>
         <section class="mt-12 border-t border-carbon-100 pt-10"><h2>Project result</h2><p class="mt-4 max-w-3xl text-xl leading-relaxed text-carbon-600">{data.outcome}</p></section>

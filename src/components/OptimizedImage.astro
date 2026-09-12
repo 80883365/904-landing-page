@@ -20,6 +20,8 @@ interface Props {
   width?: number;
   height?: number;
   densities?: number[];
+  /** Responsive srcset breakpoints — pair with `sizes`. */
+  widths?: number[];
   class?: string;
   loading?: "lazy" | "eager";
   fetchpriority?: "high" | "low" | "auto";
@@ -31,10 +33,11 @@ const {
   alt,
   width,
   height,
+  densities,
+  widths,
   class: className = "h-full w-full object-cover",
   loading = "lazy",
   fetchpriority,
-  densities,
   sizes,
 } = Astro.props;
 
@@ -61,6 +64,7 @@ const isString = typeof src === "string";
       loading={loading}
       fetchpriority={fetchpriority}
       densities={densities}
+      widths={widths}
       sizes={sizes}
       class={className}
     />

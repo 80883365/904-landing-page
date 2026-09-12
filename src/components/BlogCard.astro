@@ -45,6 +45,8 @@ const fmtDate = date
         alt={imageAlt ?? title}
         class="h-full w-full object-cover transition duration-500 group-hover:scale-105"
         loading="lazy"
+        widths={[400, 640, 900]}
+        sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
       />
     ) : (
       <div class="h-full w-full bg-gradient-to-br from-brand-700 to-brand-600"></div>
